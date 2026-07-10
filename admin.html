@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin — Rifa Rodrigo Ravera</title>
 <meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0b0b0b">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -12,6 +13,11 @@
   --crema:#f5efe6; --gris:#9a9a9a; --verde:#2ecc71; --amarillo:#f1c40f; --rojo:#e74c3c;
 }
 *{margin:0;padding:0;box-sizing:border-box}
+html{color-scheme:dark}
+button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
 body{background:var(--negro);color:var(--crema);font-family:'Barlow',sans-serif;padding:24px 16px}
 .wrap{max-width:1150px;margin:0 auto}
 h1{font-family:'Bebas Neue';font-size:36px;letter-spacing:2px}
@@ -33,7 +39,7 @@ h1 .naranja{color:var(--naranja)}
 /* stats */
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
 .stat{background:var(--panel);border:1px solid var(--borde);border-radius:12px;padding:16px 18px}
-.stat .v{font-family:'Bebas Neue';font-size:34px;color:var(--naranja);line-height:1}
+.stat .v{font-family:'Bebas Neue';font-size:34px;color:var(--naranja);line-height:1;font-variant-numeric:tabular-nums}
 .stat .v.verde{color:var(--verde)}
 .stat .v.amarillo{color:var(--amarillo)}
 .stat .l{color:var(--gris);font-size:12.5px;text-transform:uppercase;letter-spacing:1px;margin-top:4px;font-family:'Barlow Condensed'}
@@ -81,7 +87,7 @@ tr:hover td{background:#1e1e1e}
 <div id="login">
   <h1>ADMIN <span class="naranja">RIFA</span></h1>
   <div class="sub">Rifa Solidaria Rodrigo Ravera</div>
-  <input id="clave" type="password" placeholder="Clave de administración" autocomplete="current-password">
+  <input id="clave" name="clave" type="password" placeholder="Clave de administración" autocomplete="current-password" aria-label="Clave de administración">
   <button class="btn" id="btn-entrar" style="width:100%">Entrar</button>
   <div class="error" id="login-error">Clave incorrecta</div>
 </div>
@@ -99,8 +105,8 @@ tr:hover td{background:#1e1e1e}
   </div>
 
   <div class="toolbar">
-    <input id="filtro" type="text" placeholder="Filtrar por nombre, RUT, correo o número…" style="min-width:260px">
-    <select id="filtro-estado">
+    <input id="filtro" type="text" placeholder="Filtrar por nombre, RUT, correo o número…" style="min-width:260px" aria-label="Filtrar reservas">
+    <select id="filtro-estado" aria-label="Filtrar por estado">
       <option value="">Todos los estados</option>
       <option value="pagado">Pagados</option>
       <option value="pendiente">Pendientes vigentes</option>
@@ -134,19 +140,19 @@ tr:hover td{background:#1e1e1e}
   <div class="modal">
     <button class="cerrar" onclick="cerrarModal()">&times;</button>
     <h3>VENTA MANUAL</h3>
-    <div class="campo"><label>Número (1–500)</label><input id="v-numero" type="number" min="1" max="500"></div>
-    <div class="campo"><label>Nombre completo</label><input id="v-nombre" type="text"></div>
-    <div class="campo"><label>RUT</label><input id="v-rut" type="text" placeholder="12.345.678-9"></div>
-    <div class="campo"><label>Correo (opcional, recibe comprobante)</label><input id="v-email" type="email"></div>
-    <div class="campo"><label>Teléfono</label><input id="v-telefono" type="tel"></div>
-    <div class="campo"><label>Canal de pago</label>
+    <div class="campo"><label for="v-numero">Número (1–500)</label><input id="v-numero" type="number" min="1" max="500" inputmode="numeric"></div>
+    <div class="campo"><label for="v-nombre">Nombre completo</label><input id="v-nombre" type="text" autocomplete="off"></div>
+    <div class="campo"><label for="v-rut">RUT</label><input id="v-rut" type="text" placeholder="12.345.678-9" spellcheck="false" autocomplete="off"></div>
+    <div class="campo"><label for="v-email">Correo (opcional, recibe comprobante)</label><input id="v-email" type="email" spellcheck="false" autocomplete="off"></div>
+    <div class="campo"><label for="v-telefono">Teléfono</label><input id="v-telefono" type="tel" autocomplete="off"></div>
+    <div class="campo"><label for="v-canal">Canal de pago</label>
       <select id="v-canal"><option value="transferencia">Transferencia</option><option value="efectivo">Efectivo</option></select>
     </div>
     <button class="btn" id="btn-guardar-venta" style="width:100%">Registrar venta pagada</button>
   </div>
 </div>
 
-<div id="toast"></div>
+<div id="toast" role="status" aria-live="polite"></div>
 
 <script>
 const SUPABASE_URL = "https://pikbmocrnlosoujjllmw.supabase.co";
