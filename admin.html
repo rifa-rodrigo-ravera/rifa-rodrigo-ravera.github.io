@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Rifa Rodrigo Ravera</title>
+<meta name="robots" content="noindex,nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --negro:#0b0b0b; --panel:#181818; --borde:#2e2e2e; --naranja:#ff6a00;
+  --crema:#f5efe6; --gris:#9a9a9a; --verde:#2ecc71; --amarillo:#f1c40f; --rojo:#e74c3c;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--negro);color:var(--crema);font-family:'Barlow',sans-serif;padding:24px 16px}
+.wrap{max-width:1150px;margin:0 auto}
+h1{font-family:'Bebas Neue';font-size:36px;letter-spacing:2px}
+h1 .naranja{color:var(--naranja)}
+.sub{color:var(--gris);font-size:14px;margin-bottom:22px}
+
+/* login */
+#login{max-width:360px;margin:12vh auto;background:var(--panel);border:1px solid var(--borde);border-top:4px solid var(--naranja);border-radius:14px;padding:30px;text-align:center}
+#login input{width:100%;background:#111;border:1px solid var(--borde);color:var(--crema);border-radius:8px;padding:12px 14px;font-size:16px;margin:14px 0;outline:none}
+#login input:focus{border-color:var(--naranja)}
+.btn{background:var(--naranja);color:#111;border:none;border-radius:8px;font-family:'Barlow Condensed';font-weight:700;font-size:17px;letter-spacing:1.5px;text-transform:uppercase;padding:11px 22px;cursor:pointer}
+.btn:hover{filter:brightness(1.1)}
+.btn.sec{background:transparent;color:var(--crema);border:1px solid var(--borde)}
+.btn.sec:hover{border-color:var(--naranja);color:var(--naranja)}
+.btn.mini{font-size:13px;padding:6px 12px;letter-spacing:1px}
+.btn.rojo{background:var(--rojo);color:#fff}
+#login .error{color:var(--rojo);font-size:14px;margin-top:10px;display:none}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
+.stat{background:var(--panel);border:1px solid var(--borde);border-radius:12px;padding:16px 18px}
+.stat .v{font-family:'Bebas Neue';font-size:34px;color:var(--naranja);line-height:1}
+.stat .v.verde{color:var(--verde)}
+.stat .v.amarillo{color:var(--amarillo)}
+.stat .l{color:var(--gris);font-size:12.5px;text-transform:uppercase;letter-spacing:1px;margin-top:4px;font-family:'Barlow Condensed'}
+
+/* toolbar */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.toolbar input,.toolbar select{background:#111;border:1px solid var(--borde);color:var(--crema);border-radius:8px;padding:9px 12px;font-size:14.5px;outline:none}
+.toolbar input:focus{border-color:var(--naranja)}
+.spacer{flex:1}
+
+/* tabla */
+.tabla-wrap{overflow-x:auto;background:var(--panel);border:1px solid var(--borde);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:820px}
+th{font-family:'Barlow Condensed';letter-spacing:1px;text-transform:uppercase;font-size:13px;color:var(--gris);text-align:left;padding:12px 14px;border-bottom:1px solid var(--borde);position:sticky;top:0;background:var(--panel)}
+td{padding:10px 14px;border-bottom:1px solid #222;vertical-align:middle}
+tr:hover td{background:#1e1e1e}
+.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.5px}
+.badge.pagado{background:rgba(46,204,113,.15);color:var(--verde);border:1px solid rgba(46,204,113,.4)}
+.badge.pendiente{background:rgba(241,196,15,.12);color:var(--amarillo);border:1px solid rgba(241,196,15,.4)}
+.badge.expirada{background:rgba(154,154,154,.12);color:var(--gris);border:1px solid #444}
+.num-td{font-family:'Bebas Neue';font-size:20px;color:var(--naranja)}
+.vacio{padding:34px;text-align:center;color:var(--gris)}
+
+/* modal */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;place-items:center;z-index:50;padding:16px}
+.overlay.abierto{display:grid}
+.modal{width:min(430px,100%);background:var(--panel);border:1px solid var(--borde);border-top:4px solid var(--naranja);border-radius:14px;padding:26px;position:relative}
+.modal h3{font-family:'Bebas Neue';font-size:26px;letter-spacing:2px;margin-bottom:14px}
+.modal .cerrar{position:absolute;top:10px;right:14px;background:none;border:none;color:var(--gris);font-size:24px;cursor:pointer}
+.campo{margin-bottom:12px}
+.campo label{display:block;font-size:12px;color:var(--gris);margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;font-family:'Barlow Condensed';font-weight:600}
+.campo input,.campo select{width:100%;background:#111;border:1px solid var(--borde);color:var(--crema);border-radius:8px;padding:10px 12px;font-size:15px;outline:none}
+.campo input:focus{border-color:var(--naranja)}
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(130%);background:var(--panel);border:1px solid var(--naranja);border-radius:10px;padding:12px 20px;font-size:14.5px;transition:transform .3s;z-index:60;max-width:90vw}
+#toast.visible{transform:translateX(-50%) translateY(0)}
+.eventos{margin-top:26px}
+.eventos h2{font-family:'Bebas Neue';font-size:24px;letter-spacing:2px;margin-bottom:10px}
+.evento{font-size:13px;color:var(--gris);padding:7px 0;border-bottom:1px solid #1e1e1e;font-family:monospace;word-break:break-all}
+.evento .tipo{color:var(--naranja)}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login">
+  <h1>ADMIN <span class="naranja">RIFA</span></h1>
+  <div class="sub">Rifa Solidaria Rodrigo Ravera</div>
+  <input id="clave" type="password" placeholder="Clave de administración" autocomplete="current-password">
+  <button class="btn" id="btn-entrar" style="width:100%">Entrar</button>
+  <div class="error" id="login-error">Clave incorrecta</div>
+</div>
+
+<!-- PANEL -->
+<div class="wrap" id="panel" style="display:none">
+  <h1>PANEL <span class="naranja">RIFA RODRIGO RAVERA</span></h1>
+  <div class="sub">Gestión de reservas y ventas · <span id="ultima-carga"></span></div>
+
+  <div class="stats">
+    <div class="stat"><div class="v verde" id="st-vendidos">—</div><div class="l">Vendidos</div></div>
+    <div class="stat"><div class="v verde" id="st-recaudado">—</div><div class="l">Recaudado</div></div>
+    <div class="stat"><div class="v amarillo" id="st-pendientes">—</div><div class="l">En proceso de pago</div></div>
+    <div class="stat"><div class="v" id="st-disponibles">—</div><div class="l">Disponibles</div></div>
+  </div>
+
+  <div class="toolbar">
+    <input id="filtro" type="text" placeholder="Filtrar por nombre, RUT, correo o número…" style="min-width:260px">
+    <select id="filtro-estado">
+      <option value="">Todos los estados</option>
+      <option value="pagado">Pagados</option>
+      <option value="pendiente">Pendientes vigentes</option>
+      <option value="expirada">Reservas expiradas</option>
+    </select>
+    <div class="spacer"></div>
+    <button class="btn sec mini" id="btn-refrescar">Refrescar</button>
+    <button class="btn sec mini" id="btn-csv">Exportar CSV</button>
+    <button class="btn mini" id="btn-venta-manual">+ Venta manual</button>
+  </div>
+
+  <div class="tabla-wrap">
+    <table>
+      <thead><tr>
+        <th>N°</th><th>Estado</th><th>Nombre</th><th>RUT</th><th>Correo</th><th>Teléfono</th>
+        <th>Canal</th><th>Fecha</th><th></th>
+      </tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div class="vacio" id="tabla-vacia" style="display:none">Sin registros todavía</div>
+  </div>
+
+  <div class="eventos">
+    <h2>ÚLTIMOS <span style="color:var(--naranja)">EVENTOS</span></h2>
+    <div id="lista-eventos"></div>
+  </div>
+</div>
+
+<!-- MODAL VENTA MANUAL -->
+<div class="overlay" id="modal-venta">
+  <div class="modal">
+    <button class="cerrar" onclick="cerrarModal()">&times;</button>
+    <h3>VENTA MANUAL</h3>
+    <div class="campo"><label>Número (1–500)</label><input id="v-numero" type="number" min="1" max="500"></div>
+    <div class="campo"><label>Nombre completo</label><input id="v-nombre" type="text"></div>
+    <div class="campo"><label>RUT</label><input id="v-rut" type="text" placeholder="12.345.678-9"></div>
+    <div class="campo"><label>Correo (opcional, recibe comprobante)</label><input id="v-email" type="email"></div>
+    <div class="campo"><label>Teléfono</label><input id="v-telefono" type="tel"></div>
+    <div class="campo"><label>Canal de pago</label>
+      <select id="v-canal"><option value="transferencia">Transferencia</option><option value="efectivo">Efectivo</option></select>
+    </div>
+    <button class="btn" id="btn-guardar-venta" style="width:100%">Registrar venta pagada</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const SUPABASE_URL = "https://pikbmocrnlosoujjllmw.supabase.co";
+const FN = SUPABASE_URL + "/functions/v1/rifa-admin";
+const $ = (s) => document.querySelector(s);
+let CLAVE = sessionStorage.getItem("rifa_admin_clave") || "";
+let RESERVAS = [];
+let PRECIO = 10000;
+
+const fmtCLP = (n) => "$" + n.toLocaleString("es-CL");
+const fmtFecha = (iso) => iso ? new Date(iso).toLocaleString("es-CL", { day:"2-digit", month:"2-digit", year:"2-digit", hour:"2-digit", minute:"2-digit" }) : "—";
+
+async function api(payload) {
+  const res = await fetch(FN, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ clave: CLAVE, ...payload }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (res.status === 401) { salir(); throw new Error("Clave incorrecta"); }
+  if (!res.ok) throw new Error(data.error || "Error " + res.status);
+  return data;
+}
+
+function salir() {
+  sessionStorage.removeItem("rifa_admin_clave");
+  CLAVE = "";
+  $("#panel").style.display = "none";
+  $("#login").style.display = "block";
+  $("#login-error").style.display = "block";
+}
+
+async function entrar() {
+  CLAVE = $("#clave").value.trim();
+  if (!CLAVE) return;
+  $("#login-error").style.display = "none";
+  try {
+    await cargar();
+    sessionStorage.setItem("rifa_admin_clave", CLAVE);
+    $("#login").style.display = "none";
+    $("#panel").style.display = "block";
+  } catch (e) {
+    $("#login-error").textContent = e.message;
+    $("#login-error").style.display = "block";
+  }
+}
+$("#btn-entrar").addEventListener("click", entrar);
+$("#clave").addEventListener("keydown", (e) => { if (e.key === "Enter") entrar(); });
+
+async function cargar() {
+  const data = await api({ accion: "listar" });
+  RESERVAS = data.reservas;
+  PRECIO = data.precio || 10000;
+  const pagados = RESERVAS.filter(r => r.estado === "pagado");
+  const pendientes = RESERVAS.filter(r => r.estado === "pendiente" && r.vigente);
+  $("#st-vendidos").textContent = pagados.length + " / 500";
+  $("#st-recaudado").textContent = fmtCLP(pagados.length * PRECIO);
+  $("#st-pendientes").textContent = pendientes.length;
+  $("#st-disponibles").textContent = 500 - pagados.length - pendientes.length;
+  $("#ultima-carga").textContent = "actualizado " + new Date().toLocaleTimeString("es-CL");
+  pintarTabla();
+  pintarEventos(data.eventos);
+}
+
+function estadoDe(r) {
+  if (r.estado === "pagado") return "pagado";
+  return r.vigente ? "pendiente" : "expirada";
+}
+
+function pintarTabla() {
+  const q = $("#filtro").value.trim().toLowerCase();
+  const fe = $("#filtro-estado").value;
+  const filas = RESERVAS.filter(r => {
+    const est = estadoDe(r);
+    if (fe && est !== fe) return false;
+    if (!q) return true;
+    return [r.numero, r.nombre, r.rut, r.email, r.telefono].join(" ").toLowerCase().includes(q);
+  });
+  const badges = { pagado: ["pagado","PAGADO"], pendiente: ["pendiente","EN PAGO"], expirada: ["expirada","EXPIRADA"] };
+  $("#tbody").innerHTML = filas.map(r => {
+    const [cls, txt] = badges[estadoDe(r)];
+    const btnLiberar = r.estado === "pagado"
+      ? `<button class="btn rojo mini" onclick="liberar(${r.numero}, true)">Liberar</button>`
+      : `<button class="btn sec mini" onclick="liberar(${r.numero}, false)">Liberar</button>`;
+    return `<tr>
+      <td class="num-td">${r.numero}</td>
+      <td><span class="badge ${cls}">${txt}</span></td>
+      <td>${esc(r.nombre)}</td><td>${esc(r.rut)}</td><td>${esc(r.email)}</td><td>${esc(r.telefono)}</td>
+      <td>${r.canal_pago ?? "—"}</td>
+      <td>${fmtFecha(r.pagado_en || r.creado_en)}</td>
+      <td>${btnLiberar}</td>
+    </tr>`;
+  }).join("");
+  $("#tabla-vacia").style.display = filas.length ? "none" : "block";
+}
+const esc = (s) => String(s ?? "").replace(/[<>&"]/g, c => ({ "<":"&lt;", ">":"&gt;", "&":"&amp;", '"':"&quot;" }[c]));
+
+function pintarEventos(eventos) {
+  $("#lista-eventos").innerHTML = (eventos || []).slice(0, 40).map(e =>
+    `<div class="evento">${fmtFecha(e.creado_en)} · <span class="tipo">${esc(e.tipo)}</span> · ${esc(JSON.stringify(e.detalle))}</div>`
+  ).join("") || '<div class="evento">Sin eventos</div>';
+}
+
+$("#filtro").addEventListener("input", pintarTabla);
+$("#filtro-estado").addEventListener("change", pintarTabla);
+$("#btn-refrescar").addEventListener("click", () => cargar().then(() => toast("Actualizado")));
+
+// ---- Liberar número ----
+async function liberar(numero, esPagado) {
+  const msg = esPagado
+    ? `El número ${numero} está PAGADO. ¿Seguro que quieres liberarlo? Esta acción borra el registro del comprador.`
+    : `¿Liberar el número ${numero}? La reserva se elimina y el número queda disponible.`;
+  if (!confirm(msg)) return;
+  try {
+    await api({ accion: "liberar", numero });
+    toast("Número " + numero + " liberado");
+    await cargar();
+  } catch (e) { toast("Error: " + e.message); }
+}
+
+// ---- Venta manual ----
+$("#btn-venta-manual").addEventListener("click", () => $("#modal-venta").classList.add("abierto"));
+function cerrarModal() { $("#modal-venta").classList.remove("abierto"); }
+$("#modal-venta").addEventListener("click", (e) => { if (e.target.id === "modal-venta") cerrarModal(); });
+
+$("#btn-guardar-venta").addEventListener("click", async () => {
+  const payload = {
+    accion: "vender_manual",
+    numero: parseInt($("#v-numero").value, 10),
+    nombre: $("#v-nombre").value.trim(),
+    rut: $("#v-rut").value.trim(),
+    email: $("#v-email").value.trim(),
+    telefono: $("#v-telefono").value.trim(),
+    canal: $("#v-canal").value,
+  };
+  if (!payload.numero || payload.numero < 1 || payload.numero > 500) return toast("Número inválido");
+  if (payload.nombre.length < 3) return toast("Falta el nombre");
+  try {
+    await api(payload);
+    toast("Venta del número " + payload.numero + " registrada");
+    cerrarModal();
+    ["v-numero","v-nombre","v-rut","v-email","v-telefono"].forEach(id => document.getElementById(id).value = "");
+    await cargar();
+  } catch (e) { toast("Error: " + e.message); }
+});
+
+// ---- CSV ----
+$("#btn-csv").addEventListener("click", () => {
+  const cab = ["numero","estado","nombre","rut","email","telefono","canal_pago","creado_en","pagado_en"];
+  const filas = RESERVAS.map(r => cab.map(c => `"${String(r[c] ?? "").replace(/"/g, '""')}"`).join(";"));
+  const csv = "﻿" + cab.join(";") + "\n" + filas.join("\n");
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+  a.download = "rifa_rodrigo_ravera_" + new Date().toISOString().slice(0,10) + ".csv";
+  a.click();
+});
+
+function toast(msg, ms = 3500) {
+  const t = $("#toast");
+  t.textContent = msg;
+  t.classList.add("visible");
+  setTimeout(() => t.classList.remove("visible"), ms);
+}
+
+// auto-login si hay clave en sesión
+if (CLAVE) entrar();
+setInterval(() => { if (CLAVE && $("#panel").style.display !== "none") cargar().catch(()=>{}); }, 60000);
+</script>
+</body>
+</html>

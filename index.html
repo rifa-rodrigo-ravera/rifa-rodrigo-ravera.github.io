@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rifa Solidaria — Rodrigo Ravera</title>
+<meta name="description" content="Rifa solidaria a beneficio de Rodrigo Ravera. 500 números, grandes premios. Elige tu número y participa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --negro:#0b0b0b; --carbon:#151515; --panel:#1b1b1b; --borde:#2e2e2e;
+  --naranja:#ff6a00; --naranja-osc:#c85200; --crema:#f5efe6; --gris:#9a9a9a;
+  --verde:#2ecc71; --amarillo:#f1c40f; --rojo:#e74c3c;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--negro);color:var(--crema);font-family:'Barlow',sans-serif;-webkit-font-smoothing:antialiased}
+::selection{background:var(--naranja);color:#111}
+
+/* ---------- HERO ---------- */
+.hero{
+  position:relative;text-align:center;padding:64px 20px 48px;overflow:hidden;
+  background:
+    radial-gradient(ellipse 90% 60% at 50% -10%, rgba(255,106,0,.22), transparent 60%),
+    repeating-linear-gradient(-45deg, transparent 0 26px, rgba(255,255,255,.015) 26px 52px),
+    var(--negro);
+  border-bottom:3px solid var(--naranja);
+}
+.hero .kicker{
+  font-family:'Barlow Condensed';letter-spacing:6px;font-size:15px;color:var(--naranja);
+  text-transform:uppercase;font-weight:600;
+}
+.hero h1{
+  font-family:'Bebas Neue';font-size:clamp(52px,10vw,110px);line-height:.95;letter-spacing:3px;
+  margin:14px 0 4px;color:var(--crema);text-shadow:0 4px 30px rgba(255,106,0,.35);
+}
+.hero h1 .naranja{color:var(--naranja)}
+.hero .sub{
+  font-family:'Barlow Condensed';font-size:clamp(19px,3.4vw,27px);color:#cfc8bc;
+  letter-spacing:2px;text-transform:uppercase;font-weight:500;
+}
+.hero .wings{width:min(340px,70vw);margin:0 auto 6px;display:block;opacity:.95}
+.hero .precio-pill{
+  display:inline-block;margin-top:26px;background:var(--naranja);color:#111;
+  font-family:'Bebas Neue';font-size:30px;letter-spacing:2px;padding:10px 34px;border-radius:999px;
+  box-shadow:0 6px 30px rgba(255,106,0,.45);
+}
+.hero .cta{
+  display:block;margin:26px auto 0;width:fit-content;background:transparent;color:var(--crema);
+  border:2px solid var(--naranja);font-family:'Barlow Condensed';font-weight:700;font-size:19px;
+  letter-spacing:3px;text-transform:uppercase;padding:14px 38px;border-radius:8px;cursor:pointer;
+  text-decoration:none;transition:.2s;
+}
+.hero .cta:hover{background:var(--naranja);color:#111}
+
+/* ---------- SECCIONES ---------- */
+section{max-width:1080px;margin:0 auto;padding:56px 20px}
+h2{
+  font-family:'Bebas Neue';font-size:clamp(34px,5.5vw,52px);letter-spacing:3px;text-align:center;
+  margin-bottom:8px;
+}
+h2 .naranja{color:var(--naranja)}
+.section-sub{text-align:center;color:var(--gris);margin-bottom:34px;font-size:16px}
+.divisor{display:flex;align-items:center;gap:14px;max-width:420px;margin:0 auto 30px}
+.divisor::before,.divisor::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--naranja))}
+.divisor::after{background:linear-gradient(90deg,var(--naranja),transparent)}
+.divisor svg{flex:none}
+
+/* ---------- PREMIOS ---------- */
+.premios{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.premio{
+  background:linear-gradient(160deg,var(--panel),#141414);border:1px solid var(--borde);
+  border-radius:12px;padding:22px 20px;display:flex;align-items:center;gap:16px;transition:.2s;
+}
+.premio:hover{border-color:var(--naranja);transform:translateY(-2px)}
+.premio .ico{
+  flex:none;width:46px;height:46px;border-radius:10px;background:rgba(255,106,0,.12);
+  border:1px solid rgba(255,106,0,.4);display:grid;place-items:center;color:var(--naranja);
+}
+.premio .nombre{font-family:'Barlow Condensed';font-size:20px;font-weight:600;letter-spacing:.5px}
+.premio .detalle{color:var(--gris);font-size:13px;margin-top:2px}
+.premio.destacado{grid-column:1/-1;background:linear-gradient(160deg,#241505,#151009);border-color:rgba(255,106,0,.5)}
+
+/* ---------- PASOS ---------- */
+.pasos{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.paso{background:var(--panel);border:1px solid var(--borde);border-radius:12px;padding:26px 22px;text-align:center}
+.paso .num{
+  font-family:'Bebas Neue';font-size:44px;color:var(--naranja);line-height:1;
+}
+.paso h3{font-family:'Barlow Condensed';font-size:22px;letter-spacing:1px;margin:8px 0 6px;text-transform:uppercase}
+.paso p{color:var(--gris);font-size:14.5px;line-height:1.55}
+
+/* ---------- GRILLA ---------- */
+#numeros{scroll-margin-top:20px}
+.tablero-top{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:center;margin-bottom:10px}
+.leyenda{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
+.leyenda span{display:flex;align-items:center;gap:7px;font-size:14px;color:#cfc8bc}
+.chip{width:16px;height:16px;border-radius:4px;display:inline-block}
+.chip.disp{background:#1f1f1f;border:1.5px solid #4a4a4a}
+.chip.pago{background:repeating-linear-gradient(-45deg,#3a3005 0 5px,#241f04 5px 10px);border:1.5px solid var(--amarillo)}
+.chip.vend{background:var(--naranja);border:1.5px solid var(--naranja)}
+.buscador{display:flex;gap:8px;justify-content:center;margin:12px 0 6px}
+.buscador input{
+  background:var(--panel);border:1px solid var(--borde);color:var(--crema);border-radius:8px;
+  padding:10px 14px;font-size:16px;width:210px;outline:none;font-family:'Barlow';
+}
+.buscador input:focus{border-color:var(--naranja)}
+.progreso-wrap{max-width:560px;margin:6px auto 26px;text-align:center}
+.progreso{height:10px;background:#1f1f1f;border:1px solid var(--borde);border-radius:999px;overflow:hidden}
+.progreso .fill{height:100%;width:0%;background:linear-gradient(90deg,var(--naranja-osc),var(--naranja));transition:width .8s ease}
+.progreso-txt{font-size:13.5px;color:var(--gris);margin-top:7px}
+.grilla{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(54px,1fr));gap:7px;
+}
+.celda{
+  position:relative;aspect-ratio:1;display:grid;place-items:center;border-radius:8px;cursor:pointer;
+  font-family:'Barlow Condensed';font-weight:600;font-size:17px;letter-spacing:.5px;
+  background:#1f1f1f;border:1.5px solid #3c3c3c;color:#d8d2c6;transition:.15s;user-select:none;
+}
+.celda:hover{border-color:var(--naranja);color:var(--naranja);transform:scale(1.07)}
+.celda.en_pago{
+  background:repeating-linear-gradient(-45deg,#3a3005 0 5px,#241f04 5px 10px);
+  border-color:#7a6a10;color:#c9b53a;cursor:not-allowed;
+}
+.celda.en_pago:hover{transform:none}
+.celda.vendido{
+  background:var(--naranja);border-color:var(--naranja);color:#151009;cursor:not-allowed;
+}
+.celda.vendido:hover{transform:none}
+.celda.resaltado{outline:3px solid var(--crema);outline-offset:2px}
+.grilla-estado{text-align:center;color:var(--gris);padding:30px;font-size:15px}
+
+/* ---------- MODAL ---------- */
+.overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(4px);
+  display:none;place-items:center;z-index:50;padding:18px;
+}
+.overlay.abierto{display:grid}
+.modal{
+  width:min(460px,100%);background:var(--carbon);border:1px solid var(--borde);border-radius:16px;
+  padding:28px;position:relative;animation:pop .18s ease;
+  border-top:4px solid var(--naranja);max-height:92vh;overflow:auto;
+}
+@keyframes pop{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
+.modal .cerrar{
+  position:absolute;top:12px;right:14px;background:none;border:none;color:var(--gris);
+  font-size:26px;cursor:pointer;line-height:1;
+}
+.modal .cerrar:hover{color:var(--crema)}
+.modal h3{font-family:'Bebas Neue';font-size:30px;letter-spacing:2px;text-align:center}
+.modal .num-elegido{
+  display:block;width:fit-content;margin:12px auto;background:#111;border:2px solid var(--naranja);
+  color:var(--naranja);font-family:'Bebas Neue';font-size:46px;padding:6px 30px;border-radius:12px;
+}
+.campo{margin-bottom:13px}
+.campo label{display:block;font-size:13px;color:var(--gris);margin-bottom:5px;letter-spacing:.5px;text-transform:uppercase;font-family:'Barlow Condensed';font-weight:600}
+.campo input{
+  width:100%;background:#111;border:1px solid var(--borde);color:var(--crema);border-radius:8px;
+  padding:12px 14px;font-size:16px;outline:none;font-family:'Barlow';
+}
+.campo input:focus{border-color:var(--naranja)}
+.campo .error-campo{color:var(--rojo);font-size:12.5px;margin-top:4px;display:none}
+.btn-pagar{
+  width:100%;margin-top:8px;background:var(--naranja);color:#111;border:none;border-radius:10px;
+  font-family:'Barlow Condensed';font-weight:700;font-size:20px;letter-spacing:2px;text-transform:uppercase;
+  padding:15px;cursor:pointer;transition:.2s;
+}
+.btn-pagar:hover{background:#ff7d1f}
+.btn-pagar:disabled{opacity:.55;cursor:wait}
+.modal .nota{font-size:12.5px;color:var(--gris);text-align:center;margin-top:12px;line-height:1.5}
+.modal .error-global{
+  display:none;background:rgba(231,76,60,.12);border:1px solid var(--rojo);color:#ff9c90;
+  border-radius:8px;padding:10px 14px;font-size:14px;margin-bottom:12px;text-align:center;
+}
+
+/* ---------- RESULTADO PAGO ---------- */
+.resultado{text-align:center}
+.resultado .icono{font-size:0;margin-bottom:10px}
+.resultado h3{margin-bottom:8px}
+.resultado p{color:#cfc8bc;font-size:15px;line-height:1.6}
+.resultado .num-elegido{margin:16px auto}
+.resultado .btn-pagar{margin-top:16px}
+.resultado a.btn-link{
+  display:inline-block;margin-top:16px;background:var(--naranja);color:#111;text-decoration:none;
+  font-family:'Barlow Condensed';font-weight:700;font-size:19px;letter-spacing:2px;text-transform:uppercase;
+  padding:14px 30px;border-radius:10px;
+}
+
+/* ---------- FOOTER ---------- */
+footer{
+  border-top:1px solid var(--borde);margin-top:40px;padding:34px 20px;text-align:center;color:#6d6d6d;font-size:13.5px;
+}
+footer .marca{font-family:'Bebas Neue';font-size:20px;letter-spacing:3px;color:var(--gris);margin-bottom:6px}
+
+/* toast */
+#toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120%);z-index:60;
+  background:var(--panel);border:1px solid var(--naranja);color:var(--crema);border-radius:10px;
+  padding:13px 22px;font-size:15px;transition:transform .3s ease;max-width:90vw;text-align:center;
+}
+#toast.visible{transform:translateX(-50%) translateY(0)}
+
+@media (max-width:560px){
+  .grilla{grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:5px}
+  .celda{font-size:15px;border-radius:6px}
+  section{padding:42px 14px}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <svg class="wings" viewBox="0 0 340 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <g fill="none" stroke="#ff6a00" stroke-width="3" stroke-linecap="round">
+      <path d="M150 48 C110 48 70 40 20 18 C60 30 105 34 148 36"/>
+      <path d="M152 42 C118 40 84 32 48 14 C82 26 120 30 150 31"/>
+      <path d="M190 48 C230 48 270 40 320 18 C280 30 235 34 192 36"/>
+      <path d="M188 42 C222 40 256 32 292 14 C258 26 220 30 190 31"/>
+    </g>
+    <g>
+      <rect x="145" y="22" width="50" height="34" rx="6" fill="#0b0b0b" stroke="#ff6a00" stroke-width="3"/>
+      <text x="170" y="46" text-anchor="middle" font-family="Bebas Neue, sans-serif" font-size="22" fill="#f5efe6">RR</text>
+    </g>
+  </svg>
+  <div class="kicker">Rifa solidaria · 500 números</div>
+  <h1>RODRIGO <span class="naranja">RAVERA</span></h1>
+  <div class="sub">Un motoquero Harley-Davidson &middot; Todos rifamos por ti</div>
+  <div class="precio-pill">$10.000 POR NÚMERO</div>
+  <a class="cta" href="#numeros">Elige tu número</a>
+</header>
+
+<!-- PREMIOS -->
+<section id="premios">
+  <h2>LOS <span class="naranja">PREMIOS</span></h2>
+  <p class="section-sub">Esto es lo que puedes ganar apoyando a Rodrigo</p>
+  <div class="premios">
+    <div class="premio"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h18v4a2 2 0 0 0 0 4v4H3v-4a2 2 0 0 0 0-4V8z"/><path d="M13 8v12" stroke-dasharray="2 3"/></svg></div><div><div class="nombre">Voucher AS 2027</div><div class="detalle">Ruta motoquera</div></div></div>
+    <div class="premio"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h18v4a2 2 0 0 0 0 4v4H3v-4a2 2 0 0 0 0-4V8z"/><path d="M13 8v12" stroke-dasharray="2 3"/></svg></div><div><div class="nombre">Voucher ChillánLeben 2026</div><div class="detalle">Ruta motoquera</div></div></div>
+    <div class="premio"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h18v4a2 2 0 0 0 0 4v4H3v-4a2 2 0 0 0 0-4V8z"/><path d="M13 8v12" stroke-dasharray="2 3"/></svg></div><div><div class="nombre">Voucher Pichilemu 2026</div><div class="detalle">Ruta motoquera</div></div></div>
+    <div class="premio"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h18v4a2 2 0 0 0 0 4v4H3v-4a2 2 0 0 0 0-4V8z"/><path d="M13 8v12" stroke-dasharray="2 3"/></svg></div><div><div class="nombre">Voucher Jujuy 2026</div><div class="detalle">Ruta internacional · Argentina</div></div></div>
+    <div class="premio"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h18v4a2 2 0 0 0 0 4v4H3v-4a2 2 0 0 0 0-4V8z"/><path d="M13 8v12" stroke-dasharray="2 3"/></svg></div><div><div class="nombre">Voucher Asunción 2027</div><div class="detalle">Ruta internacional · Paraguay</div></div></div>
+    <div class="premio"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4l3 3-2 2 1 9-6 3-6-3 1-9-2-2 3-3 4 2 4-2z"/></svg></div><div><div class="nombre">1 Chaqueta HD</div><div class="detalle">Harley-Davidson original</div></div></div>
+    <div class="premio"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="9" width="18" height="7" rx="2"/><path d="M7 9V7a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2"/></svg></div><div><div class="nombre">Set de Puros Casa Sichel</div><div class="detalle">Para celebrar como corresponde</div></div></div>
+    <div class="premio destacado"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.4 5.3 5.6.6-4.2 3.9 1.2 5.7-5-2.9-5 2.9 1.2-5.7L4 7.9l5.6-.6L12 2z"/></svg></div><div><div class="nombre">Varios premios sorpresa y mucho más…</div><div class="detalle">Se irán anunciando durante la rifa</div></div></div>
+  </div>
+</section>
+
+<!-- CÓMO PARTICIPAR -->
+<section id="como">
+  <h2>CÓMO <span class="naranja">PARTICIPAR</span></h2>
+  <p class="section-sub">Tres pasos y quedas dentro</p>
+  <div class="pasos">
+    <div class="paso"><div class="num">1</div><h3>Elige tu número</h3><p>Busca tu número de la suerte entre los 500 disponibles y haz clic.</p></div>
+    <div class="paso"><div class="num">2</div><h3>Ingresa tus datos</h3><p>Nombre, RUT, correo y teléfono. Los usamos solo para contactar al ganador.</p></div>
+    <div class="paso"><div class="num">3</div><h3>Paga al tiro</h3><p>Pagas $10.000 con Mercado Pago (tarjeta o débito). Tu número queda confirmado y te llega un correo de respaldo.</p></div>
+  </div>
+</section>
+
+<!-- GRILLA -->
+<section id="numeros">
+  <h2>ELIGE TU <span class="naranja">NÚMERO</span></h2>
+  <p class="section-sub">Tu número queda confirmado al momento de pagar</p>
+  <div class="tablero-top">
+    <div class="leyenda">
+      <span><i class="chip disp"></i> Disponible</span>
+      <span><i class="chip pago"></i> En proceso de pago</span>
+      <span><i class="chip vend"></i> Vendido</span>
+    </div>
+  </div>
+  <div class="buscador">
+    <input id="buscar" type="number" min="1" max="500" placeholder="Busca un número (1–500)" inputmode="numeric">
+  </div>
+  <div class="progreso-wrap">
+    <div class="progreso"><div class="fill" id="progreso-fill"></div></div>
+    <div class="progreso-txt" id="progreso-txt">Cargando…</div>
+  </div>
+  <div id="grilla" class="grilla" aria-live="polite"></div>
+  <div id="grilla-estado" class="grilla-estado">Cargando números…</div>
+</section>
+
+<!-- MODAL RESERVA -->
+<div class="overlay" id="modal-reserva">
+  <div class="modal">
+    <button class="cerrar" data-cerrar aria-label="Cerrar">&times;</button>
+    <h3>TU NÚMERO DE LA SUERTE</h3>
+    <span class="num-elegido" id="modal-numero">—</span>
+    <div class="error-global" id="form-error"></div>
+    <form id="form-reserva" novalidate>
+      <div class="campo">
+        <label for="f-nombre">Nombre completo</label>
+        <input id="f-nombre" type="text" autocomplete="name" required maxlength="120" placeholder="Juan Pérez González">
+      </div>
+      <div class="campo">
+        <label for="f-rut">RUT</label>
+        <input id="f-rut" type="text" autocomplete="off" required maxlength="12" placeholder="12.345.678-9">
+        <div class="error-campo" id="err-rut">RUT no válido</div>
+      </div>
+      <div class="campo">
+        <label for="f-email">Correo</label>
+        <input id="f-email" type="email" autocomplete="email" required maxlength="120" placeholder="tucorreo@gmail.com">
+      </div>
+      <div class="campo">
+        <label for="f-telefono">Teléfono</label>
+        <input id="f-telefono" type="tel" autocomplete="tel" required maxlength="15" placeholder="+56 9 1234 5678">
+      </div>
+      <button class="btn-pagar" id="btn-pagar" type="submit">Ir a pagar $10.000</button>
+      <p class="nota">Al presionar el botón serás dirigido a <strong>Mercado Pago</strong> para completar el pago de forma segura. Tu número queda confirmado únicamente con el pago.</p>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL RESULTADO -->
+<div class="overlay" id="modal-resultado">
+  <div class="modal resultado">
+    <button class="cerrar" data-cerrar aria-label="Cerrar">&times;</button>
+    <div id="resultado-contenido"></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<footer>
+  <div class="marca">RIFA SOLIDARIA · RODRIGO RAVERA</div>
+  Organizada por la comunidad motoquera Harley-Davidson.<br>
+  Los datos ingresados se usan exclusivamente para gestionar la rifa y contactar a los ganadores.
+</footer>
+
+<script>
+// ================= CONFIG =================
+const SUPABASE_URL = "https://pikbmocrnlosoujjllmw.supabase.co";
+const ANON_KEY = "sb_publishable_t69jY2QTrEF8TCz9b_X4oQ_j8lS-PN_";
+const TOTAL = 500;
+const PRECIO = 10000;
+
+// ================= ESTADO =================
+let estados = {};            // numero -> 'disponible' | 'en_pago' | 'vendido'
+let numeroElegido = null;
+let enviando = false;
+
+const $ = (s) => document.querySelector(s);
+
+// ================= GRILLA =================
+async function cargarEstados() {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/rifa_numeros_publicos?select=numero,estado&order=numero`,
+      { headers: { apikey: ANON_KEY, Authorization: `Bearer ${ANON_KEY}` } }
+    );
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const filas = await res.json();
+    estados = Object.fromEntries(filas.map(f => [f.numero, f.estado]));
+    pintarGrilla();
+    $("#grilla-estado").style.display = "none";
+  } catch (e) {
+    $("#grilla-estado").textContent = "No se pudieron cargar los números. Revisa tu conexión y recarga la página.";
+  }
+}
+
+function pintarGrilla() {
+  const grilla = $("#grilla");
+  if (!grilla.children.length) {
+    const frag = document.createDocumentFragment();
+    for (let n = 1; n <= TOTAL; n++) {
+      const c = document.createElement("button");
+      c.type = "button";
+      c.className = "celda";
+      c.id = "num-" + n;
+      c.textContent = n;
+      c.addEventListener("click", () => elegirNumero(n));
+      frag.appendChild(c);
+    }
+    grilla.appendChild(frag);
+  }
+  let vendidos = 0;
+  for (let n = 1; n <= TOTAL; n++) {
+    const c = document.getElementById("num-" + n);
+    const est = estados[n] || "disponible";
+    c.classList.remove("en_pago", "vendido");
+    if (est === "en_pago") c.classList.add("en_pago");
+    if (est === "vendido") { c.classList.add("vendido"); vendidos++; }
+    c.disabled = est !== "disponible";
+    c.title = est === "vendido" ? "Vendido" : est === "en_pago" ? "En proceso de pago" : "Disponible";
+  }
+  $("#progreso-fill").style.width = (vendidos / TOTAL * 100).toFixed(1) + "%";
+  $("#progreso-txt").textContent = `${vendidos} de ${TOTAL} números vendidos`;
+}
+
+// Buscador: resalta y hace scroll al número
+$("#buscar").addEventListener("input", (e) => {
+  document.querySelectorAll(".celda.resaltado").forEach(c => c.classList.remove("resaltado"));
+  const n = parseInt(e.target.value, 10);
+  if (n >= 1 && n <= TOTAL) {
+    const c = document.getElementById("num-" + n);
+    c.classList.add("resaltado");
+    c.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+});
+
+// ================= MODAL =================
+function elegirNumero(n) {
+  numeroElegido = n;
+  $("#modal-numero").textContent = n;
+  $("#form-error").style.display = "none";
+  abrir("#modal-reserva");
+  setTimeout(() => $("#f-nombre").focus(), 150);
+}
+function abrir(sel) { $(sel).classList.add("abierto"); document.body.style.overflow = "hidden"; }
+function cerrarTodo() {
+  document.querySelectorAll(".overlay").forEach(o => o.classList.remove("abierto"));
+  document.body.style.overflow = "";
+}
+document.querySelectorAll("[data-cerrar]").forEach(b => b.addEventListener("click", cerrarTodo));
+document.querySelectorAll(".overlay").forEach(o =>
+  o.addEventListener("click", (e) => { if (e.target === o) cerrarTodo(); })
+);
+
+// ================= RUT =================
+function limpiarRut(rut) { return rut.replace(/[.\s-]/g, "").toUpperCase(); }
+function validarRut(rut) {
+  const limpio = limpiarRut(rut);
+  if (!/^\d{7,8}[0-9K]$/.test(limpio)) return false;
+  const cuerpo = limpio.slice(0, -1), dv = limpio.slice(-1);
+  let suma = 0, m = 2;
+  for (let i = cuerpo.length - 1; i >= 0; i--) { suma += parseInt(cuerpo[i]) * m; m = m === 7 ? 2 : m + 1; }
+  const res = 11 - (suma % 11);
+  return dv === (res === 11 ? "0" : res === 10 ? "K" : String(res));
+}
+$("#f-rut").addEventListener("blur", (e) => {
+  const ok = !e.target.value || validarRut(e.target.value);
+  $("#err-rut").style.display = ok ? "none" : "block";
+});
+
+// ================= RESERVAR + PAGAR =================
+$("#form-reserva").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if (enviando) return;
+
+  const nombre = $("#f-nombre").value.trim();
+  const rut = $("#f-rut").value.trim();
+  const email = $("#f-email").value.trim();
+  const telefono = $("#f-telefono").value.trim();
+  const errBox = $("#form-error");
+  errBox.style.display = "none";
+
+  if (nombre.length < 3) return mostrarError("Ingresa tu nombre completo.");
+  if (!validarRut(rut)) return mostrarError("El RUT ingresado no es válido.");
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return mostrarError("Ingresa un correo válido.");
+  if (telefono.replace(/\D/g, "").length < 8) return mostrarError("Ingresa un teléfono válido.");
+
+  enviando = true;
+  const btn = $("#btn-pagar");
+  btn.disabled = true;
+  btn.textContent = "Reservando tu número…";
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/rifa-reservar`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ numero: numeroElegido, nombre, rut, email, telefono }),
+    });
+    const data = await res.json();
+
+    if (res.status === 409) {
+      mostrarError("Ese número ya fue tomado por otra persona. Elige otro.");
+      cerrarTodo(); toast("El número " + numeroElegido + " ya está tomado. Elige otro.");
+      await cargarEstados();
+      return;
+    }
+    if (!res.ok || !data.init_point) {
+      mostrarError(data.mensaje || data.error || "No se pudo procesar la reserva. Intenta de nuevo.");
+      return;
+    }
+
+    // Guardamos el link por si el pago falla y quiere reintentar
+    localStorage.setItem("rifa_ultimo_pago", JSON.stringify({
+      numero: numeroElegido, init_point: data.init_point, ts: Date.now(),
+    }));
+    btn.textContent = "Redirigiendo a Mercado Pago…";
+    window.location.href = data.init_point;
+  } catch (err) {
+    mostrarError("Error de conexión. Revisa tu internet e intenta de nuevo.");
+  } finally {
+    enviando = false;
+    btn.disabled = false;
+    if (btn.textContent.startsWith("Reservando")) btn.textContent = "Ir a pagar $10.000";
+  }
+});
+
+function mostrarError(msg) {
+  const box = $("#form-error");
+  box.textContent = msg;
+  box.style.display = "block";
+}
+
+function toast(msg, ms = 4000) {
+  const t = $("#toast");
+  t.textContent = msg;
+  t.classList.add("visible");
+  setTimeout(() => t.classList.remove("visible"), ms);
+}
+
+// ================= RETORNO DE MERCADO PAGO =================
+const iconoOk = '<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#2ecc71" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>';
+const iconoReloj = '<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#f1c40f" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 7v5l3 3"/></svg>';
+const iconoX = '<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 9l6 6M15 9l-6 6"/></svg>';
+
+async function revisarRetornoPago() {
+  const params = new URLSearchParams(window.location.search);
+  const pago = params.get("pago");
+  const numero = parseInt(params.get("numero"), 10);
+  if (!pago || !numero) return;
+  history.replaceState(null, "", window.location.pathname); // limpia la URL
+
+  const cont = $("#resultado-contenido");
+
+  if (pago === "exito" || pago === "pendiente") {
+    cont.innerHTML = `<div class="icono">${iconoReloj}</div><h3>CONFIRMANDO TU PAGO…</h3>
+      <span class="num-elegido">${numero}</span>
+      <p>Estamos verificando el pago con Mercado Pago. Esto toma unos segundos.</p>`;
+    abrir("#modal-resultado");
+
+    // Reintenta hasta ~20 s mientras llega el webhook
+    for (let i = 0; i < 10; i++) {
+      await cargarEstados();
+      if (estados[numero] === "vendido") {
+        localStorage.removeItem("rifa_ultimo_pago");
+        cont.innerHTML = `<div class="icono">${iconoOk}</div><h3>¡NÚMERO CONFIRMADO!</h3>
+          <span class="num-elegido" style="border-color:#2ecc71;color:#2ecc71">${numero}</span>
+          <p>Tu pago fue recibido y el número <strong>${numero}</strong> es tuyo.<br>
+          Te enviamos un correo de respaldo con tu comprobante.<br><br>¡Gracias por apoyar a Rodrigo! 🏍️</p>`;
+        return;
+      }
+      await new Promise(r => setTimeout(r, 2000));
+    }
+    cont.innerHTML = `<div class="icono">${iconoReloj}</div><h3>PAGO EN PROCESO</h3>
+      <span class="num-elegido">${numero}</span>
+      <p>Tu pago está siendo procesado por Mercado Pago. Cuando se acredite, el número quedará confirmado y te llegará el correo de respaldo.<br><br>Si tienes dudas, recarga la página en unos minutos.</p>`;
+  }
+
+  if (pago === "fallo") {
+    let reintento = "";
+    try {
+      const u = JSON.parse(localStorage.getItem("rifa_ultimo_pago") || "null");
+      if (u && u.numero === numero && Date.now() - u.ts < 25 * 60 * 1000) {
+        reintento = `<a class="btn-link" href="${u.init_point}">Reintentar el pago</a>`;
+      }
+    } catch (_) {}
+    cont.innerHTML = `<div class="icono">${iconoX}</div><h3>PAGO NO COMPLETADO</h3>
+      <span class="num-elegido" style="border-color:#e74c3c;color:#e74c3c">${numero}</span>
+      <p>El pago no se concretó. Puedes reintentarlo ahora mismo para asegurar tu número.</p>${reintento}`;
+    abrir("#modal-resultado");
+  }
+}
+
+// ================= INICIO =================
+cargarEstados().then(revisarRetornoPago);
+setInterval(cargarEstados, 25000); // refresco automático
+</script>
+</body>
+</html>
