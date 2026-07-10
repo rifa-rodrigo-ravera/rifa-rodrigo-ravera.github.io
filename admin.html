@@ -44,6 +44,24 @@ h1 .naranja{color:var(--naranja)}
 .stat .v.amarillo{color:var(--amarillo)}
 .stat .l{color:var(--gris);font-size:12.5px;text-transform:uppercase;letter-spacing:1px;margin-top:4px;font-family:'Barlow Condensed'}
 
+/* tablero de números */
+.tablero{background:var(--panel);border:1px solid var(--borde);border-radius:12px;padding:16px;margin-bottom:20px}
+.tablero-head{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:12px}
+.tablero-head h2{font-family:'Bebas Neue';font-size:22px;letter-spacing:2px}
+.tablero-head h2 span{color:var(--naranja)}
+.leyenda{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--gris)}
+.leyenda i{width:13px;height:13px;border-radius:3px;display:inline-block;vertical-align:-2px;margin-right:5px}
+.leyenda .ld{background:#1f1f1f;border:1.5px solid #4a4a4a}
+.leyenda .lp{background:repeating-linear-gradient(-45deg,#3a3005 0 4px,#241f04 4px 8px);border:1.5px solid var(--amarillo)}
+.leyenda .lv{background:var(--verde);border:1.5px solid var(--verde)}
+.mini-grilla{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:4px}
+.ncel{aspect-ratio:1;display:grid;place-items:center;border-radius:6px;cursor:pointer;font-family:'Barlow Condensed';font-weight:600;font-size:13px;background:#1f1f1f;border:1.5px solid #3c3c3c;color:#d8d2c6;transition:border-color .15s,color .15s;padding:0}
+.ncel:hover{border-color:var(--naranja);color:var(--naranja)}
+.ncel:focus-visible{outline:2px solid var(--naranja);outline-offset:1px}
+.ncel.pend{background:repeating-linear-gradient(-45deg,#3a3005 0 4px,#241f04 4px 8px);border-color:#7a6a10;color:#c9b53a}
+.ncel.pag{background:var(--verde);border-color:var(--verde);color:#0b2b18}
+.tablero-hint{color:var(--gris);font-size:12.5px;margin-top:10px}
+
 /* toolbar */
 .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
 .toolbar input,.toolbar select{background:#111;border:1px solid var(--borde);color:var(--crema);border-radius:8px;padding:9px 12px;font-size:14.5px;outline:none}
@@ -102,6 +120,19 @@ tr:hover td{background:#1e1e1e}
     <div class="stat"><div class="v verde" id="st-recaudado">—</div><div class="l">Recaudado</div></div>
     <div class="stat"><div class="v amarillo" id="st-pendientes">—</div><div class="l">En proceso de pago</div></div>
     <div class="stat"><div class="v" id="st-disponibles">—</div><div class="l">Disponibles</div></div>
+  </div>
+
+  <div class="tablero">
+    <div class="tablero-head">
+      <h2>MARCAR <span>NÚMEROS PAGADOS</span></h2>
+      <div class="leyenda">
+        <span><i class="ld"></i>Disponible</span>
+        <span><i class="lp"></i>En pago online</span>
+        <span><i class="lv"></i>Pagado</span>
+      </div>
+    </div>
+    <div class="mini-grilla" id="mini-grilla"></div>
+    <div class="tablero-hint">Toca un número <strong>disponible</strong> para registrar un pago por transferencia o efectivo con los datos de la persona. Toca uno ocupado para ver de quién es.</div>
   </div>
 
   <div class="toolbar">
@@ -213,8 +244,53 @@ async function cargar() {
   $("#st-pendientes").textContent = pendientes.length;
   $("#st-disponibles").textContent = 500 - pagados.length - pendientes.length;
   $("#ultima-carga").textContent = "actualizado " + new Date().toLocaleTimeString("es-CL");
+  pintarMiniGrilla();
   pintarTabla();
   pintarEventos(data.eventos);
+}
+
+// ---- Tablero de números clickeable ----
+function pintarMiniGrilla() {
+  const cont = $("#mini-grilla");
+  if (!cont.children.length) {
+    const frag = document.createDocumentFragment();
+    for (let n = 1; n <= 500; n++) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "ncel";
+      b.id = "mini-" + n;
+      b.textContent = n;
+      b.addEventListener("click", () => clickNumero(n));
+      frag.appendChild(b);
+    }
+    cont.appendChild(frag);
+  }
+  const porNumero = Object.fromEntries(RESERVAS.map(r => [r.numero, r]));
+  for (let n = 1; n <= 500; n++) {
+    const b = document.getElementById("mini-" + n);
+    const r = porNumero[n];
+    b.classList.remove("pend", "pag");
+    if (r && r.estado === "pagado") { b.classList.add("pag"); b.title = `Pagado · ${r.nombre}`; }
+    else if (r && r.estado === "pendiente" && r.vigente) { b.classList.add("pend"); b.title = `En pago online · ${r.nombre}`; }
+    else b.title = "Disponible — clic para registrar pago manual";
+  }
+}
+
+function clickNumero(n) {
+  const r = RESERVAS.find(x => x.numero === n);
+  const ocupado = r && (r.estado === "pagado" || (r.estado === "pendiente" && r.vigente));
+  if (ocupado) {
+    $("#filtro").value = String(n);
+    $("#filtro-estado").value = "";
+    pintarTabla();
+    const que = r.estado === "pagado" ? `pagado (${r.canal_pago})` : "en proceso de pago online";
+    toast(`N° ${n}: ${que} · ${r.nombre} · ${r.telefono}`);
+    document.querySelector(".tabla-wrap").scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+  $("#v-numero").value = n;
+  $("#modal-venta").classList.add("abierto");
+  setTimeout(() => $("#v-nombre").focus(), 100);
 }
 
 function estadoDe(r) {
