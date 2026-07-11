@@ -7,6 +7,7 @@
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#0b0b0b">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
 <style>
 :root{
   --negro:#0b0b0b; --panel:#181818; --borde:#2e2e2e; --naranja:#ff6a00;
@@ -213,6 +214,7 @@ tr:hover td{background:#1e1e1e}
     </select>
     <button class="btn sec mini" id="btn-refrescar">Refrescar</button>
     <button class="btn sec mini" id="btn-csv">Exportar CSV</button>
+    <button class="btn sec mini" id="btn-pdf">Descargar PDF</button>
     <button class="btn mini" id="btn-venta-manual">+ Venta manual</button>
   </div>
 
@@ -260,9 +262,9 @@ tr:hover td{background:#1e1e1e}
     </div>
     <div class="campo" id="v-numero-wrap"><label for="v-numero">Número (1–500)</label><input id="v-numero" type="number" min="1" max="500" inputmode="numeric"></div>
     <div class="campo"><label for="v-nombre">Nombre completo</label><input id="v-nombre" type="text" autocomplete="off"></div>
-    <div class="campo"><label for="v-rut">RUT</label><input id="v-rut" type="text" placeholder="12.345.678-9" spellcheck="false" autocomplete="off"></div>
+    <div class="campo"><label for="v-rut">RUT (opcional)</label><input id="v-rut" type="text" placeholder="12.345.678-9" spellcheck="false" autocomplete="off"></div>
     <div class="campo"><label for="v-email">Correo (opcional, recibe comprobante)</label><input id="v-email" type="email" spellcheck="false" autocomplete="off"></div>
-    <div class="campo"><label for="v-telefono">Teléfono</label><input id="v-telefono" type="tel" autocomplete="off"></div>
+    <div class="campo"><label for="v-telefono">Teléfono (opcional)</label><input id="v-telefono" type="tel" autocomplete="off" placeholder="+56 9 1234 5678"></div>
     <div class="campo"><label for="v-canal">Canal de pago</label>
       <select id="v-canal"><option value="transferencia">Transferencia</option><option value="efectivo">Efectivo</option></select>
     </div>
@@ -586,6 +588,127 @@ $("#btn-guardar-venta").addEventListener("click", async () => {
     await cargar();
   } catch (e) { toast("Error: " + e.message); }
 });
+
+// ---- Teléfono: +56 9 XXXX XXXX ----
+(function () {
+  const input = document.getElementById("v-telefono");
+  input.addEventListener("focus", () => {
+    if (!input.value.trim()) input.value = "+56 9 ";
+  });
+  input.addEventListener("input", () => {
+    let d = input.value.replace(/\D/g, "");
+    if (d.startsWith("56")) d = d.slice(2);
+    if (d.startsWith("9")) d = d.slice(1);
+    d = d.slice(0, 8);
+    let out = "+56 9";
+    if (d.length > 0) out += " " + d.slice(0, 4);
+    if (d.length > 4) out += " " + d.slice(4);
+    input.value = out;
+  });
+  input.addEventListener("blur", () => {
+    if (input.value.trim() === "+56 9") input.value = "";
+  });
+})();
+
+// ---- PDF "Cómo vamos" ----
+function generarPDF(descargar = true) {
+  if (!window.jspdf) { toast("El generador de PDF aún está cargando, intenta de nuevo."); return null; }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: "mm", format: "a4" });
+  const ahora = new Date();
+  const fechaTxt = ahora.toLocaleDateString("es-CL", { day: "2-digit", month: "long", year: "numeric" }) +
+    " · " + ahora.toLocaleTimeString("es-CL", { hour: "2-digit", minute: "2-digit" });
+
+  const porNumero = Object.fromEntries(RESERVAS.map(r => [r.numero, estadoDe(r)]));
+  const vendidos = RESERVAS.filter(r => r.estado === "pagado").length;
+  const porConf = RESERVAS.filter(r => r.estado === "por_confirmar").length;
+  const enPago = RESERVAS.filter(r => estadoDe(r) === "pendiente").length;
+  const disponibles = 500 - vendidos - porConf - enPago;
+
+  // Encabezado
+  doc.setFillColor(255, 106, 0);
+  doc.rect(0, 0, 210, 26, "F");
+  doc.setTextColor(17, 17, 17);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(19);
+  doc.text("RIFA SOLIDARIA — RODRIGO RAVERA", 105, 11, { align: "center" });
+  doc.setFontSize(10);
+  doc.setFont("helvetica", "normal");
+  doc.text("Estado de la rifa al " + fechaTxt, 105, 19, { align: "center" });
+
+  // Tarjetas de resumen
+  const cajas = [
+    ["VENDIDOS", `${vendidos} / 500`, [46, 204, 113]],
+    ["RECAUDADO", fmtCLP(vendidos * PRECIO), [46, 204, 113]],
+    ["POR CONFIRMAR", String(porConf), [200, 160, 10]],
+    ["EN PAGO ONLINE", String(enPago), [200, 160, 10]],
+    ["DISPONIBLES", String(disponibles), [90, 90, 90]],
+  ];
+  const cw = 36, gap = 3.5, x0 = (210 - (cajas.length * cw + (cajas.length - 1) * gap)) / 2;
+  cajas.forEach((c, i) => {
+    const x = x0 + i * (cw + gap);
+    doc.setDrawColor(210); doc.setFillColor(248, 248, 248);
+    doc.roundedRect(x, 32, cw, 18, 2, 2, "FD");
+    doc.setTextColor(c[2][0], c[2][1], c[2][2]);
+    doc.setFont("helvetica", "bold"); doc.setFontSize(13);
+    doc.text(c[1], x + cw / 2, 41, { align: "center" });
+    doc.setTextColor(120); doc.setFont("helvetica", "normal"); doc.setFontSize(6.5);
+    doc.text(c[0], x + cw / 2, 46.5, { align: "center" });
+  });
+
+  // Barra de avance
+  const pct = vendidos / 500;
+  doc.setFillColor(235, 235, 235);
+  doc.roundedRect(20, 56, 170, 6, 3, 3, "F");
+  if (pct > 0) {
+    doc.setFillColor(255, 106, 0);
+    doc.roundedRect(20, 56, Math.max(6, 170 * pct), 6, 3, 3, "F");
+  }
+  doc.setTextColor(60); doc.setFontSize(9);
+  doc.text(`Avance: ${(pct * 100).toFixed(1)}% vendido — quedan ${disponibles} números disponibles de 500`, 105, 68, { align: "center" });
+
+  // Tablero 25 x 20
+  const cols = 25, cell = 6.8, gx = (210 - cols * cell) / 2, gy = 76;
+  doc.setFontSize(4.6);
+  doc.setLineWidth(0.1);
+  for (let n = 1; n <= 500; n++) {
+    const col = (n - 1) % cols, fila = Math.floor((n - 1) / cols);
+    const x = gx + col * cell, y = gy + fila * cell;
+    const est = porNumero[n] || "disponible";
+    if (est === "pagado") { doc.setFillColor(46, 204, 113); doc.setTextColor(255); }
+    else if (est === "por_confirmar") { doc.setFillColor(246, 210, 80); doc.setTextColor(80, 60, 0); }
+    else if (est === "pendiente") { doc.setFillColor(255, 230, 150); doc.setTextColor(120, 90, 0); }
+    else { doc.setFillColor(245, 245, 245); doc.setTextColor(150); }
+    doc.setDrawColor(215);
+    doc.rect(x, y, cell - 0.6, cell - 0.6, "FD");
+    doc.text(String(n), x + (cell - 0.6) / 2, y + cell / 2 + 0.5, { align: "center" });
+  }
+
+  // Leyenda
+  const ly = gy + 20 * cell + 5;
+  const leyenda = [
+    [[46, 204, 113], "Vendido"],
+    [[246, 210, 80], "Por confirmar"],
+    [[255, 230, 150], "En pago online"],
+    [[245, 245, 245], "Disponible"],
+  ];
+  let lx = 40;
+  doc.setFontSize(8);
+  leyenda.forEach(([c, t]) => {
+    doc.setFillColor(c[0], c[1], c[2]); doc.setDrawColor(190);
+    doc.rect(lx, ly, 4, 4, "FD");
+    doc.setTextColor(80);
+    doc.text(t, lx + 6, ly + 3.2);
+    lx += 12 + doc.getTextWidth(t) + 8;
+  });
+
+  doc.setTextColor(150); doc.setFontSize(7);
+  doc.text("Generado desde el panel de administración · rifa-rodrigo-ravera.github.io", 105, 292, { align: "center" });
+
+  if (descargar) doc.save("rifa_como_vamos_" + ahora.toISOString().slice(0, 10) + ".pdf");
+  return doc;
+}
+$("#btn-pdf").addEventListener("click", () => generarPDF(true));
 
 // ---- CSV ----
 $("#btn-csv").addEventListener("click", () => {
