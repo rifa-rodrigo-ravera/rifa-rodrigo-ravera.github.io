@@ -153,21 +153,29 @@ h2 .naranja{color:var(--naranja)}
 /* ---------- BARRA FLOTANTE ---------- */
 .barra{
   position:fixed;left:0;right:0;bottom:0;z-index:40;
-  background:rgba(17,17,17,.96);backdrop-filter:blur(8px);border-top:2px solid var(--naranja);
-  padding:12px 16px calc(12px + env(safe-area-inset-bottom));
-  display:none;align-items:center;gap:12px;justify-content:center;flex-wrap:wrap;
+  background:rgba(17,17,17,.97);backdrop-filter:blur(8px);border-top:2px solid var(--naranja);
+  padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+  display:none;
 }
-.barra.visible{display:flex}
-.barra .resumen{font-family:'Barlow Condensed';font-size:19px;letter-spacing:1px}
-.barra .resumen b{color:var(--naranja);font-variant-numeric:tabular-nums}
+.barra.visible{display:block}
+.barra-inner{
+  max-width:640px;margin:0 auto;display:flex;align-items:center;gap:10px;
+}
+.barra .resumen{flex:1;min-width:0;line-height:1.25}
+.barra .resumen .r1{font-family:'Barlow Condensed';font-size:15px;letter-spacing:1px;color:var(--gris);text-transform:uppercase}
+.barra .resumen .r2{font-family:'Bebas Neue';font-size:26px;letter-spacing:1px;color:var(--naranja);font-variant-numeric:tabular-nums}
 .barra .limpiar{
-  background:none;border:none;color:var(--gris);font-size:14px;cursor:pointer;text-decoration:underline;min-height:44px;
+  flex:none;background:none;border:1px solid #454545;color:#cfc8bc;font-size:14px;cursor:pointer;
+  border-radius:10px;min-height:48px;padding:0 16px;font-family:'Barlow Condensed';font-weight:600;
+  letter-spacing:1px;text-transform:uppercase;transition:border-color .15s,color .15s;
 }
+.barra .limpiar:hover{border-color:var(--gris);color:var(--crema)}
 .barra .continuar{
-  background:var(--naranja);color:#111;border:none;border-radius:10px;min-height:48px;
-  font-family:'Barlow Condensed';font-weight:700;font-size:19px;letter-spacing:2px;text-transform:uppercase;
-  padding:12px 30px;cursor:pointer;
+  flex:none;background:var(--naranja);color:#111;border:none;border-radius:10px;min-height:48px;
+  font-family:'Barlow Condensed';font-weight:700;font-size:18px;letter-spacing:2px;text-transform:uppercase;
+  padding:0 26px;cursor:pointer;
 }
+.barra .continuar:hover{background:#ff7d1f}
 
 /* ---------- MODAL / BOTTOM SHEET ---------- */
 .overlay{
@@ -328,9 +336,11 @@ footer .marca{font-family:'Bebas Neue';font-size:20px;letter-spacing:3px;color:v
 
 <!-- BARRA FLOTANTE -->
 <div class="barra" id="barra" role="region" aria-label="Resumen de selección">
-  <span class="resumen" id="barra-resumen"></span>
-  <button class="limpiar" id="barra-limpiar" type="button">Limpiar</button>
-  <button class="continuar" id="barra-continuar" type="button">Continuar</button>
+  <div class="barra-inner">
+    <div class="resumen" id="barra-resumen"></div>
+    <button class="limpiar" id="barra-limpiar" type="button">Limpiar</button>
+    <button class="continuar" id="barra-continuar" type="button">Continuar</button>
+  </div>
 </div>
 
 <!-- MODAL RESERVA -->
@@ -482,7 +492,9 @@ function pintarBarra() {
   const k = seleccion.size;
   if (k === 0) { barra.classList.remove("visible"); return; }
   barra.classList.add("visible");
-  $("#barra-resumen").innerHTML = `<b>${k}</b> número${k > 1 ? "s" : ""} · <b>${fmtCLP(k * PRECIO)}</b>`;
+  $("#barra-resumen").innerHTML =
+    `<div class="r1">${k} número${k > 1 ? "s" : ""} seleccionado${k > 1 ? "s" : ""}</div>` +
+    `<div class="r2">${fmtCLP(k * PRECIO)}</div>`;
 }
 
 $("#barra-limpiar").addEventListener("click", () => { seleccion.clear(); pintarGrilla(); });
