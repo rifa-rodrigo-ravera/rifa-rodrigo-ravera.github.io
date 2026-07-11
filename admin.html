@@ -569,10 +569,7 @@ function pintarTabla() {
   };
   $("#tbody").innerHTML = filas.map(r => {
     const [cls, txt] = badges[estadoDe(r)];
-    const tieneTel = String(r.telefono ?? "").replace(/\D/g, "").length >= 8;
-    const btnWsp = r.estado === "pagado" && tieneTel
-      ? `<button class="btn verde mini" onclick="copiarWspFila(${r.numero})" title="Copiar el link de WhatsApp de este cliente para enviarle el mensaje">Copiar WhatsApp</button> `
-      : "";
+    const btnWsp = "";
     const btnLiberar = r.estado === "pagado"
       ? `<button class="btn rojo mini" onclick="liberar(${r.numero}, true)">Liberar</button>`
       : `<button class="btn sec mini" onclick="liberar(${r.numero}, false)">Liberar</button>`;
