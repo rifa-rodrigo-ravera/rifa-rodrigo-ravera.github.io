@@ -82,15 +82,18 @@ button:active{transform:scale(.97)}
   box-shadow:0 6px 30px rgba(255,106,0,.45);
 }
 .fecha-sorteo{
-  margin:24px auto 0;max-width:430px;border:1.5px solid rgba(255,106,0,.55);border-radius:16px;
+  position:relative;margin:24px auto 0;max-width:430px;border:1.5px solid rgba(255,106,0,.55);border-radius:16px;
   background:linear-gradient(160deg, rgba(255,106,0,.14), rgba(20,20,20,.55));
   padding:16px 22px;display:flex;align-items:center;gap:16px;text-align:left;
+  box-shadow:0 6px 26px rgba(255,106,0,.16);
+}
+/* Glow que late via opacity (compuesto por GPU) — no repinta en cada frame */
+.fecha-sorteo::after{
+  content:"";position:absolute;inset:-1px;border-radius:16px;pointer-events:none;
+  box-shadow:0 8px 40px rgba(255,106,0,.5);opacity:0;
   animation:pulsoSorteo 2.8s ease-in-out infinite;
 }
-@keyframes pulsoSorteo{
-  0%,100%{box-shadow:0 6px 26px rgba(255,106,0,.16)}
-  50%{box-shadow:0 8px 40px rgba(255,106,0,.42)}
-}
+@keyframes pulsoSorteo{0%,100%{opacity:0}50%{opacity:1}}
 .fecha-sorteo .cal{
   flex:none;width:52px;height:52px;border-radius:12px;background:var(--naranja);
   display:grid;place-items:center;color:#111;box-shadow:0 4px 16px rgba(255,106,0,.4);
@@ -176,7 +179,7 @@ h2 .naranja{color:var(--naranja)}
 /* ---------- BARRA FLOTANTE ---------- */
 .barra{
   position:fixed;left:0;right:0;bottom:0;z-index:40;
-  background:rgba(17,17,17,.97);backdrop-filter:blur(8px);border-top:2px solid var(--naranja);
+  background:#141414;border-top:2px solid var(--naranja);
   padding:10px 14px calc(10px + env(safe-area-inset-bottom));
   display:none;
 }
@@ -202,7 +205,7 @@ h2 .naranja{color:var(--naranja)}
 
 /* ---------- MODAL / BOTTOM SHEET ---------- */
 .overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(4px);
+  position:fixed;inset:0;background:rgba(0,0,0,.85);
   display:none;place-items:end center;z-index:50;
 }
 .overlay.abierto{display:grid}
@@ -496,27 +499,40 @@ function pintarGrilla() {
   }
   let vendidos = 0;
   for (let n = 1; n <= TOTAL; n++) {
-    const c = document.getElementById("num-" + n);
     const est = estados[n] || "disponible";
-    c.classList.remove("reservado", "vendido", "seleccionado");
-    if (est === "vendido") { c.classList.add("vendido"); vendidos++; }
-    else if (est === "en_pago" || est === "reservado") c.classList.add("reservado");
-    else if (seleccion.has(n)) c.classList.add("seleccionado");
-    c.disabled = ocupado(est);
-    c.setAttribute("aria-pressed", seleccion.has(n) ? "true" : "false");
-    c.title = est === "vendido" ? "Vendido" : ocupado(est) ? "Reservado" : seleccion.has(n) ? "Seleccionado — toca para quitar" : "Disponible";
+    if (est === "vendido") vendidos++;
+    aplicarCelda(n, est);
   }
   $("#progreso-fill").style.width = (vendidos / TOTAL * 100).toFixed(1) + "%";
   $("#progreso-txt").textContent = `${vendidos} de ${TOTAL} números vendidos`;
   pintarBarra();
 }
 
+// Estado visual de cada celda ya renderizado; solo tocamos el DOM cuando cambia (evita tironeo)
+const celdaVis = {};
+function claseVisual(est, n) {
+  if (est === "vendido") return "vendido";
+  if (est === "en_pago" || est === "reservado") return "reservado";
+  if (seleccion.has(n)) return "seleccionado";
+  return "";
+}
+function aplicarCelda(n, est) {
+  est = est || estados[n] || "disponible";
+  const v = claseVisual(est, n);
+  if (celdaVis[n] === v) return;
+  const c = document.getElementById("num-" + n);
+  c.classList.remove("reservado", "vendido", "seleccionado");
+  if (v) c.classList.add(v);
+  c.disabled = ocupado(est);
+  c.setAttribute("aria-pressed", seleccion.has(n) ? "true" : "false");
+  c.title = est === "vendido" ? "Vendido" : ocupado(est) ? "Reservado" : seleccion.has(n) ? "Seleccionado — toca para quitar" : "Disponible";
+  celdaVis[n] = v;
+}
+
 function toggleNumero(n) {
   if (ocupado(estados[n])) return;
   if (seleccion.has(n)) seleccion.delete(n); else seleccion.add(n);
-  const c = document.getElementById("num-" + n);
-  c.classList.toggle("seleccionado", seleccion.has(n));
-  c.setAttribute("aria-pressed", seleccion.has(n) ? "true" : "false");
+  aplicarCelda(n);
   pintarBarra();
 }
 
