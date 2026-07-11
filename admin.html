@@ -399,13 +399,31 @@ async function ofrecerWhatsapp(nombre, telefono, numeros) {
   if (ok) window.open(linkWhatsapp(telefono, nombre, numeros), "_blank");
 }
 
-function wspFila(numero) {
-  const r = RESERVAS.find(x => x.numero === numero);
-  if (!r || !telValido(r.telefono)) { toast("Esa reserva no tiene teléfono válido"); return; }
+function numsGrupoPagado(r, numero) {
   const nums = RESERVAS
     .filter(x => x.grupo_uid === r.grupo_uid && x.estado === "pagado")
     .map(x => x.numero).sort((a, b) => a - b);
-  window.open(linkWhatsapp(r.telefono, r.nombre, nums.length ? nums : [numero]), "_blank");
+  return nums.length ? nums : [numero];
+}
+
+function wspFila(numero) {
+  const r = RESERVAS.find(x => x.numero === numero);
+  if (!r || !telValido(r.telefono)) { toast("Esa reserva no tiene teléfono válido"); return; }
+  window.open(linkWhatsapp(r.telefono, r.nombre, numsGrupoPagado(r, numero)), "_blank");
+}
+
+async function copiarWspFila(numero) {
+  const r = RESERVAS.find(x => x.numero === numero);
+  if (!r || !telValido(r.telefono)) { toast("Esa reserva no tiene teléfono válido"); return; }
+  const link = linkWhatsapp(r.telefono, r.nombre, numsGrupoPagado(r, numero));
+  try {
+    await navigator.clipboard.writeText(link);
+  } catch (_) {
+    const ta = document.createElement("textarea");
+    ta.value = link; document.body.appendChild(ta); ta.select();
+    document.execCommand("copy"); ta.remove();
+  }
+  toast("Link de WhatsApp copiado. Pégalo en el navegador o en un chat para abrir el mensaje de " + r.nombre + ".");
 }
 
 // ---- Pagos por confirmar (agrupados por compra) ----
@@ -548,8 +566,10 @@ function pintarTabla() {
   };
   $("#tbody").innerHTML = filas.map(r => {
     const [cls, txt] = badges[estadoDe(r)];
-    const btnWsp = r.estado === "pagado" && String(r.telefono ?? "").replace(/\D/g, "").length >= 8
-      ? `<button class="btn verde mini" onclick="wspFila(${r.numero})" title="Avisar por WhatsApp">WhatsApp</button> `
+    const tieneTel = String(r.telefono ?? "").replace(/\D/g, "").length >= 8;
+    const btnWsp = r.estado === "pagado" && tieneTel
+      ? `<button class="btn verde mini" onclick="wspFila(${r.numero})" title="Abrir WhatsApp con el mensaje listo">WhatsApp</button> ` +
+        `<button class="btn sec mini" onclick="copiarWspFila(${r.numero})" title="Copiar el link de WhatsApp de este cliente">Copiar link</button> `
       : "";
     const btnLiberar = r.estado === "pagado"
       ? `<button class="btn rojo mini" onclick="liberar(${r.numero}, true)">Liberar</button>`
