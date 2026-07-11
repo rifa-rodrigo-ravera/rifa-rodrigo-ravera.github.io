@@ -14,89 +14,125 @@
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{color-scheme:dark}
-button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+button{touch-action:manipulation;-webkit-tap-highlight-color:transparent;font-family:inherit}
+button:active{transform:scale(.97)}
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
-body{background:var(--negro);color:var(--crema);font-family:'Barlow',sans-serif;padding:24px 16px}
+body{background:var(--negro);color:var(--crema);font-family:'Barlow',sans-serif;padding:20px 12px calc(24px + env(safe-area-inset-bottom));min-height:100dvh}
 .wrap{max-width:1150px;margin:0 auto}
-h1{font-family:'Bebas Neue';font-size:36px;letter-spacing:2px}
+h1{font-family:'Bebas Neue';font-size:clamp(28px,6vw,36px);letter-spacing:2px}
 h1 .naranja{color:var(--naranja)}
-.sub{color:var(--gris);font-size:14px;margin-bottom:22px}
+.sub{color:var(--gris);font-size:14px;margin-bottom:18px}
 
 /* login */
-#login{max-width:360px;margin:12vh auto;background:var(--panel);border:1px solid var(--borde);border-top:4px solid var(--naranja);border-radius:14px;padding:30px;text-align:center}
-#login input{width:100%;background:#111;border:1px solid var(--borde);color:var(--crema);border-radius:8px;padding:12px 14px;font-size:16px;margin:14px 0;outline:none}
+#login{max-width:360px;margin:10vh auto;background:var(--panel);border:1px solid var(--borde);border-top:4px solid var(--naranja);border-radius:14px;padding:28px;text-align:center}
+#login input{width:100%;background:#111;border:1px solid var(--borde);color:var(--crema);border-radius:10px;padding:13px 14px;font-size:16px;margin:14px 0;outline:none;min-height:48px}
 #login input:focus{border-color:var(--naranja)}
-.btn{background:var(--naranja);color:#111;border:none;border-radius:8px;font-family:'Barlow Condensed';font-weight:700;font-size:17px;letter-spacing:1.5px;text-transform:uppercase;padding:11px 22px;cursor:pointer}
+.btn{background:var(--naranja);color:#111;border:none;border-radius:10px;font-family:'Barlow Condensed';font-weight:700;font-size:16px;letter-spacing:1.5px;text-transform:uppercase;padding:12px 20px;cursor:pointer;min-height:44px}
 .btn:hover{filter:brightness(1.1)}
 .btn.sec{background:transparent;color:var(--crema);border:1px solid var(--borde)}
 .btn.sec:hover{border-color:var(--naranja);color:var(--naranja)}
-.btn.mini{font-size:13px;padding:6px 12px;letter-spacing:1px}
+.btn.mini{font-size:13px;padding:8px 12px;letter-spacing:1px;min-height:40px}
 .btn.rojo{background:var(--rojo);color:#fff}
+.btn.verde{background:var(--verde);color:#0b2b18}
 #login .error{color:var(--rojo);font-size:14px;margin-top:10px;display:none}
 
+/* alertas */
+.alertas{display:none;background:rgba(231,76,60,.1);border:1px solid var(--rojo);border-radius:10px;padding:10px 14px;font-size:14px;color:#ff9c90;margin-bottom:16px}
+
 /* stats */
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
-.stat{background:var(--panel);border:1px solid var(--borde);border-radius:12px;padding:16px 18px}
-.stat .v{font-family:'Bebas Neue';font-size:34px;color:var(--naranja);line-height:1;font-variant-numeric:tabular-nums}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:18px}
+.stat{background:var(--panel);border:1px solid var(--borde);border-radius:12px;padding:14px 16px}
+.stat .v{font-family:'Bebas Neue';font-size:30px;color:var(--naranja);line-height:1;font-variant-numeric:tabular-nums}
 .stat .v.verde{color:var(--verde)}
 .stat .v.amarillo{color:var(--amarillo)}
-.stat .l{color:var(--gris);font-size:12.5px;text-transform:uppercase;letter-spacing:1px;margin-top:4px;font-family:'Barlow Condensed'}
+.stat .l{color:var(--gris);font-size:12px;text-transform:uppercase;letter-spacing:1px;margin-top:4px;font-family:'Barlow Condensed'}
 
-/* tablero de números */
-.tablero{background:var(--panel);border:1px solid var(--borde);border-radius:12px;padding:16px;margin-bottom:20px}
-.tablero-head{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:12px}
+/* pagos por confirmar */
+.porconfirmar{margin-bottom:20px}
+.porconfirmar h2{font-family:'Bebas Neue';font-size:24px;letter-spacing:2px;margin-bottom:10px}
+.porconfirmar h2 span{color:var(--amarillo)}
+.pc-vacio{color:var(--gris);font-size:14px;background:var(--panel);border:1px dashed var(--borde);border-radius:12px;padding:16px;text-align:center}
+.pc-lista{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.pc-card{background:linear-gradient(160deg,#241f04,#181613);border:1px solid #7a6a10;border-radius:14px;padding:16px}
+.pc-nums{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.pc-num{background:#111;border:2px solid var(--amarillo);color:var(--amarillo);font-family:'Bebas Neue';font-size:20px;padding:2px 12px;border-radius:8px}
+.pc-datos{font-size:14px;line-height:1.65;color:#e8e2d6}
+.pc-datos b{color:var(--crema)}
+.pc-canal{display:inline-block;background:rgba(241,196,15,.14);border:1px solid rgba(241,196,15,.5);color:var(--amarillo);border-radius:999px;font-size:12px;padding:2px 10px;letter-spacing:.5px;text-transform:uppercase;font-weight:600}
+.pc-monto{font-family:'Bebas Neue';font-size:24px;color:var(--crema);margin:6px 0}
+.pc-acciones{display:flex;gap:8px;margin-top:12px}
+.pc-acciones .btn{flex:1}
+
+/* tablero */
+.tablero{background:var(--panel);border:1px solid var(--borde);border-radius:12px;padding:14px;margin-bottom:18px}
+.tablero-head{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:12px}
 .tablero-head h2{font-family:'Bebas Neue';font-size:22px;letter-spacing:2px}
 .tablero-head h2 span{color:var(--naranja)}
-.leyenda{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--gris)}
+.leyenda{display:flex;gap:12px;flex-wrap:wrap;font-size:12.5px;color:var(--gris)}
 .leyenda i{width:13px;height:13px;border-radius:3px;display:inline-block;vertical-align:-2px;margin-right:5px}
 .leyenda .ld{background:#1f1f1f;border:1.5px solid #4a4a4a}
-.leyenda .lp{background:repeating-linear-gradient(-45deg,#3a3005 0 4px,#241f04 4px 8px);border:1.5px solid var(--amarillo)}
+.leyenda .lo{background:repeating-linear-gradient(-45deg,#3a3005 0 4px,#241f04 4px 8px);border:1.5px solid var(--amarillo)}
+.leyenda .lc{background:rgba(241,196,15,.35);border:1.5px solid var(--amarillo)}
 .leyenda .lv{background:var(--verde);border:1.5px solid var(--verde)}
-.mini-grilla{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:4px}
-.ncel{aspect-ratio:1;display:grid;place-items:center;border-radius:6px;cursor:pointer;font-family:'Barlow Condensed';font-weight:600;font-size:13px;background:#1f1f1f;border:1.5px solid #3c3c3c;color:#d8d2c6;transition:border-color .15s,color .15s;padding:0}
+.mini-grilla{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:5px}
+.ncel{aspect-ratio:1;display:grid;place-items:center;border-radius:7px;cursor:pointer;font-family:'Barlow Condensed';font-weight:600;font-size:14px;background:#1f1f1f;border:1.5px solid #3c3c3c;color:#d8d2c6;transition:border-color .15s,color .15s;padding:0}
 .ncel:hover{border-color:var(--naranja);color:var(--naranja)}
 .ncel:focus-visible{outline:2px solid var(--naranja);outline-offset:1px}
 .ncel.pend{background:repeating-linear-gradient(-45deg,#3a3005 0 4px,#241f04 4px 8px);border-color:#7a6a10;color:#c9b53a}
+.ncel.pc{background:rgba(241,196,15,.28);border-color:var(--amarillo);color:var(--amarillo)}
 .ncel.pag{background:var(--verde);border-color:var(--verde);color:#0b2b18}
-.tablero-hint{color:var(--gris);font-size:12.5px;margin-top:10px}
+.tablero-hint{color:var(--gris);font-size:12.5px;margin-top:10px;line-height:1.5}
 
 /* toolbar */
-.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
-.toolbar input,.toolbar select{background:#111;border:1px solid var(--borde);color:var(--crema);border-radius:8px;padding:9px 12px;font-size:14.5px;outline:none}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.toolbar input,.toolbar select{background:#111;border:1px solid var(--borde);color:var(--crema);border-radius:10px;padding:11px 12px;font-size:16px;outline:none;min-height:44px}
+.toolbar input{flex:1;min-width:170px}
 .toolbar input:focus{border-color:var(--naranja)}
-.spacer{flex:1}
+.spacer{flex:0}
 
-/* tabla */
+/* tabla / tarjetas */
 .tabla-wrap{overflow-x:auto;background:var(--panel);border:1px solid var(--borde);border-radius:12px}
-table{width:100%;border-collapse:collapse;font-size:14px;min-width:820px}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:840px}
 th{font-family:'Barlow Condensed';letter-spacing:1px;text-transform:uppercase;font-size:13px;color:var(--gris);text-align:left;padding:12px 14px;border-bottom:1px solid var(--borde);position:sticky;top:0;background:var(--panel)}
 td{padding:10px 14px;border-bottom:1px solid #222;vertical-align:middle}
 tr:hover td{background:#1e1e1e}
 .badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.5px}
 .badge.pagado{background:rgba(46,204,113,.15);color:var(--verde);border:1px solid rgba(46,204,113,.4)}
 .badge.pendiente{background:rgba(241,196,15,.12);color:var(--amarillo);border:1px solid rgba(241,196,15,.4)}
+.badge.por_confirmar{background:rgba(241,196,15,.25);color:#ffd94a;border:1px solid var(--amarillo)}
 .badge.expirada{background:rgba(154,154,154,.12);color:var(--gris);border:1px solid #444}
 .num-td{font-family:'Bebas Neue';font-size:20px;color:var(--naranja)}
-.vacio{padding:34px;text-align:center;color:var(--gris)}
+.vacio{padding:30px;text-align:center;color:var(--gris)}
+
+/* tabla -> tarjetas en móvil */
+@media (max-width:700px){
+  .tabla-wrap{overflow:visible;background:none;border:none}
+  table{min-width:0;display:block}
+  thead{display:none}
+  tbody{display:grid;gap:10px}
+  tr{display:block;background:var(--panel);border:1px solid var(--borde);border-radius:12px;padding:12px 14px}
+  tr:hover td{background:none}
+  td{display:flex;justify-content:space-between;align-items:center;gap:10px;border:none;padding:4px 0;font-size:14.5px}
+  td::before{content:attr(data-l);color:var(--gris);font-size:12px;text-transform:uppercase;letter-spacing:1px;font-family:'Barlow Condensed';font-weight:600}
+  td[data-l=""]::before{display:none}
+  td:first-child{justify-content:flex-start}
+}
 
 /* modal */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;place-items:center;z-index:50;padding:16px}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;place-items:end center;z-index:50}
 .overlay.abierto{display:grid}
-.modal{width:min(430px,100%);background:var(--panel);border:1px solid var(--borde);border-top:4px solid var(--naranja);border-radius:14px;padding:26px;position:relative}
+.modal{width:100%;max-width:430px;background:var(--panel);border:1px solid var(--borde);border-top:4px solid var(--naranja);border-radius:18px 18px 0 0;padding:24px 20px calc(24px + env(safe-area-inset-bottom));position:relative;max-height:92dvh;overflow:auto}
+@media (min-width:640px){.overlay{place-items:center}.modal{border-radius:14px;padding:26px}}
 .modal h3{font-family:'Bebas Neue';font-size:26px;letter-spacing:2px;margin-bottom:14px}
-.modal .cerrar{position:absolute;top:10px;right:14px;background:none;border:none;color:var(--gris);font-size:24px;cursor:pointer}
+.modal .cerrar{position:absolute;top:8px;right:8px;background:none;border:none;color:var(--gris);font-size:26px;cursor:pointer;width:44px;height:44px}
 .campo{margin-bottom:12px}
 .campo label{display:block;font-size:12px;color:var(--gris);margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;font-family:'Barlow Condensed';font-weight:600}
-.campo input,.campo select{width:100%;background:#111;border:1px solid var(--borde);color:var(--crema);border-radius:8px;padding:10px 12px;font-size:15px;outline:none}
+.campo input,.campo select{width:100%;background:#111;border:1px solid var(--borde);color:var(--crema);border-radius:10px;padding:12px;font-size:16px;outline:none;min-height:48px}
 .campo input:focus{border-color:var(--naranja)}
-#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(130%);background:var(--panel);border:1px solid var(--naranja);border-radius:10px;padding:12px 20px;font-size:14.5px;transition:transform .3s;z-index:60;max-width:90vw}
+#toast{position:fixed;bottom:calc(22px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(200%);background:var(--panel);border:1px solid var(--naranja);border-radius:10px;padding:12px 20px;font-size:14.5px;transition:transform .3s;z-index:60;max-width:92vw;text-align:center}
 #toast.visible{transform:translateX(-50%) translateY(0)}
-.eventos{margin-top:26px}
-.eventos h2{font-family:'Bebas Neue';font-size:24px;letter-spacing:2px;margin-bottom:10px}
-.evento{font-size:13px;color:var(--gris);padding:7px 0;border-bottom:1px solid #1e1e1e;font-family:monospace;word-break:break-all}
-.evento .tipo{color:var(--naranja)}
 </style>
 </head>
 <body>
@@ -115,35 +151,47 @@ tr:hover td{background:#1e1e1e}
   <h1>PANEL <span class="naranja">RIFA RODRIGO RAVERA</span></h1>
   <div class="sub">Gestión de reservas y ventas · <span id="ultima-carga"></span></div>
 
+  <div class="alertas" id="alertas" role="alert"></div>
+
   <div class="stats">
     <div class="stat"><div class="v verde" id="st-vendidos">—</div><div class="l">Vendidos</div></div>
     <div class="stat"><div class="v verde" id="st-recaudado">—</div><div class="l">Recaudado</div></div>
-    <div class="stat"><div class="v amarillo" id="st-pendientes">—</div><div class="l">En proceso de pago</div></div>
+    <div class="stat"><div class="v amarillo" id="st-porconfirmar">—</div><div class="l">Por confirmar</div></div>
+    <div class="stat"><div class="v amarillo" id="st-enpago">—</div><div class="l">En pago online</div></div>
     <div class="stat"><div class="v" id="st-disponibles">—</div><div class="l">Disponibles</div></div>
   </div>
 
+  <!-- PAGOS POR CONFIRMAR -->
+  <div class="porconfirmar">
+    <h2>PAGOS <span>POR CONFIRMAR</span></h2>
+    <div class="pc-lista" id="pc-lista"></div>
+    <div class="pc-vacio" id="pc-vacio">No hay pagos declarados esperando confirmación.</div>
+  </div>
+
+  <!-- TABLERO -->
   <div class="tablero">
     <div class="tablero-head">
-      <h2>MARCAR <span>NÚMEROS PAGADOS</span></h2>
+      <h2>TABLERO DE <span>NÚMEROS</span></h2>
       <div class="leyenda">
         <span><i class="ld"></i>Disponible</span>
-        <span><i class="lp"></i>En pago online</span>
+        <span><i class="lo"></i>En pago online</span>
+        <span><i class="lc"></i>Por confirmar</span>
         <span><i class="lv"></i>Pagado</span>
       </div>
     </div>
     <div class="mini-grilla" id="mini-grilla"></div>
-    <div class="tablero-hint">Toca un número <strong>disponible</strong> para registrar un pago por transferencia o efectivo con los datos de la persona. Toca uno ocupado para ver de quién es.</div>
+    <div class="tablero-hint">Toca un número <strong>disponible</strong> para registrar una venta pagada (transferencia o efectivo) con los datos de la persona. Toca uno ocupado para ver de quién es.</div>
   </div>
 
   <div class="toolbar">
-    <input id="filtro" type="text" placeholder="Filtrar por nombre, RUT, correo o número…" style="min-width:260px" aria-label="Filtrar reservas">
+    <input id="filtro" type="text" placeholder="Filtrar por nombre, RUT, correo o número…" aria-label="Filtrar reservas">
     <select id="filtro-estado" aria-label="Filtrar por estado">
-      <option value="">Todos los estados</option>
+      <option value="">Todos</option>
       <option value="pagado">Pagados</option>
-      <option value="pendiente">Pendientes vigentes</option>
-      <option value="expirada">Reservas expiradas</option>
+      <option value="por_confirmar">Por confirmar</option>
+      <option value="pendiente">En pago online</option>
+      <option value="expirada">Expiradas</option>
     </select>
-    <div class="spacer"></div>
     <button class="btn sec mini" id="btn-refrescar">Refrescar</button>
     <button class="btn sec mini" id="btn-csv">Exportar CSV</button>
     <button class="btn mini" id="btn-venta-manual">+ Venta manual</button>
@@ -159,17 +207,12 @@ tr:hover td{background:#1e1e1e}
     </table>
     <div class="vacio" id="tabla-vacia" style="display:none">Sin registros todavía</div>
   </div>
-
-  <div class="eventos">
-    <h2>ÚLTIMOS <span style="color:var(--naranja)">EVENTOS</span></h2>
-    <div id="lista-eventos"></div>
-  </div>
 </div>
 
 <!-- MODAL VENTA MANUAL -->
 <div class="overlay" id="modal-venta">
-  <div class="modal">
-    <button class="cerrar" onclick="cerrarModal()">&times;</button>
+  <div class="modal" role="dialog" aria-modal="true">
+    <button class="cerrar" onclick="cerrarModal()" aria-label="Cerrar">&times;</button>
     <h3>VENTA MANUAL</h3>
     <div class="campo"><label for="v-numero">Número (1–500)</label><input id="v-numero" type="number" min="1" max="500" inputmode="numeric"></div>
     <div class="campo"><label for="v-nombre">Nombre completo</label><input id="v-nombre" type="text" autocomplete="off"></div>
@@ -195,6 +238,7 @@ let PRECIO = 10000;
 
 const fmtCLP = (n) => "$" + n.toLocaleString("es-CL");
 const fmtFecha = (iso) => iso ? new Date(iso).toLocaleString("es-CL", { day:"2-digit", month:"2-digit", year:"2-digit", hour:"2-digit", minute:"2-digit" }) : "—";
+const esc = (s) => String(s ?? "").replace(/[<>&"]/g, c => ({ "<":"&lt;", ">":"&gt;", "&":"&amp;", '"':"&quot;" }[c]));
 
 async function api(payload) {
   const res = await fetch(FN, {
@@ -217,7 +261,7 @@ function salir() {
 }
 
 async function entrar() {
-  CLAVE = $("#clave").value.trim();
+  CLAVE = $("#clave").value.trim() || CLAVE;
   if (!CLAVE) return;
   $("#login-error").style.display = "none";
   try {
@@ -233,20 +277,83 @@ async function entrar() {
 $("#btn-entrar").addEventListener("click", entrar);
 $("#clave").addEventListener("keydown", (e) => { if (e.key === "Enter") entrar(); });
 
+function estadoDe(r) {
+  if (r.estado === "pagado") return "pagado";
+  if (r.estado === "por_confirmar") return "por_confirmar";
+  return r.vigente ? "pendiente" : "expirada";
+}
+
 async function cargar() {
   const data = await api({ accion: "listar" });
   RESERVAS = data.reservas;
   PRECIO = data.precio || 10000;
+
   const pagados = RESERVAS.filter(r => r.estado === "pagado");
-  const pendientes = RESERVAS.filter(r => r.estado === "pendiente" && r.vigente);
+  const porConfirmar = RESERVAS.filter(r => r.estado === "por_confirmar");
+  const enPago = RESERVAS.filter(r => estadoDe(r) === "pendiente");
   $("#st-vendidos").textContent = pagados.length + " / 500";
   $("#st-recaudado").textContent = fmtCLP(pagados.length * PRECIO);
-  $("#st-pendientes").textContent = pendientes.length;
-  $("#st-disponibles").textContent = 500 - pagados.length - pendientes.length;
+  $("#st-porconfirmar").textContent = porConfirmar.length;
+  $("#st-enpago").textContent = enPago.length;
+  $("#st-disponibles").textContent = 500 - pagados.length - porConfirmar.length - enPago.length;
   $("#ultima-carga").textContent = "actualizado " + new Date().toLocaleTimeString("es-CL");
+
+  // Alertas resumidas (reemplaza el log de eventos)
+  const al = [];
+  if (data.resumen?.pagos_huerfanos > 0) al.push(`${data.resumen.pagos_huerfanos} pago(s) huérfano(s) de Mercado Pago requieren devolución manual`);
+  if (data.resumen?.correos_error > 0) al.push(`${data.resumen.correos_error} correo(s) no pudieron enviarse`);
+  const box = $("#alertas");
+  box.textContent = al.length ? "⚠ " + al.join(" · ") : "";
+  box.style.display = al.length ? "block" : "none";
+
+  pintarPorConfirmar(porConfirmar);
   pintarMiniGrilla();
   pintarTabla();
-  pintarEventos(data.eventos);
+}
+
+// ---- Pagos por confirmar (agrupados por compra) ----
+function pintarPorConfirmar(filas) {
+  const grupos = {};
+  for (const r of filas) (grupos[r.grupo_uid] = grupos[r.grupo_uid] || []).push(r);
+  const lista = Object.values(grupos).sort((a, b) => new Date(b[0].creado_en) - new Date(a[0].creado_en));
+  $("#pc-lista").innerHTML = lista.map(g => {
+    const p = g[0];
+    const nums = g.map(x => x.numero).sort((a, b) => a - b);
+    return `<div class="pc-card">
+      <div class="pc-nums">${nums.map(n => `<span class="pc-num">${n}</span>`).join("")}</div>
+      <span class="pc-canal">${esc(p.canal_pago)}</span>
+      <div class="pc-monto">${fmtCLP(nums.length * PRECIO)}</div>
+      <div class="pc-datos">
+        <b>${esc(p.nombre)}</b><br>
+        ${esc(p.rut)} · ${esc(p.telefono)}<br>
+        ${esc(p.email)}<br>
+        <span style="color:var(--gris);font-size:12.5px">Declarado el ${fmtFecha(p.creado_en)}</span>
+      </div>
+      <div class="pc-acciones">
+        <button class="btn verde" onclick="aceptarGrupo('${p.grupo_uid}', '${nums.join(", ")}')">✓ Aceptar</button>
+        <button class="btn rojo" onclick="rechazarGrupo('${p.grupo_uid}', '${nums.join(", ")}')">✕ Rechazar</button>
+      </div>
+    </div>`;
+  }).join("");
+  $("#pc-vacio").style.display = lista.length ? "none" : "block";
+}
+
+async function aceptarGrupo(grupo, numsTxt) {
+  if (!confirm(`¿Confirmar el pago de los números ${numsTxt}? Quedarán como VENDIDOS y se enviará el comprobante por correo.`)) return;
+  try {
+    await api({ accion: "aceptar_grupo", grupo_uid: grupo });
+    toast("Pago confirmado: números " + numsTxt);
+    await cargar();
+  } catch (e) { toast("Error: " + e.message); }
+}
+
+async function rechazarGrupo(grupo, numsTxt) {
+  if (!confirm(`¿Rechazar este pago? Los números ${numsTxt} quedarán DISPONIBLES de nuevo y se avisará por correo a la persona.`)) return;
+  try {
+    await api({ accion: "rechazar_grupo", grupo_uid: grupo });
+    toast("Pago rechazado, números liberados: " + numsTxt);
+    await cargar();
+  } catch (e) { toast("Error: " + e.message); }
 }
 
 // ---- Tablero de números clickeable ----
@@ -269,21 +376,23 @@ function pintarMiniGrilla() {
   for (let n = 1; n <= 500; n++) {
     const b = document.getElementById("mini-" + n);
     const r = porNumero[n];
-    b.classList.remove("pend", "pag");
-    if (r && r.estado === "pagado") { b.classList.add("pag"); b.title = `Pagado · ${r.nombre}`; }
-    else if (r && r.estado === "pendiente" && r.vigente) { b.classList.add("pend"); b.title = `En pago online · ${r.nombre}`; }
-    else b.title = "Disponible — clic para registrar pago manual";
+    const est = r ? estadoDe(r) : "disponible";
+    b.classList.remove("pend", "pag", "pc");
+    if (est === "pagado") { b.classList.add("pag"); b.title = `Pagado · ${r.nombre}`; }
+    else if (est === "por_confirmar") { b.classList.add("pc"); b.title = `Por confirmar (${r.canal_pago}) · ${r.nombre}`; }
+    else if (est === "pendiente") { b.classList.add("pend"); b.title = `En pago online · ${r.nombre}`; }
+    else b.title = "Disponible — clic para registrar venta manual";
   }
 }
 
 function clickNumero(n) {
   const r = RESERVAS.find(x => x.numero === n);
-  const ocupado = r && (r.estado === "pagado" || (r.estado === "pendiente" && r.vigente));
-  if (ocupado) {
+  const est = r ? estadoDe(r) : "disponible";
+  if (est === "pagado" || est === "por_confirmar" || est === "pendiente") {
     $("#filtro").value = String(n);
     $("#filtro-estado").value = "";
     pintarTabla();
-    const que = r.estado === "pagado" ? `pagado (${r.canal_pago})` : "en proceso de pago online";
+    const que = est === "pagado" ? `pagado (${r.canal_pago})` : est === "por_confirmar" ? `por confirmar (${r.canal_pago})` : "en pago online";
     toast(`N° ${n}: ${que} · ${r.nombre} · ${r.telefono}`);
     document.querySelector(".tabla-wrap").scrollIntoView({ behavior: "smooth", block: "start" });
     return;
@@ -293,11 +402,7 @@ function clickNumero(n) {
   setTimeout(() => $("#v-nombre").focus(), 100);
 }
 
-function estadoDe(r) {
-  if (r.estado === "pagado") return "pagado";
-  return r.vigente ? "pendiente" : "expirada";
-}
-
+// ---- Tabla ----
 function pintarTabla() {
   const q = $("#filtro").value.trim().toLowerCase();
   const fe = $("#filtro-estado").value;
@@ -307,29 +412,30 @@ function pintarTabla() {
     if (!q) return true;
     return [r.numero, r.nombre, r.rut, r.email, r.telefono].join(" ").toLowerCase().includes(q);
   });
-  const badges = { pagado: ["pagado","PAGADO"], pendiente: ["pendiente","EN PAGO"], expirada: ["expirada","EXPIRADA"] };
+  const badges = {
+    pagado: ["pagado", "PAGADO"],
+    pendiente: ["pendiente", "EN PAGO"],
+    por_confirmar: ["por_confirmar", "POR CONFIRMAR"],
+    expirada: ["expirada", "EXPIRADA"],
+  };
   $("#tbody").innerHTML = filas.map(r => {
     const [cls, txt] = badges[estadoDe(r)];
     const btnLiberar = r.estado === "pagado"
       ? `<button class="btn rojo mini" onclick="liberar(${r.numero}, true)">Liberar</button>`
       : `<button class="btn sec mini" onclick="liberar(${r.numero}, false)">Liberar</button>`;
     return `<tr>
-      <td class="num-td">${r.numero}</td>
-      <td><span class="badge ${cls}">${txt}</span></td>
-      <td>${esc(r.nombre)}</td><td>${esc(r.rut)}</td><td>${esc(r.email)}</td><td>${esc(r.telefono)}</td>
-      <td>${r.canal_pago ?? "—"}</td>
-      <td>${fmtFecha(r.pagado_en || r.creado_en)}</td>
-      <td>${btnLiberar}</td>
+      <td class="num-td" data-l="">${r.numero}</td>
+      <td data-l="Estado"><span class="badge ${cls}">${txt}</span></td>
+      <td data-l="Nombre">${esc(r.nombre)}</td>
+      <td data-l="RUT">${esc(r.rut)}</td>
+      <td data-l="Correo">${esc(r.email)}</td>
+      <td data-l="Teléfono">${esc(r.telefono)}</td>
+      <td data-l="Canal">${r.canal_pago ?? "—"}</td>
+      <td data-l="Fecha">${fmtFecha(r.pagado_en || r.creado_en)}</td>
+      <td data-l="">${btnLiberar}</td>
     </tr>`;
   }).join("");
   $("#tabla-vacia").style.display = filas.length ? "none" : "block";
-}
-const esc = (s) => String(s ?? "").replace(/[<>&"]/g, c => ({ "<":"&lt;", ">":"&gt;", "&":"&amp;", '"':"&quot;" }[c]));
-
-function pintarEventos(eventos) {
-  $("#lista-eventos").innerHTML = (eventos || []).slice(0, 40).map(e =>
-    `<div class="evento">${fmtFecha(e.creado_en)} · <span class="tipo">${esc(e.tipo)}</span> · ${esc(JSON.stringify(e.detalle))}</div>`
-  ).join("") || '<div class="evento">Sin eventos</div>';
 }
 
 $("#filtro").addEventListener("input", pintarTabla);
