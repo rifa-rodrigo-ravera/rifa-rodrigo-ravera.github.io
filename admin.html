@@ -377,14 +377,48 @@ async function cargar() {
   pintarTabla();
 }
 
+// ---- WhatsApp con mensaje pre-escrito ----
+function linkWhatsapp(telefono, nombre, numeros) {
+  let d = String(telefono || "").replace(/\D/g, "");
+  if (d.length === 8) d = "569" + d;
+  else if (d.length === 9 && d.startsWith("9")) d = "56" + d;
+  else if (!d.startsWith("56")) d = "56" + d;
+  const primerNombre = String(nombre || "").trim().split(" ")[0] || "";
+  const msg = `¡Hola ${primerNombre}! 🏍️ Te confirmamos tu pago en la Rifa Solidaria de Rodrigo Ravera. ${numeros.length > 1 ? "Tus números son" : "Tu número es"}: ${numeros.join(", ")}. ¡Mucha suerte y gracias por apoyar!`;
+  return "https://wa.me/" + d + "?text=" + encodeURIComponent(msg);
+}
+
+function telValido(t) { return String(t || "").replace(/\D/g, "").length >= 8; }
+
+async function ofrecerWhatsapp(nombre, telefono, numeros) {
+  if (!telValido(telefono)) return;
+  const ok = await confirmar(
+    `¿Quieres avisarle por WhatsApp a ${nombre} (${telefono})? Se abrirá tu WhatsApp con el mensaje listo, solo debes apretar enviar.`,
+    { titulo: "Pago confirmado ✓", boton: "Abrir WhatsApp" },
+  );
+  if (ok) window.open(linkWhatsapp(telefono, nombre, numeros), "_blank");
+}
+
+function wspFila(numero) {
+  const r = RESERVAS.find(x => x.numero === numero);
+  if (!r || !telValido(r.telefono)) { toast("Esa reserva no tiene teléfono válido"); return; }
+  const nums = RESERVAS
+    .filter(x => x.grupo_uid === r.grupo_uid && x.estado === "pagado")
+    .map(x => x.numero).sort((a, b) => a - b);
+  window.open(linkWhatsapp(r.telefono, r.nombre, nums.length ? nums : [numero]), "_blank");
+}
+
 // ---- Pagos por confirmar (agrupados por compra) ----
+let GRUPOS = {};
 function pintarPorConfirmar(filas) {
   const grupos = {};
   for (const r of filas) (grupos[r.grupo_uid] = grupos[r.grupo_uid] || []).push(r);
+  GRUPOS = {};
   const lista = Object.values(grupos).sort((a, b) => new Date(b[0].creado_en) - new Date(a[0].creado_en));
   $("#pc-lista").innerHTML = lista.map(g => {
     const p = g[0];
     const nums = g.map(x => x.numero).sort((a, b) => a - b);
+    GRUPOS[p.grupo_uid] = { nombre: p.nombre, telefono: p.telefono, numeros: nums };
     return `<div class="pc-card">
       <div class="pc-nums">${nums.map(n => `<span class="pc-num">${n}</span>`).join("")}</div>
       <span class="pc-canal">${esc(p.canal_pago)}</span>
@@ -410,10 +444,12 @@ async function aceptarGrupo(grupo, numsTxt) {
     { titulo: "Confirmar pago recibido", boton: "Sí, confirmar pago" },
   );
   if (!ok) return;
+  const info = GRUPOS[grupo];
   try {
     await api({ accion: "aceptar_grupo", grupo_uid: grupo });
     toast("Pago confirmado: números " + numsTxt);
     await cargar();
+    if (info) await ofrecerWhatsapp(info.nombre, info.telefono, info.numeros);
   } catch (e) { toast("Error: " + e.message); }
 }
 
@@ -512,6 +548,9 @@ function pintarTabla() {
   };
   $("#tbody").innerHTML = filas.map(r => {
     const [cls, txt] = badges[estadoDe(r)];
+    const btnWsp = r.estado === "pagado" && String(r.telefono ?? "").replace(/\D/g, "").length >= 8
+      ? `<button class="btn verde mini" onclick="wspFila(${r.numero})" title="Avisar por WhatsApp">WhatsApp</button> `
+      : "";
     const btnLiberar = r.estado === "pagado"
       ? `<button class="btn rojo mini" onclick="liberar(${r.numero}, true)">Liberar</button>`
       : `<button class="btn sec mini" onclick="liberar(${r.numero}, false)">Liberar</button>`;
@@ -524,7 +563,7 @@ function pintarTabla() {
       <td data-l="Teléfono">${esc(r.telefono)}</td>
       <td data-l="Canal">${r.canal_pago ?? "—"}</td>
       <td data-l="Fecha">${fmtFecha(r.pagado_en || r.creado_en)}</td>
-      <td data-l="">${btnLiberar}</td>
+      <td data-l="">${btnWsp}${btnLiberar}</td>
     </tr>`;
   }).join("");
   $("#tabla-vacia").style.display = filas.length ? "none" : "block";
@@ -586,6 +625,7 @@ $("#btn-guardar-venta").addEventListener("click", async () => {
     selAdmin.clear();
     ["v-numero","v-nombre","v-rut","v-email","v-telefono"].forEach(id => document.getElementById(id).value = "");
     await cargar();
+    await ofrecerWhatsapp(payload.nombre, payload.telefono, numeros);
   } catch (e) { toast("Error: " + e.message); }
 });
 
@@ -625,6 +665,10 @@ function generarPDF(descargar = true) {
   const enPago = RESERVAS.filter(r => estadoDe(r) === "pendiente").length;
   const disponibles = 500 - vendidos - porConf - enPago;
 
+  // Fondo negro completo
+  doc.setFillColor(11, 11, 11);
+  doc.rect(0, 0, 210, 297, "F");
+
   // Encabezado
   doc.setFillColor(255, 106, 0);
   doc.rect(0, 0, 210, 26, "F");
@@ -640,69 +684,78 @@ function generarPDF(descargar = true) {
   const cajas = [
     ["VENDIDOS", `${vendidos} / 500`, [46, 204, 113]],
     ["RECAUDADO", fmtCLP(vendidos * PRECIO), [46, 204, 113]],
-    ["POR CONFIRMAR", String(porConf), [200, 160, 10]],
-    ["EN PAGO ONLINE", String(enPago), [200, 160, 10]],
-    ["DISPONIBLES", String(disponibles), [90, 90, 90]],
+    ["POR CONFIRMAR", String(porConf), [241, 196, 15]],
+    ["EN PAGO ONLINE", String(enPago), [241, 196, 15]],
+    ["DISPONIBLES", String(disponibles), [235, 228, 214]],
   ];
   const cw = 36, gap = 3.5, x0 = (210 - (cajas.length * cw + (cajas.length - 1) * gap)) / 2;
   cajas.forEach((c, i) => {
     const x = x0 + i * (cw + gap);
-    doc.setDrawColor(210); doc.setFillColor(248, 248, 248);
+    doc.setDrawColor(70); doc.setFillColor(27, 27, 27);
     doc.roundedRect(x, 32, cw, 18, 2, 2, "FD");
     doc.setTextColor(c[2][0], c[2][1], c[2][2]);
     doc.setFont("helvetica", "bold"); doc.setFontSize(13);
     doc.text(c[1], x + cw / 2, 41, { align: "center" });
-    doc.setTextColor(120); doc.setFont("helvetica", "normal"); doc.setFontSize(6.5);
+    doc.setTextColor(150); doc.setFont("helvetica", "normal"); doc.setFontSize(6.5);
     doc.text(c[0], x + cw / 2, 46.5, { align: "center" });
   });
 
   // Barra de avance
   const pct = vendidos / 500;
-  doc.setFillColor(235, 235, 235);
+  doc.setFillColor(40, 40, 40);
   doc.roundedRect(20, 56, 170, 6, 3, 3, "F");
   if (pct > 0) {
     doc.setFillColor(255, 106, 0);
     doc.roundedRect(20, 56, Math.max(6, 170 * pct), 6, 3, 3, "F");
   }
-  doc.setTextColor(60); doc.setFontSize(9);
+  doc.setTextColor(225, 218, 205); doc.setFontSize(9);
   doc.text(`Avance: ${(pct * 100).toFixed(1)}% vendido — quedan ${disponibles} números disponibles de 500`, 105, 68, { align: "center" });
 
   // Tablero 25 x 20
   const cols = 25, cell = 6.8, gx = (210 - cols * cell) / 2, gy = 76;
-  doc.setFontSize(4.6);
-  doc.setLineWidth(0.1);
+  doc.setFontSize(5.6);
+  doc.setLineWidth(0.15);
   for (let n = 1; n <= 500; n++) {
     const col = (n - 1) % cols, fila = Math.floor((n - 1) / cols);
     const x = gx + col * cell, y = gy + fila * cell;
     const est = porNumero[n] || "disponible";
-    if (est === "pagado") { doc.setFillColor(46, 204, 113); doc.setTextColor(255); }
-    else if (est === "por_confirmar") { doc.setFillColor(246, 210, 80); doc.setTextColor(80, 60, 0); }
-    else if (est === "pendiente") { doc.setFillColor(255, 230, 150); doc.setTextColor(120, 90, 0); }
-    else { doc.setFillColor(245, 245, 245); doc.setTextColor(150); }
-    doc.setDrawColor(215);
+    if (est === "pagado") {
+      doc.setFillColor(46, 204, 113); doc.setDrawColor(46, 204, 113);
+      doc.setTextColor(6, 40, 20); doc.setFont("helvetica", "bold");
+    } else if (est === "por_confirmar") {
+      doc.setFillColor(241, 196, 15); doc.setDrawColor(241, 196, 15);
+      doc.setTextColor(60, 45, 0); doc.setFont("helvetica", "bold");
+    } else if (est === "pendiente") {
+      doc.setFillColor(90, 75, 10); doc.setDrawColor(150, 125, 20);
+      doc.setTextColor(235, 215, 120); doc.setFont("helvetica", "normal");
+    } else {
+      doc.setFillColor(30, 30, 30); doc.setDrawColor(75, 75, 75);
+      doc.setTextColor(190, 185, 175); doc.setFont("helvetica", "normal");
+    }
     doc.rect(x, y, cell - 0.6, cell - 0.6, "FD");
-    doc.text(String(n), x + (cell - 0.6) / 2, y + cell / 2 + 0.5, { align: "center" });
+    doc.text(String(n), x + (cell - 0.6) / 2, y + cell / 2 + 0.7, { align: "center" });
   }
+  doc.setFont("helvetica", "normal");
 
   // Leyenda
   const ly = gy + 20 * cell + 5;
   const leyenda = [
     [[46, 204, 113], "Vendido"],
-    [[246, 210, 80], "Por confirmar"],
-    [[255, 230, 150], "En pago online"],
-    [[245, 245, 245], "Disponible"],
+    [[241, 196, 15], "Por confirmar"],
+    [[90, 75, 10], "En pago online"],
+    [[30, 30, 30], "Disponible"],
   ];
   let lx = 40;
   doc.setFontSize(8);
   leyenda.forEach(([c, t]) => {
-    doc.setFillColor(c[0], c[1], c[2]); doc.setDrawColor(190);
+    doc.setFillColor(c[0], c[1], c[2]); doc.setDrawColor(110);
     doc.rect(lx, ly, 4, 4, "FD");
-    doc.setTextColor(80);
+    doc.setTextColor(215, 208, 195);
     doc.text(t, lx + 6, ly + 3.2);
     lx += 12 + doc.getTextWidth(t) + 8;
   });
 
-  doc.setTextColor(150); doc.setFontSize(7);
+  doc.setTextColor(120); doc.setFontSize(7);
   doc.text("Generado desde el panel de administración · rifa-rodrigo-ravera.github.io", 105, 292, { align: "center" });
 
   if (descargar) doc.save("rifa_como_vamos_" + ahora.toISOString().slice(0, 10) + ".pdf");
