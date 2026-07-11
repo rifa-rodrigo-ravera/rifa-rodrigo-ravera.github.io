@@ -20,7 +20,7 @@ button:active{transform:scale(.97)}
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
 body{background:var(--negro);color:var(--crema);font-family:'Barlow',sans-serif;padding:20px 12px calc(24px + env(safe-area-inset-bottom));min-height:100dvh}
-.wrap{max-width:1150px;margin:0 auto}
+.wrap{max-width:1150px;margin:0 auto;padding-bottom:90px}
 h1{font-family:'Bebas Neue';font-size:clamp(28px,6vw,36px);letter-spacing:2px}
 h1 .naranja{color:var(--naranja)}
 .sub{color:var(--gris);font-size:14px;margin-bottom:18px}
@@ -83,7 +83,26 @@ h1 .naranja{color:var(--naranja)}
 .ncel.pend{background:repeating-linear-gradient(-45deg,#3a3005 0 4px,#241f04 4px 8px);border-color:#7a6a10;color:#c9b53a}
 .ncel.pc{background:rgba(241,196,15,.28);border-color:var(--amarillo);color:var(--amarillo)}
 .ncel.pag{background:var(--verde);border-color:var(--verde);color:#0b2b18}
+.ncel.sel{background:rgba(255,106,0,.25);border:2px solid var(--naranja);color:var(--naranja);font-weight:700}
 .tablero-hint{color:var(--gris);font-size:12.5px;margin-top:10px;line-height:1.5}
+
+/* barra de selección del admin */
+.barra-admin{
+  position:fixed;left:0;right:0;bottom:0;z-index:45;display:none;
+  background:rgba(17,17,17,.97);backdrop-filter:blur(8px);border-top:2px solid var(--naranja);
+  padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+}
+.barra-admin.visible{display:block}
+.barra-admin .inner{max-width:640px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.barra-admin .res{flex:1;min-width:0;line-height:1.25}
+.barra-admin .res .r1{font-family:'Barlow Condensed';font-size:14px;letter-spacing:1px;color:var(--gris);text-transform:uppercase}
+.barra-admin .res .r2{font-family:'Bebas Neue';font-size:24px;letter-spacing:1px;color:var(--naranja);font-variant-numeric:tabular-nums}
+
+/* modal de confirmación */
+#modal-confirm .modal{border-top-color:var(--amarillo)}
+#confirm-msg{font-size:15px;line-height:1.6;color:#e8e2d6;margin-bottom:18px}
+.confirm-btns{display:flex;gap:8px}
+.confirm-btns .btn{flex:1}
 
 /* toolbar */
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
@@ -180,7 +199,7 @@ tr:hover td{background:#1e1e1e}
       </div>
     </div>
     <div class="mini-grilla" id="mini-grilla"></div>
-    <div class="tablero-hint">Toca un número <strong>disponible</strong> para registrar una venta pagada (transferencia o efectivo) con los datos de la persona. Toca uno ocupado para ver de quién es.</div>
+    <div class="tablero-hint">Toca uno o varios números <strong>disponibles</strong> para marcarlos como pagados por transferencia o efectivo (abajo aparece el botón para registrar el pago). Toca un número ocupado para ver de quién es.</div>
   </div>
 
   <div class="toolbar">
@@ -209,12 +228,37 @@ tr:hover td{background:#1e1e1e}
   </div>
 </div>
 
+<!-- BARRA DE SELECCIÓN ADMIN -->
+<div class="barra-admin" id="barra-admin" role="region" aria-label="Números seleccionados">
+  <div class="inner">
+    <div class="res" id="barra-admin-res"></div>
+    <button class="btn sec mini" id="barra-admin-limpiar" type="button">Limpiar</button>
+    <button class="btn" id="barra-admin-registrar" type="button">Registrar pago</button>
+  </div>
+</div>
+
+<!-- MODAL CONFIRMACIÓN -->
+<div class="overlay" id="modal-confirm">
+  <div class="modal" role="dialog" aria-modal="true">
+    <h3 id="confirm-titulo">CONFIRMAR</h3>
+    <p id="confirm-msg"></p>
+    <div class="confirm-btns">
+      <button class="btn sec" id="confirm-no" type="button">Cancelar</button>
+      <button class="btn" id="confirm-si" type="button">Confirmar</button>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL VENTA MANUAL -->
 <div class="overlay" id="modal-venta">
   <div class="modal" role="dialog" aria-modal="true">
     <button class="cerrar" onclick="cerrarModal()" aria-label="Cerrar">&times;</button>
-    <h3>VENTA MANUAL</h3>
-    <div class="campo"><label for="v-numero">Número (1–500)</label><input id="v-numero" type="number" min="1" max="500" inputmode="numeric"></div>
+    <h3>REGISTRAR PAGO</h3>
+    <div class="campo" id="v-chips-wrap" style="display:none">
+      <label>Números seleccionados</label>
+      <div class="pc-nums" id="v-chips"></div>
+    </div>
+    <div class="campo" id="v-numero-wrap"><label for="v-numero">Número (1–500)</label><input id="v-numero" type="number" min="1" max="500" inputmode="numeric"></div>
     <div class="campo"><label for="v-nombre">Nombre completo</label><input id="v-nombre" type="text" autocomplete="off"></div>
     <div class="campo"><label for="v-rut">RUT</label><input id="v-rut" type="text" placeholder="12.345.678-9" spellcheck="false" autocomplete="off"></div>
     <div class="campo"><label for="v-email">Correo (opcional, recibe comprobante)</label><input id="v-email" type="email" spellcheck="false" autocomplete="off"></div>
@@ -239,6 +283,26 @@ let PRECIO = 10000;
 const fmtCLP = (n) => "$" + n.toLocaleString("es-CL");
 const fmtFecha = (iso) => iso ? new Date(iso).toLocaleString("es-CL", { day:"2-digit", month:"2-digit", year:"2-digit", hour:"2-digit", minute:"2-digit" }) : "—";
 const esc = (s) => String(s ?? "").replace(/[<>&"]/g, c => ({ "<":"&lt;", ">":"&gt;", "&":"&amp;", '"':"&quot;" }[c]));
+const selAdmin = new Set(); // números marcados en el tablero para venta manual
+
+// Confirmación propia (reemplaza el confirm() del navegador)
+function confirmar(mensaje, opciones = {}) {
+  return new Promise((resolver) => {
+    $("#confirm-titulo").textContent = opciones.titulo || "¿Estás seguro?";
+    $("#confirm-msg").textContent = mensaje;
+    const si = $("#confirm-si");
+    si.textContent = opciones.boton || "Confirmar";
+    si.className = opciones.peligro ? "btn rojo" : "btn";
+    $("#modal-confirm").classList.add("abierto");
+    const cerrar = (valor) => {
+      $("#modal-confirm").classList.remove("abierto");
+      si.onclick = null; $("#confirm-no").onclick = null;
+      resolver(valor);
+    };
+    si.onclick = () => cerrar(true);
+    $("#confirm-no").onclick = () => cerrar(false);
+  });
+}
 
 async function api(payload) {
   const res = await fetch(FN, {
@@ -339,7 +403,11 @@ function pintarPorConfirmar(filas) {
 }
 
 async function aceptarGrupo(grupo, numsTxt) {
-  if (!confirm(`¿Confirmar el pago de los números ${numsTxt}? Quedarán como VENDIDOS y se enviará el comprobante por correo.`)) return;
+  const ok = await confirmar(
+    `Los números ${numsTxt} quedarán como VENDIDOS y se enviará el comprobante por correo a la persona.`,
+    { titulo: "Confirmar pago recibido", boton: "Sí, confirmar pago" },
+  );
+  if (!ok) return;
   try {
     await api({ accion: "aceptar_grupo", grupo_uid: grupo });
     toast("Pago confirmado: números " + numsTxt);
@@ -348,7 +416,11 @@ async function aceptarGrupo(grupo, numsTxt) {
 }
 
 async function rechazarGrupo(grupo, numsTxt) {
-  if (!confirm(`¿Rechazar este pago? Los números ${numsTxt} quedarán DISPONIBLES de nuevo y se avisará por correo a la persona.`)) return;
+  const ok = await confirmar(
+    `Los números ${numsTxt} volverán a estar DISPONIBLES y se avisará por correo a la persona.`,
+    { titulo: "Rechazar este pago", boton: "Sí, rechazar", peligro: true },
+  );
+  if (!ok) return;
   try {
     await api({ accion: "rechazar_grupo", grupo_uid: grupo });
     toast("Pago rechazado, números liberados: " + numsTxt);
@@ -377,12 +449,15 @@ function pintarMiniGrilla() {
     const b = document.getElementById("mini-" + n);
     const r = porNumero[n];
     const est = r ? estadoDe(r) : "disponible";
-    b.classList.remove("pend", "pag", "pc");
+    if (est !== "disponible" && est !== "expirada") selAdmin.delete(n);
+    b.classList.remove("pend", "pag", "pc", "sel");
     if (est === "pagado") { b.classList.add("pag"); b.title = `Pagado · ${r.nombre}`; }
     else if (est === "por_confirmar") { b.classList.add("pc"); b.title = `Por confirmar (${r.canal_pago}) · ${r.nombre}`; }
     else if (est === "pendiente") { b.classList.add("pend"); b.title = `En pago online · ${r.nombre}`; }
-    else b.title = "Disponible — clic para registrar venta manual";
+    else if (selAdmin.has(n)) { b.classList.add("sel"); b.title = "Seleccionado — toca para quitar"; }
+    else b.title = "Disponible — toca para seleccionar";
   }
+  pintarBarraAdmin();
 }
 
 function clickNumero(n) {
@@ -397,10 +472,25 @@ function clickNumero(n) {
     document.querySelector(".tabla-wrap").scrollIntoView({ behavior: "smooth", block: "start" });
     return;
   }
-  $("#v-numero").value = n;
-  $("#modal-venta").classList.add("abierto");
-  setTimeout(() => $("#v-nombre").focus(), 100);
+  // disponible: selección múltiple
+  if (selAdmin.has(n)) selAdmin.delete(n); else selAdmin.add(n);
+  const b = document.getElementById("mini-" + n);
+  b.classList.toggle("sel", selAdmin.has(n));
+  pintarBarraAdmin();
 }
+
+function pintarBarraAdmin() {
+  const k = selAdmin.size;
+  const barra = $("#barra-admin");
+  if (k === 0) { barra.classList.remove("visible"); return; }
+  barra.classList.add("visible");
+  $("#barra-admin-res").innerHTML =
+    `<div class="r1">${k} número${k > 1 ? "s" : ""} para marcar pagado${k > 1 ? "s" : ""}</div>` +
+    `<div class="r2">${fmtCLP(k * PRECIO)}</div>`;
+}
+
+$("#barra-admin-limpiar").addEventListener("click", () => { selAdmin.clear(); pintarMiniGrilla(); });
+$("#barra-admin-registrar").addEventListener("click", () => abrirVenta());
 
 // ---- Tabla ----
 function pintarTabla() {
@@ -445,9 +535,10 @@ $("#btn-refrescar").addEventListener("click", () => cargar().then(() => toast("A
 // ---- Liberar número ----
 async function liberar(numero, esPagado) {
   const msg = esPagado
-    ? `El número ${numero} está PAGADO. ¿Seguro que quieres liberarlo? Esta acción borra el registro del comprador.`
-    : `¿Liberar el número ${numero}? La reserva se elimina y el número queda disponible.`;
-  if (!confirm(msg)) return;
+    ? `El número ${numero} está PAGADO. Si lo liberas, se borra el registro del comprador y el número vuelve a estar disponible.`
+    : `El número ${numero} volverá a estar disponible y la reserva se eliminará.`;
+  const ok = await confirmar(msg, { titulo: `Liberar el número ${numero}`, boton: "Sí, liberar", peligro: true });
+  if (!ok) return;
   try {
     await api({ accion: "liberar", numero });
     toast("Número " + numero + " liberado");
@@ -455,27 +546,42 @@ async function liberar(numero, esPagado) {
   } catch (e) { toast("Error: " + e.message); }
 }
 
-// ---- Venta manual ----
-$("#btn-venta-manual").addEventListener("click", () => $("#modal-venta").classList.add("abierto"));
+// ---- Venta manual (uno o varios números) ----
+function abrirVenta() {
+  const varios = selAdmin.size > 0;
+  $("#v-chips-wrap").style.display = varios ? "block" : "none";
+  $("#v-numero-wrap").style.display = varios ? "none" : "block";
+  if (varios) {
+    $("#v-chips").innerHTML = [...selAdmin].sort((a, b) => a - b)
+      .map(n => `<span class="pc-num">${n}</span>`).join("");
+  }
+  $("#modal-venta").classList.add("abierto");
+  setTimeout(() => $("#v-nombre").focus(), 100);
+}
+$("#btn-venta-manual").addEventListener("click", () => abrirVenta());
 function cerrarModal() { $("#modal-venta").classList.remove("abierto"); }
 $("#modal-venta").addEventListener("click", (e) => { if (e.target.id === "modal-venta") cerrarModal(); });
 
 $("#btn-guardar-venta").addEventListener("click", async () => {
+  const numeros = selAdmin.size > 0
+    ? [...selAdmin].sort((a, b) => a - b)
+    : [parseInt($("#v-numero").value, 10)];
   const payload = {
     accion: "vender_manual",
-    numero: parseInt($("#v-numero").value, 10),
+    numeros,
     nombre: $("#v-nombre").value.trim(),
     rut: $("#v-rut").value.trim(),
     email: $("#v-email").value.trim(),
     telefono: $("#v-telefono").value.trim(),
     canal: $("#v-canal").value,
   };
-  if (!payload.numero || payload.numero < 1 || payload.numero > 500) return toast("Número inválido");
+  if (!numeros.length || numeros.some(n => !n || n < 1 || n > 500)) return toast("Número inválido");
   if (payload.nombre.length < 3) return toast("Falta el nombre");
   try {
     await api(payload);
-    toast("Venta del número " + payload.numero + " registrada");
+    toast(`Pago registrado: número${numeros.length > 1 ? "s" : ""} ${numeros.join(", ")}`);
     cerrarModal();
+    selAdmin.clear();
     ["v-numero","v-nombre","v-rut","v-email","v-telefono"].forEach(id => document.getElementById(id).value = "");
     await cargar();
   } catch (e) { toast("Error: " + e.message); }
