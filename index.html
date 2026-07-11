@@ -81,6 +81,26 @@ button:active{transform:scale(.97)}
   font-family:'Bebas Neue';font-size:28px;letter-spacing:2px;padding:10px 32px;border-radius:999px;
   box-shadow:0 6px 30px rgba(255,106,0,.45);
 }
+.fecha-sorteo{
+  margin:24px auto 0;max-width:430px;border:1.5px solid rgba(255,106,0,.55);border-radius:16px;
+  background:linear-gradient(160deg, rgba(255,106,0,.14), rgba(20,20,20,.55));
+  padding:16px 22px;display:flex;align-items:center;gap:16px;text-align:left;
+  animation:pulsoSorteo 2.8s ease-in-out infinite;
+}
+@keyframes pulsoSorteo{
+  0%,100%{box-shadow:0 6px 26px rgba(255,106,0,.16)}
+  50%{box-shadow:0 8px 40px rgba(255,106,0,.42)}
+}
+.fecha-sorteo .cal{
+  flex:none;width:52px;height:52px;border-radius:12px;background:var(--naranja);
+  display:grid;place-items:center;color:#111;box-shadow:0 4px 16px rgba(255,106,0,.4);
+}
+.fecha-sorteo .lbl{
+  font-family:'Barlow Condensed';letter-spacing:4px;color:var(--naranja);
+  font-size:13px;text-transform:uppercase;font-weight:600;
+}
+.fecha-sorteo .dia{font-family:'Bebas Neue';font-size:29px;letter-spacing:1px;color:var(--crema);line-height:1.02;margin-top:2px}
+.fecha-sorteo .nota{color:#cfc8bc;font-size:13.5px;margin-top:4px}
 .hero .cta{
   display:block;margin:22px auto 0;width:fit-content;min-height:48px;background:transparent;color:var(--crema);
   border:2px solid var(--naranja);font-family:'Barlow Condensed';font-weight:700;font-size:19px;
@@ -286,6 +306,16 @@ footer .marca{font-family:'Bebas Neue';font-size:20px;letter-spacing:3px;color:v
     <div class="placa">Rodrigo Ravera</div>
   </div>
   <div class="precio-pill">$10.000 POR NÚMERO</div>
+  <div class="fecha-sorteo">
+    <div class="cal" aria-hidden="true">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/><path d="M8.5 14l2.2 2.2L15.5 12"/></svg>
+    </div>
+    <div>
+      <div class="lbl">Gran sorteo</div>
+      <div class="dia">Sábado 25 de julio</div>
+      <div class="nota">Al finalizar el almuerzo solidario</div>
+    </div>
+  </div>
   <a class="cta" href="#numeros">Elige tus números</a>
 </header>
 
