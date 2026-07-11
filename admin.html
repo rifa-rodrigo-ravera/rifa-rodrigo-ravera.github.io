@@ -218,7 +218,6 @@ tr:hover td{background:#1e1e1e}
     <button class="btn sec mini" id="btn-refrescar">Refrescar</button>
     <button class="btn sec mini" id="btn-csv">Exportar CSV</button>
     <button class="btn sec mini" id="btn-pdf">Descargar PDF</button>
-    <button class="btn mini" id="btn-venta-manual">+ Venta manual</button>
   </div>
 
   <div class="tabla-wrap">
@@ -571,8 +570,7 @@ function pintarTabla() {
     const [cls, txt] = badges[estadoDe(r)];
     const tieneTel = String(r.telefono ?? "").replace(/\D/g, "").length >= 8;
     const btnWsp = r.estado === "pagado" && tieneTel
-      ? `<button class="btn verde mini" onclick="wspFila(${r.numero})" title="Abrir WhatsApp con el mensaje listo">WhatsApp</button> ` +
-        `<button class="btn sec mini" onclick="copiarWspFila(${r.numero})" title="Copiar el link de WhatsApp de este cliente">Copiar link</button> `
+      ? `<button class="btn verde mini" onclick="copiarWspFila(${r.numero})" title="Copiar el link de WhatsApp de este cliente para enviarle el mensaje">Copiar WhatsApp</button> `
       : "";
     const btnLiberar = r.estado === "pagado"
       ? `<button class="btn rojo mini" onclick="liberar(${r.numero}, true)">Liberar</button>`
@@ -622,7 +620,6 @@ function abrirVenta() {
   $("#modal-venta").classList.add("abierto");
   setTimeout(() => $("#v-nombre").focus(), 100);
 }
-$("#btn-venta-manual").addEventListener("click", () => abrirVenta());
 function cerrarModal() { $("#modal-venta").classList.remove("abierto"); }
 $("#modal-venta").addEventListener("click", (e) => { if (e.target.id === "modal-venta") cerrarModal(); });
 
