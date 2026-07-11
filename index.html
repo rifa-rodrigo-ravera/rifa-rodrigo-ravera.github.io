@@ -10,14 +10,14 @@
 <meta property="og:url" content="https://rifa-rodrigo-ravera.github.io/">
 <meta property="og:title" content="Rifa Solidaria — Rodrigo Ravera 🏍️">
 <meta property="og:description" content="500 números a $10.000 c/u. Vouchers de rutas, chaqueta Harley-Davidson, puros Casa Sichel y más premios. ¡Elige tus números y participa!">
-<meta property="og:image" content="https://rifa-rodrigo-ravera.github.io/og.jpg">
+<meta property="og:image" content="https://rifa-rodrigo-ravera.github.io/og2.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="es_CL">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Rifa Solidaria — Rodrigo Ravera 🏍️">
 <meta name="twitter:description" content="500 números a $10.000 c/u. Grandes premios. ¡Elige tus números y participa!">
-<meta name="twitter:image" content="https://rifa-rodrigo-ravera.github.io/og.jpg">
+<meta name="twitter:image" content="https://rifa-rodrigo-ravera.github.io/og2.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
@@ -300,8 +300,8 @@ footer .marca{font-family:'Bebas Neue';font-size:20px;letter-spacing:3px;color:v
   <p class="section-sub">Tres pasos y quedas dentro</p>
   <div class="pasos">
     <div class="paso"><div class="num">1</div><h3>Elige tus números</h3><p>Toca todos los números que quieras llevar: uno, dos o los que quieras.</p></div>
-    <div class="paso"><div class="num">2</div><h3>Ingresa tus datos</h3><p>Nombre, RUT, correo y teléfono. Los usamos solo para contactar a los ganadores.</p></div>
-    <div class="paso"><div class="num">3</div><h3>Elige cómo pagar</h3><p>Mercado Pago (al tiro, con tarjeta), transferencia o efectivo. Tus números quedan confirmados con el pago.</p></div>
+    <div class="paso"><div class="num">2</div><h3>Ingresa tus datos</h3><p>Nombre, correo y teléfono. Los usamos únicamente para contactar a los ganadores.</p></div>
+    <div class="paso"><div class="num">3</div><h3>Elige cómo pagar</h3><p>Mercado Pago, transferencia o efectivo. Tus números quedan confirmados una vez realizado el pago.</p></div>
   </div>
 </section>
 
@@ -346,8 +346,8 @@ footer .marca{font-family:'Bebas Neue';font-size:20px;letter-spacing:3px;color:v
         <input id="f-nombre" name="nombre" type="text" autocomplete="name" required maxlength="120" placeholder="Juan Pérez González">
       </div>
       <div class="campo">
-        <label for="f-rut">RUT</label>
-        <input id="f-rut" name="rut" type="text" autocomplete="off" spellcheck="false" required maxlength="12" placeholder="12.345.678-9">
+        <label for="f-rut">RUT (opcional)</label>
+        <input id="f-rut" name="rut" type="text" autocomplete="off" spellcheck="false" maxlength="12" placeholder="12.345.678-9">
         <div class="error-campo" id="err-rut">RUT no válido</div>
       </div>
       <div class="campo">
@@ -359,7 +359,7 @@ footer .marca{font-family:'Bebas Neue';font-size:20px;letter-spacing:3px;color:v
         <input id="f-telefono" name="telefono" type="tel" autocomplete="tel" required maxlength="15" placeholder="+56 9 1234 5678">
       </div>
 
-      <div class="campo"><label>¿Cómo quieres pagar?</label></div>
+      <div class="campo"><label>Forma de pago</label></div>
       <div class="metodos" role="radiogroup" aria-label="Método de pago">
         <label class="metodo activo" data-metodo="mercadopago">
           <input type="radio" name="metodo" value="mercadopago" checked>
@@ -377,7 +377,7 @@ footer .marca{font-family:'Bebas Neue';font-size:20px;letter-spacing:3px;color:v
           <span class="m-nombre">Efectivo</span>
         </label>
       </div>
-      <p class="metodo-nota" id="metodo-nota">Pagas al tiro con tarjeta, débito o saldo de Mercado Pago.</p>
+      <p class="metodo-nota" id="metodo-nota">Pago inmediato con tarjeta de crédito, débito o saldo de Mercado Pago.</p>
 
       <button class="btn-pagar" id="btn-pagar" type="submit">Pagar en Mercado Pago</button>
       <p class="nota" id="nota-pie">Serás dirigido a <strong>Mercado Pago</strong> para pagar de forma segura. Tus números quedan confirmados únicamente con el pago.</p>
@@ -520,12 +520,12 @@ document.querySelectorAll(".overlay").forEach(o =>
 
 // ================= MÉTODO DE PAGO =================
 const NOTAS = {
-  mercadopago: ["Pagas al tiro con tarjeta, débito o saldo de Mercado Pago.", "Pagar en Mercado Pago",
-    "Serás dirigido a <strong>Mercado Pago</strong> para pagar de forma segura. Tus números quedan confirmados únicamente con el pago."],
-  transferencia: ["Te mostramos los datos para transferir. El organizador validará tu pago.", "Reservar y ver datos",
-    "Tus números quedan <strong>reservados a tu nombre</strong> y se confirman cuando el organizador valide la transferencia."],
-  efectivo: ["Coordinas la entrega del efectivo con el organizador.", "Reservar mis números",
-    "Tus números quedan <strong>reservados a tu nombre</strong> y se confirman cuando el organizador reciba el pago."],
+  mercadopago: ["Pago inmediato con tarjeta de crédito, débito o saldo de Mercado Pago.", "Pagar con Mercado Pago",
+    "Al continuar, te llevaremos al sitio seguro de <strong>Mercado Pago</strong>. Tus números quedan confirmados apenas se acredite el pago."],
+  transferencia: ["Reserva tus números y te mostraremos los datos de la cuenta para transferir.", "Reservar y transferir",
+    "Tus números quedan <strong>reservados a tu nombre</strong>. Se confirman cuando el organizador verifique tu transferencia y recibirás el comprobante por correo."],
+  efectivo: ["Reserva tus números y coordina la entrega del dinero con el organizador.", "Reservar mis números",
+    "Tus números quedan <strong>reservados a tu nombre</strong>. Se confirman cuando el organizador reciba el pago y recibirás el comprobante por correo."],
 };
 function metodoActual() { return document.querySelector('input[name="metodo"]:checked').value; }
 function actualizarMetodoUI() {
@@ -567,7 +567,7 @@ $("#form-reserva").addEventListener("submit", async (e) => {
 
   if (nums.length === 0) return mostrarError("Elige al menos un número.");
   if (nombre.length < 3) return mostrarError("Ingresa tu nombre completo.");
-  if (!validarRut(rut)) return mostrarError("El RUT ingresado no es válido.");
+  if (rut && !validarRut(rut)) return mostrarError("El RUT ingresado no es válido. Si prefieres, puedes dejarlo en blanco.");
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return mostrarError("Ingresa un correo válido.");
   if (telefono.replace(/\D/g, "").length < 8) return mostrarError("Ingresa un teléfono válido.");
 
@@ -642,12 +642,34 @@ const chips = (nums, color) => `<div class="nums-elegidos">` + nums.map(n =>
 
 function mostrarPorConfirmar(nums, total, metodo, instrucciones) {
   const cont = $("#resultado-contenido");
-  const titulo = metodo === "transferencia" ? "AHORA TRANSFIERE PARA CONFIRMAR" : "RESERVA RECIBIDA";
+  const esTransfer = metodo === "transferencia";
+  const titulo = esTransfer ? "¡YA CASI! TRANSFIERE PARA CONFIRMAR" : "¡RESERVA RECIBIDA!";
+  const botonCopiar = esTransfer
+    ? `<button class="btn-link" id="btn-copiar" type="button">Copiar datos para transferir</button>`
+    : "";
   cont.innerHTML = `${iconoReloj}<h3>${titulo}</h3>
     ${chips(nums, "#f1c40f")}
-    <p>Total: <strong>${fmtCLP(total)}</strong></p>
-    <div class="instrucciones">${instrucciones || ""}</div>
-    <p>Tus números quedaron <strong>reservados a tu nombre</strong>. Cuando el organizador valide el pago te llegará el comprobante a tu correo.</p>`;
+    <p>Total a pagar: <strong>${fmtCLP(total)}</strong></p>
+    <div class="instrucciones" id="instrucciones-txt">${instrucciones || ""}</div>
+    ${botonCopiar}
+    <p style="margin-top:14px">Tus números quedaron <strong>reservados a tu nombre</strong>. También te enviamos estos datos a tu correo. Cuando el organizador confirme el pago, recibirás tu comprobante de participación.</p>`;
+  if (esTransfer) {
+    $("#btn-copiar").addEventListener("click", async () => {
+      const texto = (instrucciones || "") + "\nMonto: " + fmtCLP(total);
+      try {
+        await navigator.clipboard.writeText(texto);
+        $("#btn-copiar").textContent = "✓ Datos copiados";
+        toast("Datos copiados. Pégalos en la app de tu banco.");
+      } catch (_) {
+        // Plan B para navegadores sin permiso de portapapeles
+        const ta = document.createElement("textarea");
+        ta.value = texto; document.body.appendChild(ta); ta.select();
+        document.execCommand("copy"); ta.remove();
+        $("#btn-copiar").textContent = "✓ Datos copiados";
+        toast("Datos copiados. Pégalos en la app de tu banco.");
+      }
+    });
+  }
   abrir("#modal-resultado");
 }
 
