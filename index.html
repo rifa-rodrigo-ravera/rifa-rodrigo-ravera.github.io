@@ -379,7 +379,7 @@ footer .marca{font-family:'Bebas Neue';font-size:20px;letter-spacing:3px;color:v
       </div>
       <p class="metodo-nota" id="metodo-nota">Pago inmediato con tarjeta de crédito, débito o saldo de Mercado Pago.</p>
 
-      <button class="btn-pagar" id="btn-pagar" type="submit">Pagar en Mercado Pago</button>
+      <button class="btn-pagar" id="btn-pagar" type="submit">Pagar con Mercado Pago</button>
       <p class="nota" id="nota-pie">Serás dirigido a <strong>Mercado Pago</strong> para pagar de forma segura. Tus números quedan confirmados únicamente con el pago.</p>
     </form>
   </div>
@@ -533,7 +533,7 @@ function actualizarMetodoUI() {
   document.querySelectorAll(".metodo").forEach(el => el.classList.toggle("activo", el.dataset.metodo === m));
   const total = fmtCLP(seleccion.size * PRECIO);
   $("#metodo-nota").textContent = NOTAS[m][0];
-  $("#btn-pagar").textContent = m === "mercadopago" ? `Pagar ${total} en Mercado Pago` : NOTAS[m][1];
+  $("#btn-pagar").textContent = m === "mercadopago" ? `Pagar ${total} con Mercado Pago` : NOTAS[m][1];
   $("#nota-pie").innerHTML = NOTAS[m][2];
 }
 document.querySelectorAll('input[name="metodo"]').forEach(r => r.addEventListener("change", actualizarMetodoUI));
