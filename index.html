@@ -239,6 +239,13 @@ h2 .naranja{color:var(--naranja)}
 }
 .campo input:focus{border-color:var(--naranja)}
 .campo .error-campo{color:var(--rojo);font-size:12.5px;margin-top:4px;display:none}
+.tel-row{display:flex;gap:8px}
+.tel-row select{
+  flex:none;background:#111;border:1px solid var(--borde);color:var(--crema);border-radius:10px;
+  padding:0 8px;font-size:15px;outline:none;font-family:'Barlow';min-height:48px;cursor:pointer;
+}
+.tel-row select:focus{border-color:var(--naranja)}
+.tel-row input{flex:1;min-width:0}
 
 /* método de pago */
 .metodos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:4px 0 14px}
@@ -327,6 +334,7 @@ footer .marca{font-family:'Bebas Neue';font-size:20px;letter-spacing:3px;color:v
   <h2>LOS <span class="naranja">PREMIOS</span></h2>
   <p class="section-sub">Esto es lo que puedes ganar apoyando a Rodrigo</p>
   <div class="premios">
+    <div class="premio destacado"><div class="ico"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h18v4a2 2 0 0 0 0 4v4H3v-4a2 2 0 0 0 0-4V8z"/><path d="M13 8v12" stroke-dasharray="2 3"/></svg></div><div><div class="nombre">Voucher Bariloche 2027</div><div class="detalle">Habitación doble · Argentina</div></div></div>
     <div class="premio"><div class="ico"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h18v4a2 2 0 0 0 0 4v4H3v-4a2 2 0 0 0 0-4V8z"/><path d="M13 8v12" stroke-dasharray="2 3"/></svg></div><div><div class="nombre">Voucher AS 2027</div><div class="detalle">Ruta motoquera</div></div></div>
     <div class="premio"><div class="ico"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h18v4a2 2 0 0 0 0 4v4H3v-4a2 2 0 0 0 0-4V8z"/><path d="M13 8v12" stroke-dasharray="2 3"/></svg></div><div><div class="nombre">Voucher ChillánLeben 2026</div><div class="detalle">Ruta motoquera</div></div></div>
     <div class="premio"><div class="ico"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h18v4a2 2 0 0 0 0 4v4H3v-4a2 2 0 0 0 0-4V8z"/><path d="M13 8v12" stroke-dasharray="2 3"/></svg></div><div><div class="nombre">Voucher Pichilemu 2026</div><div class="detalle">Ruta motoquera</div></div></div>
@@ -402,8 +410,24 @@ footer .marca{font-family:'Bebas Neue';font-size:20px;letter-spacing:3px;color:v
         <input id="f-email" name="email" type="email" autocomplete="email" spellcheck="false" required maxlength="120" placeholder="tucorreo@gmail.com">
       </div>
       <div class="campo">
-        <label for="f-telefono">Teléfono</label>
-        <input id="f-telefono" name="telefono" type="tel" autocomplete="tel" required maxlength="15" placeholder="+56 9 1234 5678">
+        <label for="f-telefono">Teléfono / WhatsApp</label>
+        <div class="tel-row">
+          <select id="f-pais" aria-label="País">
+            <option value="56" selected>🇨🇱 +56</option>
+            <option value="54">🇦🇷 +54</option>
+            <option value="595">🇵🇾 +595</option>
+            <option value="57">🇨🇴 +57</option>
+            <option value="51">🇵🇪 +51</option>
+            <option value="598">🇺🇾 +598</option>
+            <option value="55">🇧🇷 +55</option>
+            <option value="591">🇧🇴 +591</option>
+            <option value="593">🇪🇨 +593</option>
+            <option value="52">🇲🇽 +52</option>
+            <option value="34">🇪🇸 +34</option>
+            <option value="1">🇺🇸 +1</option>
+          </select>
+          <input id="f-telefono" name="telefono" type="tel" inputmode="numeric" autocomplete="tel" required maxlength="16" placeholder="9 1234 5678">
+        </div>
       </div>
 
       <div class="campo"><label>Forma de pago</label></div>
@@ -615,26 +639,40 @@ $("#f-rut").addEventListener("blur", (e) => {
   $("#err-rut").style.display = ok ? "none" : "block";
 });
 
-// ================= TELÉFONO: +56 9 XXXX XXXX =================
-function formatearTelefono(input) {
-  input.addEventListener("focus", () => {
-    if (!input.value.trim()) input.value = "+56 9 ";
-  });
-  input.addEventListener("input", () => {
-    let d = input.value.replace(/\D/g, "");
+// ================= TELÉFONO POR PAÍS =================
+// Chile (+56) por defecto con formato 9 XXXX XXXX; otros países dejan escribir libre.
+const tel = $("#f-telefono");
+const pais = $("#f-pais");
+const EJEMPLOS = { "56": "9 1234 5678", "54": "11 1234 5678", "595": "981 123 456", "57": "300 123 4567", "51": "912 345 678", "598": "91 234 567", "55": "11 91234 5678", "591": "712 34567", "593": "99 123 4567", "52": "55 1234 5678", "34": "612 345 678", "1": "305 123 4567" };
+function esChile() { return pais.value === "56"; }
+function formatearTel() {
+  let d = tel.value.replace(/\D/g, "");
+  if (esChile()) {
     if (d.startsWith("56")) d = d.slice(2);
     if (d.startsWith("9")) d = d.slice(1);
     d = d.slice(0, 8);
-    let out = "+56 9";
+    let out = "9";
     if (d.length > 0) out += " " + d.slice(0, 4);
     if (d.length > 4) out += " " + d.slice(4);
-    input.value = out;
-  });
-  input.addEventListener("blur", () => {
-    if (input.value.replace(/\D/g, "") === "569" || input.value.trim() === "+56 9") input.value = "";
-  });
+    tel.value = out;
+  } else {
+    tel.value = d.slice(0, 14).replace(/(\d{3,4})(?=\d)/g, "$1 ").trim();
+  }
 }
-formatearTelefono($("#f-telefono"));
+tel.addEventListener("input", formatearTel);
+tel.addEventListener("focus", () => { if (esChile() && !tel.value.trim()) tel.value = "9 "; });
+tel.addEventListener("blur", () => { if (tel.value.trim() === "9" || tel.value.trim() === "9 ") tel.value = ""; });
+pais.addEventListener("change", () => {
+  tel.value = esChile() ? "9 " : "";
+  tel.placeholder = EJEMPLOS[pais.value] || "";
+  tel.focus();
+});
+// número completo con prefijo internacional
+function telefonoCompleto() {
+  const n = tel.value.trim();
+  return n ? "+" + pais.value + " " + n : "";
+}
+function telDigitos() { return (pais.value + tel.value).replace(/\D/g, ""); }
 
 // ================= ENVIAR =================
 $("#form-reserva").addEventListener("submit", async (e) => {
@@ -644,7 +682,7 @@ $("#form-reserva").addEventListener("submit", async (e) => {
   const nombre = $("#f-nombre").value.trim();
   const rut = $("#f-rut").value.trim();
   const email = $("#f-email").value.trim();
-  const telefono = $("#f-telefono").value.trim();
+  const telefono = telefonoCompleto();
   const metodo = metodoActual();
   const nums = [...seleccion].sort((a, b) => a - b);
 
@@ -652,7 +690,7 @@ $("#form-reserva").addEventListener("submit", async (e) => {
   if (nombre.length < 3) return mostrarError("Ingresa tu nombre completo.");
   if (rut && !validarRut(rut)) return mostrarError("El RUT ingresado no es válido. Si prefieres, puedes dejarlo en blanco.");
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return mostrarError("Ingresa un correo válido.");
-  if (telefono.replace(/\D/g, "").length < 8) return mostrarError("Ingresa un teléfono válido.");
+  if (tel.value.replace(/\D/g, "").length < 6) return mostrarError("Ingresa un teléfono válido.");
 
   enviando = true;
   const btn = $("#btn-pagar");
