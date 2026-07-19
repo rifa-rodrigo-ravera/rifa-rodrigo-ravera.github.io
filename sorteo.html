@@ -123,11 +123,33 @@ button:active{transform:scale(.98)}
 
 .narracion{min-height:26px;text-align:center;font-family:'Barlow Condensed';font-size:20px;letter-spacing:1px;color:var(--naranja2);margin:12px 0 4px;font-weight:600}
 .ganador-box{text-align:center;min-height:40px}
-.ganador-box.show{animation:pop .5s ease}
-@keyframes pop{0%{transform:scale(.7);opacity:0}60%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
-.ganador-num{font-family:'Bebas Neue';font-size:clamp(48px,10vw,90px);letter-spacing:2px;color:var(--oro);line-height:.9;text-shadow:0 4px 34px rgba(255,207,63,.6)}
-.ganador-nom{font-family:'Barlow Condensed';font-weight:700;font-size:clamp(20px,4vw,32px);letter-spacing:1px;text-transform:uppercase;color:#fff;margin-top:4px}
-.ganador-tel{font-size:13.5px;color:var(--gris);margin-top:2px}
+/* ===== revelación espectacular del ganador ===== */
+.win-card{position:relative;padding:8px 0 4px;isolation:isolate}
+.win-rays{position:absolute;top:46%;left:50%;width:min(560px,120vw);aspect-ratio:1;transform:translate(-50%,-50%);z-index:-1;pointer-events:none;border-radius:50%;
+  background:repeating-conic-gradient(from 0deg,rgba(255,207,63,.16) 0deg 9deg,transparent 9deg 18deg);
+  filter:blur(1px);opacity:.75;-webkit-mask:radial-gradient(circle,#000 30%,transparent 72%);mask:radial-gradient(circle,#000 30%,transparent 72%);
+  animation:girarRayos 16s linear infinite}
+@keyframes girarRayos{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.win-tag{display:inline-block;font-family:'Barlow Condensed';font-weight:700;letter-spacing:4px;text-transform:uppercase;font-size:16px;color:#3a1500;
+  background:linear-gradient(90deg,#ffe36b,#ff8a2b);padding:5px 20px;border-radius:999px;box-shadow:0 4px 22px rgba(255,207,63,.55);
+  animation:tagIn .55s cubic-bezier(.2,1.5,.3,1) both,tagPulse 1.5s ease-in-out .6s infinite}
+@keyframes tagIn{0%{transform:scale(0) rotate(-10deg);opacity:0}70%{transform:scale(1.18) rotate(2deg)}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes tagPulse{50%{box-shadow:0 4px 40px rgba(255,207,63,.95)}}
+.win-label{font-family:'Barlow Condensed';letter-spacing:3px;text-transform:uppercase;color:#cdbf9f;font-size:14px;margin-top:12px;animation:fadeUp .5s .2s both}
+.win-num{font-family:'Bebas Neue';font-size:clamp(66px,15vw,150px);line-height:.82;letter-spacing:2px;margin-top:2px;
+  background:linear-gradient(100deg,#fff 8%,#ffcf3f 38%,#ff8a2b 55%,#ffcf3f 78%,#fff 96%);background-size:260% 100%;
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--oro);
+  filter:drop-shadow(0 6px 34px rgba(255,207,63,.6));
+  animation:numIn .75s cubic-bezier(.2,1.35,.3,1) both,shimmerNum 2.6s linear .75s infinite}
+@keyframes numIn{0%{transform:scale(.25);opacity:0;filter:blur(8px)}60%{transform:scale(1.14)}100%{transform:scale(1);opacity:1}}
+@keyframes shimmerNum{to{background-position:260% 0}}
+.win-name{font-family:'Barlow Condensed';font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:clamp(22px,4.6vw,40px);color:#fff;margin-top:6px;
+  text-shadow:0 2px 26px rgba(255,106,0,.55);animation:nameIn .65s .5s both}
+@keyframes nameIn{0%{transform:translateY(20px);opacity:0;letter-spacing:9px}100%{transform:translateY(0);opacity:1;letter-spacing:1px}}
+.win-tel{font-size:13.5px;color:var(--gris);margin-top:5px;animation:fadeUp .5s .85s both}
+@keyframes fadeUp{0%{transform:translateY(8px);opacity:0}100%{transform:translateY(0);opacity:1}}
+.flash{position:fixed;inset:0;background:radial-gradient(circle,rgba(255,228,150,.55),transparent 62%);z-index:75;pointer-events:none;animation:flashAnim .75s ease forwards}
+@keyframes flashAnim{0%{opacity:0}14%{opacity:1}100%{opacity:0}}
 
 .controles{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px;position:relative;z-index:3}
 .btn-girar{
@@ -478,10 +500,17 @@ function textoDecena(c, d) { return `¡cerca del ${c * 100 + d * 10}!`; }
 
 function revelar(ganador) {
   const num = ganador.numero;
-  narrar(`¡Número ganador: ${num}!`);
+  narrar("");
   const box = $("#ganador-box");
-  box.innerHTML = `<div class="ganador-num">Nº ${num}</div><div class="ganador-nom">${esc(ganador.nombre || "—")}</div>${ganador.telefono && ganador.telefono !== "-" ? `<div class="ganador-tel">${esc(ganador.telefono)}</div>` : ""}`;
-  box.classList.add("show");
+  box.innerHTML = `<div class="win-card">
+    <div class="win-rays"></div>
+    <div class="win-tag">🏆 ¡Ganador!</div>
+    <div class="win-label">El número ganador es</div>
+    <div class="win-num">Nº ${num}</div>
+    <div class="win-name">${esc(ganador.nombre || "—")}</div>
+    ${ganador.telefono && ganador.telefono !== "-" ? `<div class="win-tel">${esc(ganador.telefono)}</div>` : ""}
+  </div>`;
+  flashLuz();
   fanfarria(); confeti();
   premios[idxActual].ganador = { numero: num, nombre: ganador.nombre, telefono: ganador.telefono };
   guardarLocal();
@@ -550,6 +579,7 @@ $("#btn-reiniciar").addEventListener("click", () => {
 });
 
 function toast(m, ms = 3200) { const t = $("#toast"); t.textContent = m; t.classList.add("visible"); setTimeout(() => t.classList.remove("visible"), ms); }
+function flashLuz() { const f = document.createElement("div"); f.className = "flash"; document.body.appendChild(f); setTimeout(() => f.remove(), 800); }
 function confeti() {
   const cont = $("#confeti"); cont.classList.add("on"); cont.innerHTML = "";
   const cols = ["#ff6a00", "#ffcf3f", "#2ecc71", "#f5efe6", "#ff8a2b"];
