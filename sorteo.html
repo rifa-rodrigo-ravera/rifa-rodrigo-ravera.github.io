@@ -460,8 +460,8 @@ function girar() {
   document.querySelectorAll(".reel").forEach(r => r.classList.remove("win"));
   narrar("Girando…");
 
-  // cada dígito sale ~5 s después del anterior (más suspenso)
-  const dC = 5, dD = 10, dU = 15;
+  // el número completo se revela en ~5 s (los dígitos salen uno tras otro)
+  const dC = 2.2, dD = 3.6, dU = 5;
   posReel(0, c, true, dC); posReel(1, d, true, dD); posReel(2, u, true, dU);
   const lock = (r, dur, txt, freq) => setTimeout(() => {
     document.querySelector("#reel-" + r + " .strip").classList.remove("spin");
