@@ -53,7 +53,7 @@ button:active{transform:scale(.98)}
 .badge-prueba b{color:var(--crema)}
 
 /* layout */
-.wrap{max-width:1200px;margin:0 auto;padding:52px 14px 60px;display:none}
+.wrap{max-width:1200px;margin:0 auto;padding:16px 14px 60px;display:none}
 .topbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:flex-end;margin-bottom:6px}
 .topbar .acc{display:flex;gap:8px;flex-wrap:wrap}
 
@@ -208,9 +208,6 @@ button:active{transform:scale(.98)}
   <div class="error" id="login-error">Clave incorrecta</div>
 </div>
 
-<!-- BADGE MODO PRUEBA -->
-<div class="badge-prueba" id="badge-prueba" style="display:none">🎲 Modo <b>ENSAYO</b> · no modifica nada</div>
-
 <!-- APP -->
 <div class="wrap" id="wrap">
   <div class="topbar">
@@ -326,7 +323,7 @@ async function api(payload) {
   if (!res.ok) throw new Error(data.error || "Error " + res.status);
   return data;
 }
-function salir() { sessionStorage.removeItem("rifa_admin_clave"); CLAVE = ""; $("#wrap").style.display = "none"; $("#badge-prueba").style.display = "none"; $("#login").style.display = "block"; $("#login-error").style.display = "block"; }
+function salir() { sessionStorage.removeItem("rifa_admin_clave"); CLAVE = ""; $("#wrap").style.display = "none"; $("#login").style.display = "block"; $("#login-error").style.display = "block"; }
 
 async function entrar() {
   CLAVE = $("#clave").value.trim() || CLAVE;
@@ -337,7 +334,6 @@ async function entrar() {
     sessionStorage.setItem("rifa_admin_clave", CLAVE);
     $("#login").style.display = "none";
     $("#wrap").style.display = "block";
-    $("#badge-prueba").style.display = "block";
   } catch (e) { $("#login-error").textContent = e.message; $("#login-error").style.display = "block"; }
 }
 $("#btn-entrar").addEventListener("click", entrar);
