@@ -14,7 +14,7 @@
 :root{
   --negro:#0b0b0b; --panel:#181818; --borde:#2e2e2e; --naranja:#ff6a00; --naranja2:#ffb066;
   --crema:#f5efe6; --gris:#9a9a9a; --verde:#2ecc71; --amarillo:#f1c40f; --rojo:#e74c3c;
-  --oro:#ffcf3f; --oro2:#b8860b; --rojocasino:#7a0d12;
+  --oro:#ffcf3f; --oro2:#b8860b;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{color-scheme:dark}
@@ -24,7 +24,7 @@ body{background:
   #060606;
   color:var(--crema);font-family:'Barlow',sans-serif;min-height:100dvh;overflow-x:hidden}
 button{font-family:inherit;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-button:active{transform:scale(.98)}
+button:not(:disabled):active{transform:scale(.97)}
 @media (prefers-reduced-motion: reduce){*{animation-duration:.01ms!important}}
 
 /* login */
@@ -42,92 +42,85 @@ button:active{transform:scale(.98)}
 .btn.mini{font-size:13px;padding:8px 14px;min-height:40px}
 .btn:disabled{opacity:.45;cursor:not-allowed}
 
-/* badge modo prueba */
-.badge-prueba{
-  position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:60;
-  background:repeating-linear-gradient(45deg,#111 0 10px,#1a1a1a 10px 20px);
-  border:2px solid var(--amarillo);color:var(--amarillo);border-radius:999px;
-  font-family:'Barlow Condensed';font-weight:700;letter-spacing:3px;text-transform:uppercase;
-  font-size:12.5px;padding:5px 18px;box-shadow:0 4px 18px rgba(0,0,0,.5);white-space:nowrap;
-}
-.badge-prueba b{color:var(--crema)}
-
-/* layout */
 .wrap{max-width:1200px;margin:0 auto;padding:16px 14px 60px;display:none}
 .topbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:flex-end;margin-bottom:6px}
-.topbar .acc{display:flex;gap:8px;flex-wrap:wrap}
 
-/* HERO agradecimiento */
-.hero{text-align:center;margin:6px 0 22px;position:relative}
-.hero .foto{
-  width:118px;height:118px;border-radius:50%;object-fit:cover;object-position:center 20%;
-  border:3px solid var(--oro);box-shadow:0 0 0 4px rgba(255,106,0,.25),0 8px 40px rgba(255,106,0,.4);
-  margin-bottom:12px;
-}
-.hero .grax{font-family:'Bebas Neue';font-size:clamp(34px,7vw,72px);line-height:.95;letter-spacing:2px;
+/* HERO */
+.hero{text-align:center;margin:6px 0 20px}
+.hero .foto{width:108px;height:108px;border-radius:50%;object-fit:cover;object-position:center 20%;
+  border:3px solid var(--oro);box-shadow:0 0 0 4px rgba(255,106,0,.25),0 8px 40px rgba(255,106,0,.4);margin-bottom:10px}
+.hero .grax{font-family:'Bebas Neue';font-size:clamp(32px,6.5vw,66px);line-height:.95;letter-spacing:2px;
   background:linear-gradient(180deg,#fff,var(--oro) 60%,var(--naranja));
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  text-shadow:0 4px 40px rgba(255,106,0,.25);filter:drop-shadow(0 2px 12px rgba(255,207,63,.25))}
-.hero .linea2{font-family:'Barlow Condensed';font-size:clamp(16px,3.2vw,24px);letter-spacing:1px;color:#e8e2d6;margin-top:6px;font-weight:600}
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero .linea2{font-family:'Barlow Condensed';font-size:clamp(15px,3vw,22px);letter-spacing:1px;color:#e8e2d6;margin-top:5px;font-weight:600}
 .hero .linea2 .rr{color:var(--naranja);font-weight:700}
-.hero .linea3{font-family:'Barlow Condensed';font-size:clamp(13px,2.4vw,17px);letter-spacing:3px;text-transform:uppercase;color:var(--gris);margin-top:8px}
 
-.grid{display:grid;grid-template-columns:1fr 330px;gap:18px;align-items:start}
+.grid{display:grid;grid-template-columns:1fr 320px;gap:18px;align-items:start}
 @media (max-width:860px){.grid{grid-template-columns:1fr}}
 
-/* ============ MÁQUINA CASINO ============ */
-.cabina{
-  position:relative;border-radius:22px;padding:0;overflow:hidden;
-  background:
-    radial-gradient(ellipse 120% 80% at 50% 0%, #2a0a0c, #14060a 60%, #0b0406);
-  border:4px solid var(--oro2);
-  box-shadow:0 0 0 3px #1a1206, 0 18px 60px rgba(0,0,0,.7), inset 0 0 60px rgba(0,0,0,.6);
-}
-/* marquesina de ampolletas */
-.marquee{display:flex;gap:0;justify-content:center;padding:8px 10px;background:linear-gradient(180deg,#1c1206,#0e0904)}
-.marquee.bottom{background:linear-gradient(0deg,#1c1206,#0e0904)}
+/* MÁQUINA */
+.cabina{position:relative;border-radius:22px;overflow:hidden;
+  background:radial-gradient(ellipse 120% 80% at 50% 0%, #2a0a0c, #14060a 60%, #0b0406);
+  border:4px solid var(--oro2);box-shadow:0 0 0 3px #1a1206,0 18px 60px rgba(0,0,0,.7),inset 0 0 60px rgba(0,0,0,.6)}
+.marquee{display:flex;justify-content:center;padding:8px 10px;background:linear-gradient(180deg,#1c1206,#0e0904)}
 .bulb{width:11px;height:11px;border-radius:50%;margin:0 5px;background:radial-gradient(circle at 35% 30%,#fff,var(--oro) 45%,#7a5a00);
   box-shadow:0 0 8px var(--oro);animation:chase 1.1s linear infinite}
 @keyframes chase{0%,100%{opacity:.3;box-shadow:0 0 3px #5a4200}50%{opacity:1;box-shadow:0 0 12px var(--oro),0 0 22px rgba(255,207,63,.6)}}
-
-.cabina-inner{padding:16px 16px 8px;background:
+.cabina-inner{padding:16px 16px 10px;background:
   radial-gradient(ellipse 100% 70% at 50% 30%, rgba(122,13,18,.55), transparent 70%),
   repeating-linear-gradient(90deg,transparent 0 40px,rgba(255,255,255,.015) 40px 41px)}
 
-.premio-actual{text-align:center;font-family:'Barlow Condensed';text-transform:uppercase;letter-spacing:2px;color:#c99;font-size:14px}
-.premio-actual .pnom{display:block;font-family:'Bebas Neue';font-size:clamp(28px,5vw,46px);letter-spacing:1px;color:var(--oro);margin-top:2px;text-shadow:0 2px 22px rgba(255,207,63,.45)}
-.premio-actual .pdet{font-size:12.5px;color:#b98;letter-spacing:1px}
+/* input del premio */
+.premio-input-wrap{text-align:center;margin-bottom:6px}
+.premio-input-wrap label{display:block;font-family:'Barlow Condensed';text-transform:uppercase;letter-spacing:3px;color:#c99;font-size:12.5px;margin-bottom:6px}
+#premio-nombre{width:min(560px,100%);background:rgba(0,0,0,.55);border:2px solid var(--oro2);border-radius:12px;
+  color:var(--oro);font-family:'Bebas Neue';font-size:clamp(24px,4.5vw,38px);letter-spacing:1px;text-align:center;
+  padding:8px 14px;outline:none;min-height:54px}
+#premio-nombre::placeholder{color:#7a6a45;font-family:'Bebas Neue'}
+#premio-nombre:focus{border-color:var(--oro);box-shadow:0 0 18px rgba(255,207,63,.3)}
 
-.reels{display:flex;gap:12px;justify-content:center;align-items:center;margin:20px 0 6px}
-.reel-cap{display:flex;flex-direction:column;align-items:center;gap:6px}
+.reels{display:flex;gap:12px;justify-content:center;align-items:flex-start;margin:16px 0 4px}
+.reel-cap{display:flex;flex-direction:column;align-items:center;gap:7px}
 .reel-lbl{font-family:'Barlow Condensed';font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--oro);opacity:.8}
-.reel{
-  --cell:80px;
-  width:68px;height:calc(var(--cell)*3);overflow:hidden;position:relative;border-radius:12px;
-  background:linear-gradient(180deg,#000,#0a0405);
-  border:3px solid var(--oro);
-  box-shadow:inset 0 0 34px rgba(0,0,0,.95),0 0 14px rgba(255,207,63,.25);
-}
+.reel{--cell:80px;width:68px;height:calc(var(--cell)*3);overflow:hidden;position:relative;border-radius:12px;
+  background:linear-gradient(180deg,#000,#0a0405);border:3px solid var(--oro);
+  box-shadow:inset 0 0 34px rgba(0,0,0,.95),0 0 14px rgba(255,207,63,.25)}
 .reel.win{animation:winglow .6s ease infinite alternate}
 @keyframes winglow{from{box-shadow:inset 0 0 34px rgba(0,0,0,.95),0 0 18px rgba(255,207,63,.5)}to{box-shadow:inset 0 0 34px rgba(0,0,0,.95),0 0 34px rgba(255,207,63,.95),0 0 60px rgba(255,106,0,.5)}}
 .reel .strip{display:flex;flex-direction:column;will-change:transform}
-.reel .strip.spin{filter:blur(3px)}
+.reel .strip.blur{filter:blur(3px)}
 .reel .cell{height:var(--cell);display:grid;place-items:center;font-family:'Bebas Neue';font-size:64px;line-height:1;
   color:var(--oro);text-shadow:0 0 14px rgba(255,207,63,.5)}
 .reel::before,.reel::after{content:"";position:absolute;left:0;right:0;height:var(--cell);z-index:2;pointer-events:none}
 .reel::before{top:0;background:linear-gradient(#000,transparent)}
 .reel::after{bottom:0;background:linear-gradient(transparent,#000)}
-.reel .linea{position:absolute;left:0;right:0;top:var(--cell);height:var(--cell);border-top:2px solid rgba(255,106,0,.65);border-bottom:2px solid rgba(255,106,0,.65);z-index:3;pointer-events:none;box-shadow:0 0 14px rgba(255,106,0,.4) inset}
-.reel-sep{font-family:'Bebas Neue';font-size:44px;color:var(--oro);opacity:.5;align-self:center;margin-top:18px}
-@media (max-width:560px){.reel{--cell:76px;width:62px}.reel .cell{font-size:60px}.reels{gap:8px}}
+.reel .linea{position:absolute;left:0;right:0;top:var(--cell);height:var(--cell);border-top:2px solid rgba(255,106,0,.65);border-bottom:2px solid rgba(255,106,0,.65);z-index:3;pointer-events:none}
+.reel-sep{font-family:'Bebas Neue';font-size:44px;color:var(--oro);opacity:.5;align-self:center;margin-top:52px}
+@media (max-width:560px){.reel{--cell:66px;width:56px}.reel .cell{font-size:52px}.reels{gap:7px}.reel-sep{font-size:34px;margin-top:44px}}
 
-.narracion{min-height:26px;text-align:center;font-family:'Barlow Condensed';font-size:20px;letter-spacing:1px;color:var(--naranja2);margin:12px 0 4px;font-weight:600}
-.ganador-box{text-align:center;min-height:40px}
-/* ===== revelación espectacular del ganador ===== */
-.win-card{position:relative;padding:8px 0 4px;isolation:isolate}
-.win-rays{position:absolute;top:46%;left:50%;width:min(560px,120vw);aspect-ratio:1;transform:translate(-50%,-50%);z-index:-1;pointer-events:none;border-radius:50%;
+/* BOTÓN PARAR bajo cada rodillo */
+.btn-parar{
+  min-height:44px;min-width:74px;padding:8px 14px;border-radius:11px;
+  font-family:'Barlow Condensed';font-weight:700;font-size:14px;letter-spacing:2px;text-transform:uppercase;
+  background:linear-gradient(180deg,#3a1010,#240808);color:#ffb9a0;border:2px solid #6d2020;
+  transition:background .15s,border-color .15s,color .15s,box-shadow .15s;
+}
+.btn-parar.activo{
+  background:linear-gradient(180deg,#ff5a4d,#d81f12);color:#fff;border-color:#ff8f7f;
+  box-shadow:0 0 18px rgba(255,60,40,.55);animation:latir 1s ease-in-out infinite;
+}
+@keyframes latir{50%{box-shadow:0 0 30px rgba(255,60,40,.95)}}
+.btn-parar:disabled{opacity:.4;cursor:not-allowed;animation:none}
+.btn-parar.listo{background:linear-gradient(180deg,#123d20,#0a2413);color:#7fe0a0;border-color:#1f6b39;box-shadow:none;animation:none}
+
+.narracion{min-height:26px;text-align:center;font-family:'Barlow Condensed';font-size:19px;letter-spacing:1px;color:var(--naranja2);margin:10px 0 2px;font-weight:600}
+.ganador-box{text-align:center;min-height:30px}
+
+/* revelación del ganador */
+.win-card{position:relative;padding:6px 0 4px;isolation:isolate}
+.win-rays{position:absolute;top:48%;left:50%;width:min(560px,120vw);aspect-ratio:1;transform:translate(-50%,-50%);z-index:-1;pointer-events:none;border-radius:50%;
   background:repeating-conic-gradient(from 0deg,rgba(255,207,63,.16) 0deg 9deg,transparent 9deg 18deg);
-  filter:blur(1px);opacity:.75;-webkit-mask:radial-gradient(circle,#000 30%,transparent 72%);mask:radial-gradient(circle,#000 30%,transparent 72%);
+  opacity:.7;-webkit-mask:radial-gradient(circle,#000 30%,transparent 72%);mask:radial-gradient(circle,#000 30%,transparent 72%);
   animation:girarRayos 16s linear infinite}
 @keyframes girarRayos{to{transform:translate(-50%,-50%) rotate(360deg)}}
 .win-tag{display:inline-block;font-family:'Barlow Condensed';font-weight:700;letter-spacing:4px;text-transform:uppercase;font-size:16px;color:#3a1500;
@@ -135,34 +128,32 @@ button:active{transform:scale(.98)}
   animation:tagIn .55s cubic-bezier(.2,1.5,.3,1) both,tagPulse 1.5s ease-in-out .6s infinite}
 @keyframes tagIn{0%{transform:scale(0) rotate(-10deg);opacity:0}70%{transform:scale(1.18) rotate(2deg)}100%{transform:scale(1) rotate(0);opacity:1}}
 @keyframes tagPulse{50%{box-shadow:0 4px 40px rgba(255,207,63,.95)}}
-.win-label{font-family:'Barlow Condensed';letter-spacing:3px;text-transform:uppercase;color:#cdbf9f;font-size:14px;margin-top:12px;animation:fadeUp .5s .2s both}
-.win-num{font-family:'Bebas Neue';font-size:clamp(66px,15vw,150px);line-height:.82;letter-spacing:2px;margin-top:2px;
-  background:linear-gradient(100deg,#fff 8%,#ffcf3f 38%,#ff8a2b 55%,#ffcf3f 78%,#fff 96%);background-size:260% 100%;
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--oro);
-  filter:drop-shadow(0 6px 34px rgba(255,207,63,.6));
-  animation:numIn .75s cubic-bezier(.2,1.35,.3,1) both,shimmerNum 2.6s linear .75s infinite}
-@keyframes numIn{0%{transform:scale(.25);opacity:0;filter:blur(8px)}60%{transform:scale(1.14)}100%{transform:scale(1);opacity:1}}
-@keyframes shimmerNum{to{background-position:260% 0}}
-.win-name{font-family:'Barlow Condensed';font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:clamp(22px,4.6vw,40px);color:#fff;margin-top:6px;
-  text-shadow:0 2px 26px rgba(255,106,0,.55);animation:nameIn .65s .5s both}
+.win-label{font-family:'Barlow Condensed';letter-spacing:3px;text-transform:uppercase;color:#cdbf9f;font-size:14px;margin-top:14px;animation:fadeUp .5s .2s both}
+/* nítido: sin filtros ni blur, solo text-shadow */
+.win-num{font-family:'Bebas Neue';font-size:clamp(66px,14vw,140px);line-height:.9;letter-spacing:3px;margin-top:4px;
+  color:var(--oro);text-shadow:0 0 26px rgba(255,207,63,.55),0 4px 10px rgba(0,0,0,.6);
+  animation:numIn .7s cubic-bezier(.2,1.35,.3,1) both}
+@keyframes numIn{0%{transform:scale(.35);opacity:0}60%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
+.win-name{font-family:'Barlow Condensed';font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:clamp(22px,4.6vw,40px);color:#fff;
+  margin-top:26px;text-shadow:0 2px 26px rgba(255,106,0,.55);animation:nameIn .65s .45s both}
 @keyframes nameIn{0%{transform:translateY(20px);opacity:0;letter-spacing:9px}100%{transform:translateY(0);opacity:1;letter-spacing:1px}}
-.win-tel{font-size:13.5px;color:var(--gris);margin-top:5px;animation:fadeUp .5s .85s both}
+.win-premio{font-family:'Barlow Condensed';font-size:15px;letter-spacing:2px;text-transform:uppercase;color:var(--oro);margin-top:10px;animation:fadeUp .5s .7s both}
 @keyframes fadeUp{0%{transform:translateY(8px);opacity:0}100%{transform:translateY(0);opacity:1}}
 .flash{position:fixed;inset:0;background:radial-gradient(circle,rgba(255,228,150,.55),transparent 62%);z-index:75;pointer-events:none;animation:flashAnim .75s ease forwards}
 @keyframes flashAnim{0%{opacity:0}14%{opacity:1}100%{opacity:0}}
 
-.controles{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px;position:relative;z-index:3}
-.btn-girar{
-  background:radial-gradient(circle at 50% 30%,#ff8a2b,#ff5400 70%);color:#3a1500;border:3px solid var(--oro);
-  border-radius:16px;font-family:'Bebas Neue';font-size:34px;letter-spacing:4px;padding:14px 54px;
-  box-shadow:0 8px 30px rgba(255,84,0,.5),inset 0 2px 8px rgba(255,255,255,.3);min-height:64px;text-shadow:0 1px 0 rgba(255,255,255,.3)}
-.btn-girar:hover{filter:brightness(1.06)}
+.controles{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px;position:relative;z-index:3}
+.btn-girar{background:radial-gradient(circle at 50% 30%,#ff8a2b,#ff5400 70%);color:#3a1500;border:3px solid var(--oro);
+  border-radius:16px;font-family:'Bebas Neue';font-size:32px;letter-spacing:4px;padding:12px 50px;
+  box-shadow:0 8px 30px rgba(255,84,0,.5),inset 0 2px 8px rgba(255,255,255,.3);min-height:60px;text-shadow:0 1px 0 rgba(255,255,255,.3)}
 .btn-girar.girando{animation:pulseg 1s ease-in-out infinite}
 @keyframes pulseg{50%{box-shadow:0 8px 46px rgba(255,84,0,.85),inset 0 2px 8px rgba(255,255,255,.3)}}
+.estado-sub{text-align:center;color:var(--gris);font-size:13px;margin:12px 0 0}
+.estado-sub b{color:var(--crema)}
 
-/* FUEGO en la base de la cabina */
-.fuego{position:relative;height:70px;margin-top:4px;overflow:hidden}
-.llama{position:absolute;bottom:-10px;width:60px;height:90px;border-radius:50% 50% 45% 45%;
+/* FUEGO */
+.fuego{position:relative;height:64px;overflow:hidden}
+.llama{position:absolute;bottom:-10px;width:60px;height:88px;border-radius:50% 50% 45% 45%;
   background:radial-gradient(ellipse at 50% 100%, #ffe36b 0%, #ff9d1e 30%, #ff5a00 55%, #d81a00 75%, transparent 82%);
   filter:blur(2px);mix-blend-mode:screen;transform-origin:bottom center;animation:flamear 1.1s ease-in-out infinite}
 @keyframes flamear{0%,100%{transform:scaleY(1) scaleX(1) translateY(0);opacity:.9}
@@ -171,57 +162,34 @@ button:active{transform:scale(.98)}
   75%{transform:scaleY(1.15) scaleX(.95) translateY(-4px);opacity:.95}}
 .humo{position:absolute;inset:0;background:linear-gradient(0deg,rgba(255,90,0,.25),transparent 70%);pointer-events:none}
 
-/* opciones */
-.opts{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:14px;font-size:13px;color:#cfc8bc;position:relative;z-index:3}
-.opts label{display:flex;align-items:center;gap:6px;cursor:pointer}
-.estado-sub{text-align:center;color:var(--gris);font-size:13px;margin:14px 0 0}
-.estado-sub b{color:var(--crema)}
-
-/* Panel premios */
-.premios-panel{background:var(--panel);border:1px solid var(--borde);border-radius:16px;padding:16px}
-.premios-panel h2{font-family:'Bebas Neue';font-size:22px;letter-spacing:1px;margin-bottom:4px}
-.premios-panel h2 .na{color:var(--naranja)}
-.premios-panel .hint{font-size:12px;color:var(--gris);margin-bottom:12px}
-.plist{display:flex;flex-direction:column;gap:8px}
-.pitem{display:flex;gap:10px;align-items:center;background:#141414;border:1px solid #262626;border-radius:11px;padding:9px 11px}
-.pitem.actual{border-color:var(--naranja);background:rgba(255,106,0,.08)}
-.pitem.listo{border-color:rgba(46,204,113,.4)}
-.pitem .pi-idx{width:26px;height:26px;border-radius:50%;background:#222;color:var(--gris);font-family:'Bebas Neue';font-size:16px;display:grid;place-items:center;flex:none}
-.pitem.actual .pi-idx{background:var(--naranja);color:#111}
-.pitem.listo .pi-idx{background:var(--verde);color:#0b2b18}
-.pitem .pi-body{flex:1;min-width:0}
-.pitem .pi-nom{font-family:'Barlow Condensed';font-weight:600;font-size:15px;letter-spacing:.3px;line-height:1.15}
-.pitem .pi-gan{font-size:12.5px;color:var(--verde);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pitem .pi-gan .gnum{color:var(--oro);font-weight:700}
-.pitem .pi-pend{font-size:12px;color:var(--gris);margin-top:1px}
-.pi-edit{background:none;border:none;color:var(--gris);font-size:16px;padding:2px 6px}
-.pi-edit:hover{color:var(--naranja)}
-.addprem{display:flex;gap:6px;margin-top:12px}
-.addprem input{flex:1;min-width:0;background:#111;border:1px solid var(--borde);color:var(--crema);border-radius:9px;padding:9px 10px;font-size:14px;outline:none}
-.addprem input:focus{border-color:var(--naranja)}
+/* Panel ganadores */
+.gan-panel{background:var(--panel);border:1px solid var(--borde);border-radius:16px;padding:16px}
+.gan-panel h2{font-family:'Bebas Neue';font-size:22px;letter-spacing:1px;margin-bottom:4px}
+.gan-panel h2 .na{color:var(--naranja)}
+.gan-panel .hint{font-size:12px;color:var(--gris);margin-bottom:12px}
+.glist{display:flex;flex-direction:column;gap:8px;max-height:52vh;overflow:auto}
+.gitem{display:flex;gap:10px;align-items:center;background:#141414;border:1px solid rgba(46,204,113,.35);border-radius:11px;padding:9px 11px}
+.gitem .gi-num{font-family:'Bebas Neue';font-size:22px;color:var(--oro);flex:none;min-width:44px;text-align:center}
+.gitem .gi-body{flex:1;min-width:0}
+.gitem .gi-prem{font-family:'Barlow Condensed';font-weight:600;font-size:14px;color:var(--crema);line-height:1.15}
+.gitem .gi-nom{font-size:12.5px;color:var(--verde);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gi-del{background:none;border:none;color:#555;font-size:17px;padding:2px 6px}
+.gi-del:hover{color:var(--rojo)}
+.gvacio{color:var(--gris);font-size:13px;text-align:center;padding:18px 6px;border:1px dashed var(--borde);border-radius:10px}
 .pool-info{margin-top:14px;font-size:12.5px;color:var(--gris);text-align:center}
 .pool-info b{color:var(--crema);font-variant-numeric:tabular-nums}
 
 #toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(200%);background:var(--panel);border:1px solid var(--naranja);border-radius:10px;padding:12px 20px;font-size:14.5px;transition:transform .3s;z-index:80;max-width:92vw;text-align:center}
 #toast.visible{transform:translateX(-50%) translateY(0)}
-
 #confeti{position:fixed;inset:0;pointer-events:none;z-index:70;overflow:hidden;display:none}
 #confeti.on{display:block}
 .conf{position:absolute;top:-20px;width:10px;height:16px;opacity:.95;animation:caer linear forwards}
 @keyframes caer{to{transform:translateY(105vh) rotate(720deg);opacity:.9}}
-
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);display:none;place-items:center;z-index:90;padding:16px}
-.overlay.abierto{display:grid}
-.modal{width:min(420px,100%);background:var(--panel);border:1px solid var(--borde);border-top:4px solid var(--naranja);border-radius:14px;padding:22px}
-.modal h3{font-family:'Bebas Neue';font-size:22px;letter-spacing:1px;margin-bottom:12px}
-.modal input{width:100%;background:#111;border:1px solid var(--borde);color:var(--crema);border-radius:9px;padding:11px;font-size:15px;outline:none;margin-bottom:8px}
-.modal .mrow{display:flex;gap:8px;margin-top:6px}
-.modal .mrow .btn{flex:1}
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
+<!-- LOGIN (misma clave del panel admin) -->
 <div id="login">
   <h1>SORTEO <span class="na">RIFA</span></h1>
   <div class="sub">Rodrigo Ravera · acceso de administrador</div>
@@ -230,69 +198,66 @@ button:active{transform:scale(.98)}
   <div class="error" id="login-error">Clave incorrecta</div>
 </div>
 
-<!-- APP -->
 <div class="wrap" id="wrap">
   <div class="topbar">
-    <div class="acc">
-      <button class="btn sec mini" id="btn-sonido" title="Sonido">🔊 Sonido</button>
-      <button class="btn sec mini" id="btn-reiniciar">Reiniciar ensayo</button>
-      <a class="btn sec mini" href="admin.html" style="text-decoration:none;display:inline-flex;align-items:center">Volver al panel</a>
-    </div>
+    <button class="btn sec mini" id="btn-sonido">🔊 Sonido</button>
+    <button class="btn sec mini" id="btn-limpiar">Limpiar ganadores</button>
+    <a class="btn sec mini" href="admin.html" style="text-decoration:none;display:inline-flex;align-items:center">Volver al panel</a>
   </div>
 
-  <!-- HERO AGRADECIMIENTO -->
   <div class="hero">
     <img class="foto" src="rodrigo.jpg" alt="Rodrigo Ravera">
     <div class="grax">MUCHAS GRACIAS</div>
     <div class="linea2">A todas las personas que ayudaron a nuestro compañero de ruta <span class="rr">RODRIGO RAVERA</span></div>
-    <div class="linea3">Sorteo Rifa Solidaria · Harley-Davidson</div>
   </div>
 
   <div class="grid">
-    <!-- MÁQUINA CASINO -->
     <div class="cabina">
       <div class="marquee" id="marq-top"></div>
       <div class="cabina-inner">
-        <div class="premio-actual">
-          Sorteando el premio
-          <span class="pnom" id="premio-nom">—</span>
-          <span class="pdet" id="premio-det"></span>
+
+        <div class="premio-input-wrap">
+          <label for="premio-nombre">Premio que se está sorteando</label>
+          <input id="premio-nombre" placeholder="Escribe el premio…" maxlength="60" autocomplete="off">
         </div>
 
         <div class="reels">
-          <div class="reel-cap"><span class="reel-lbl">Centena</span><div class="reel" id="reel-0"><div class="strip"></div><div class="linea"></div></div></div>
+          <div class="reel-cap">
+            <span class="reel-lbl">Centena</span>
+            <div class="reel" id="reel-0"><div class="strip"></div><div class="linea"></div></div>
+            <button class="btn-parar" id="parar-0" disabled>Parar</button>
+          </div>
           <div class="reel-sep">·</div>
-          <div class="reel-cap"><span class="reel-lbl">Decena</span><div class="reel" id="reel-1"><div class="strip"></div><div class="linea"></div></div></div>
+          <div class="reel-cap">
+            <span class="reel-lbl">Decena</span>
+            <div class="reel" id="reel-1"><div class="strip"></div><div class="linea"></div></div>
+            <button class="btn-parar" id="parar-1" disabled>Parar</button>
+          </div>
           <div class="reel-sep">·</div>
-          <div class="reel-cap"><span class="reel-lbl">Unidad</span><div class="reel" id="reel-2"><div class="strip"></div><div class="linea"></div></div></div>
+          <div class="reel-cap">
+            <span class="reel-lbl">Unidad</span>
+            <div class="reel" id="reel-2"><div class="strip"></div><div class="linea"></div></div>
+            <button class="btn-parar" id="parar-2" disabled>Parar</button>
+          </div>
         </div>
 
-        <div class="narracion" id="narracion">Presiona GIRAR para sortear el primer premio</div>
+        <div class="narracion" id="narracion">Escribe el premio y presiona GIRAR</div>
         <div class="ganador-box" id="ganador-box"></div>
 
         <div class="controles">
           <button class="btn-girar" id="btn-girar">GIRAR</button>
-          <button class="btn" id="btn-siguiente" style="display:none">Siguiente premio →</button>
+          <button class="btn" id="btn-nuevo" style="display:none">Sortear otro premio →</button>
         </div>
 
-        <div class="opts">
-          <label><input type="checkbox" id="opt-persona"> No repetir la misma persona</label>
-        </div>
-        <div class="estado-sub" id="estado-sub">Cargando participantes…</div>
+        <div class="estado-sub" id="estado-sub"></div>
       </div>
-      <!-- FUEGO -->
       <div class="fuego" id="fuego"><div class="humo"></div></div>
     </div>
 
-    <!-- PANEL PREMIOS -->
-    <div class="premios-panel">
-      <h2>PREMIOS <span class="na">Y GANADORES</span></h2>
-      <div class="hint">Orden del sorteo. Puedes editar/agregar/quitar premios.</div>
-      <div class="plist" id="plist"></div>
-      <div class="addprem">
-        <input id="nuevo-premio" placeholder="Agregar premio…" maxlength="60">
-        <button class="btn mini" id="btn-add">Agregar</button>
-      </div>
+    <div class="gan-panel">
+      <h2>GANADORES <span class="na">DEL SORTEO</span></h2>
+      <div class="hint">Se van agregando a medida que sorteas. Un número no puede repetirse.</div>
+      <div class="glist" id="glist"></div>
       <div class="pool-info" id="pool-info"></div>
     </div>
   </div>
@@ -301,40 +266,19 @@ button:active{transform:scale(.98)}
 <div id="toast" role="status" aria-live="polite"></div>
 <div id="confeti"></div>
 
-<div class="overlay" id="modal-edit">
-  <div class="modal">
-    <h3 id="edit-titulo">Editar premio</h3>
-    <input id="edit-nom" placeholder="Nombre del premio" maxlength="60">
-    <input id="edit-det" placeholder="Detalle (opcional)" maxlength="60">
-    <div class="mrow">
-      <button class="btn sec" id="edit-cancelar">Cancelar</button>
-      <button class="btn" id="edit-borrar" style="background:var(--rojo);color:#fff">Borrar</button>
-      <button class="btn" id="edit-guardar">Guardar</button>
-    </div>
-  </div>
-</div>
-
 <script>
 const SUPABASE_URL = "https://pikbmocrnlosoujjllmw.supabase.co";
 const FN = SUPABASE_URL + "/functions/v1/rifa-admin";
 const $ = (s) => document.querySelector(s);
 let CLAVE = sessionStorage.getItem("rifa_admin_clave") || "";
 
-// MODO ENSAYO: esta página solo LEE los participantes. No escribe nada en el sistema.
-const PREMIOS_DEFAULT = [
-  { nom: "Voucher Bariloche 2027", det: "Habitación doble" },
-  { nom: "Voucher AS 2027", det: "" },
-  { nom: "Voucher ChillánLeben 2026", det: "" },
-  { nom: "Voucher Pichilemu 2026", det: "" },
-  { nom: "Voucher Jujuy 2026", det: "" },
-  { nom: "Voucher Asunción 2027", det: "" },
-  { nom: "1 Chaqueta Harley-Davidson", det: "" },
-  { nom: "1 Set de Puros Casa Sichel", det: "" },
-  { nom: "1 mes de cerveza Wandersleben", det: "" },
-];
-
-let POOL = [], premios = [], idxActual = 0, girando = false, sonidoOn = true, editIdx = null;
-const LS = "rifa_sorteo_ensayo";
+// Esta página SOLO LEE los participantes. No escribe nada ni envía ningún mensaje al ganador.
+let POOL = [];            // [{numero, nombre, telefono}] pagados
+let resultados = [];      // [{premio, numero, nombre, telefono}]
+let objetivo = null;      // ganador pre-seleccionado del giro en curso
+let fase = 0;             // 0 idle · 1 esperando parar centena · 2 decena · 3 unidad · 4 revelado
+let sonidoOn = true;
+const LS = "rifa_sorteo_ganadores";
 const fmt3 = (n) => String(n).padStart(3, "0");
 const esc = (s) => String(s ?? "").replace(/[<>&"]/g, c => ({ "<":"&lt;", ">":"&gt;", "&":"&amp;", '"':"&quot;" }[c]));
 
@@ -362,90 +306,109 @@ $("#btn-entrar").addEventListener("click", entrar);
 $("#clave").addEventListener("keydown", e => { if (e.key === "Enter") entrar(); });
 
 async function cargar() {
-  const data = await api({ accion: "listar" });   // SOLO lectura
+  const data = await api({ accion: "listar" });     // solo lectura
   POOL = (data.reservas || []).filter(r => r.estado === "pagado").map(r => ({ numero: r.numero, nombre: r.nombre, telefono: r.telefono }));
-  restaurarEstado();
-  construirReels();
-  construirBulbs();
-  construirFuego();
-  render();
+  try { resultados = JSON.parse(localStorage.getItem(LS) || "[]"); } catch (_) { resultados = []; }
+  construirReels(); construirBulbs(); construirFuego(); render();
 }
+function guardarLocal() { localStorage.setItem(LS, JSON.stringify(resultados)); }
 
-// estado del ENSAYO: solo en localStorage (no toca la base de datos)
-function restaurarEstado() {
-  let g = null;
-  try { g = JSON.parse(localStorage.getItem(LS) || "null"); } catch (_) {}
-  premios = (Array.isArray(g?.premios) && g.premios.length)
-    ? g.premios.map(p => ({ nom: p.nom, det: p.det || "", ganador: p.ganador || null }))
-    : PREMIOS_DEFAULT.map(p => ({ ...p, ganador: null }));
-  idxActual = premios.findIndex(p => !p.ganador);
-  if (idxActual < 0) idxActual = premios.length;
-}
-function guardarLocal() { localStorage.setItem(LS, JSON.stringify({ premios })); }
-
-function numerosGanados() { return new Set(premios.filter(p => p.ganador).map(p => p.ganador.numero)); }
-function personasGanadoras() { return new Set(premios.filter(p => p.ganador).map(p => (p.ganador.nombre || "").trim().toLowerCase())); }
+// un número no puede repetirse (una persona sí puede ganar con otro número)
 function elegibles() {
-  const usados = numerosGanados();
-  const excP = $("#opt-persona").checked ? personasGanadoras() : null;
-  return POOL.filter(x => !usados.has(x.numero) && (!excP || !excP.has((x.nombre || "").trim().toLowerCase())));
+  const usados = new Set(resultados.map(r => r.numero));
+  return POOL.filter(x => !usados.has(x.numero));
 }
 
-/* ---- casino: ampolletas ---- */
+/* ---- adornos ---- */
 function construirBulbs() {
-  const top = $("#marq-top");
-  if (top.children.length) return;
-  const n = 26;
-  let h = "";
-  for (let i = 0; i < n; i++) h += `<span class="bulb" style="animation-delay:${(i % 6) * 0.18}s"></span>`;
+  const top = $("#marq-top"); if (top.children.length) return;
+  let h = ""; for (let i = 0; i < 26; i++) h += `<span class="bulb" style="animation-delay:${(i % 6) * 0.18}s"></span>`;
   top.innerHTML = h;
 }
-/* ---- fuego ---- */
 function construirFuego() {
-  const f = $("#fuego");
-  if (f.querySelector(".llama")) return;
-  const anchoPasos = 7;
-  for (let i = 0; i < anchoPasos; i++) {
-    const l = document.createElement("div");
-    l.className = "llama";
-    l.style.left = (i / (anchoPasos - 1) * 88 + 6) + "%";
-    l.style.marginLeft = "-30px";
+  const f = $("#fuego"); if (f.querySelector(".llama")) return;
+  for (let i = 0; i < 7; i++) {
+    const l = document.createElement("div"); l.className = "llama";
+    l.style.left = (i / 6 * 88 + 6) + "%"; l.style.marginLeft = "-30px";
     l.style.animationDelay = (Math.random() * 0.8).toFixed(2) + "s";
     l.style.animationDuration = (0.9 + Math.random() * 0.6).toFixed(2) + "s";
-    l.style.opacity = (0.75 + Math.random() * 0.25).toFixed(2);
     f.appendChild(l);
   }
 }
 
-/* ---- reels ---- */
-const REP = 72;          // suficientes celdas para giros largos
-const VEL = 42;          // celdas por segundo aprox (mantiene velocidad pareja entre rodillos)
+/* ---- rodillos ---- */
+const REP = 40;
 function construirReels() {
   for (let r = 0; r < 3; r++) {
     const strip = document.querySelector("#reel-" + r + " .strip");
     if (strip.children.length) continue;
-    let html = "";
-    for (let i = 0; i < REP * 10; i++) html += `<div class="cell">${i % 10}</div>`;
-    strip.innerHTML = html;
-    posReel(r, 0, false);
+    let html = ""; for (let i = 0; i < REP * 10; i++) html += `<div class="cell">${i % 10}</div>`;
+    strip.innerHTML = html; resetReel(r);
   }
 }
 function cellPx(r) { return parseFloat(getComputedStyle(document.querySelector("#reel-" + r)).getPropertyValue("--cell")); }
-function posReel(r, digito, animar, dur = 2) {
+
+// Giro controlado por JS (requestAnimationFrame): preciso y sin conflictos con CSS.
+// RS[r].p = índice de celda que está centrado (float). transform = -(p-1)*cell
+const RS = [{ p: 0, girando: false, raf: 0, cell: 80 }, { p: 0, girando: false, raf: 0, cell: 80 }, { p: 0, girando: false, raf: 0, cell: 80 }];
+const VEL_GIRO = 26;   // celdas por segundo
+
+function pintarReel(r) {
+  const s = document.querySelector("#reel-" + r + " .strip");
+  s.style.transform = `translateY(${-(RS[r].p - 1) * RS[r].cell}px)`;
+}
+function resetReel(r) {
+  const st = RS[r]; st.girando = false; cancelAnimationFrame(st.raf);
+  const reel = document.querySelector("#reel-" + r), strip = reel.querySelector(".strip");
+  reel.classList.remove("win"); strip.classList.remove("blur");
+  strip.style.transition = "none"; strip.style.animation = "none";
+  st.cell = cellPx(r); st.p = 0; pintarReel(r);
+}
+function iniciarGiro(r) {
+  const st = RS[r];
+  st.cell = cellPx(r); st.girando = true;
   const strip = document.querySelector("#reel-" + r + " .strip");
-  const cell = cellPx(r);
-  if (!animar) { strip.style.transition = "none"; strip.style.transform = `translateY(${-(digito - 1) * cell}px)`; strip.classList.remove("spin"); return; }
-  // vueltas proporcionales a la duración → velocidad pareja aunque se detenga más tarde
-  let vueltas = Math.max(8, Math.round(VEL * dur / 10));
-  let idx = vueltas * 10 + digito;
-  const max = REP * 10 - 1;
-  if (idx > max) idx = Math.floor((max - digito) / 10) * 10 + digito;
-  strip.classList.add("spin");
-  strip.style.transition = "none";
-  strip.style.transform = "translateY(0)";
-  void strip.offsetHeight;
-  strip.style.transition = `transform ${dur}s cubic-bezier(.10,.52,.22,1)`;
-  strip.style.transform = `translateY(${-(idx - 1) * cell}px)`;
+  strip.style.transition = "none"; strip.classList.add("blur");
+  document.querySelector("#reel-" + r).classList.remove("win");
+  let last = performance.now();
+  const paso = (now) => {
+    if (!st.girando) return;
+    const dt = Math.min(0.05, (now - last) / 1000); last = now;
+    st.p += VEL_GIRO * dt;
+    if (st.p >= 110) st.p -= 10;            // envuelve (los dígitos se repiten cada 10)
+    pintarReel(r);
+    st.raf = requestAnimationFrame(paso);
+  };
+  st.raf = requestAnimationFrame(paso);
+}
+// frena el rodillo r aterrizando exactamente en `digito` y avisa al terminar
+function detenerReel(r, digito, alTerminar) {
+  const st = RS[r];
+  st.girando = false; cancelAnimationFrame(st.raf);
+  const reel = document.querySelector("#reel-" + r), strip = reel.querySelector(".strip");
+  const inicio = st.p;
+  const base = Math.ceil(inicio) + 18;                      // vueltas antes de frenar
+  const destino = base + (((digito - (base % 10)) + 10) % 10);
+  const dur = 1500, t0 = performance.now();
+  const ease = (x) => 1 - Math.pow(1 - x, 3);               // easeOutCubic
+  let terminado = false;
+  const finalizar = () => {
+    if (terminado) return; terminado = true;
+    st.p = destino; pintarReel(r);
+    strip.classList.remove("blur"); reel.classList.add("win");
+    beep(520 + r * 120, .12, "square", .07);
+    if (alTerminar) alTerminar();
+  };
+  const paso = (now) => {
+    if (terminado) return;
+    const k = Math.min(1, (now - t0) / dur);
+    st.p = inicio + (destino - inicio) * ease(k);
+    pintarReel(r);
+    if (k < 1) { requestAnimationFrame(paso); return; }
+    finalizar();
+  };
+  requestAnimationFrame(paso);
+  setTimeout(finalizar, dur + 60);   // red de seguridad: siempre aterriza en el dígito
 }
 
 /* ---- sonido ---- */
@@ -462,121 +425,105 @@ function beep(freq, dur = 0.08, tipo = "square", vol = 0.06) {
 }
 function fanfarria() { if (!sonidoOn) return; [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => beep(f, 0.18, "triangle", 0.08), i * 130)); }
 
-/* ---- sortear ---- */
+/* ---- flujo del sorteo ---- */
 $("#btn-girar").addEventListener("click", girar);
-$("#btn-siguiente").addEventListener("click", () => { avanzarPremio(); render(); });
+$("#btn-nuevo").addEventListener("click", nuevoSorteo);
+for (let r = 0; r < 3; r++) $("#parar-" + r).addEventListener("click", () => pararRodillo(r));
 
 function girar() {
-  if (girando) return;
-  if (idxActual >= premios.length) { toast("¡Ya se sortearon todos los premios!"); return; }
+  if (fase !== 0) return;
+  const premio = $("#premio-nombre").value.trim();
+  if (premio.length < 2) { toast("Escribe primero el premio que vas a sortear"); $("#premio-nombre").focus(); return; }
   const cand = elegibles();
-  if (cand.length === 0) { toast("No quedan números elegibles."); return; }
-  const ganador = cand[Math.floor(Math.random() * cand.length)];
-  const num = ganador.numero;
-  const [c, d, u] = fmt3(num).split("").map(Number);
+  if (!cand.length) { toast("No quedan números elegibles."); return; }
 
-  girando = true;
-  $("#btn-girar").disabled = true; $("#btn-girar").classList.add("girando");
-  $("#btn-siguiente").style.display = "none";
-  $("#ganador-box").innerHTML = ""; $("#ganador-box").classList.remove("show");
+  objetivo = { ...cand[Math.floor(Math.random() * cand.length)], premio };
+  $("#ganador-box").innerHTML = "";
   document.querySelectorAll(".reel").forEach(r => r.classList.remove("win"));
-  narrar("Girando…");
-
-  // el número completo se revela en ~5 s (los dígitos salen uno tras otro)
-  const dC = 2.2, dD = 3.6, dU = 5;
-  posReel(0, c, true, dC); posReel(1, d, true, dD); posReel(2, u, true, dU);
-  const lock = (r, dur, txt, freq) => setTimeout(() => {
-    document.querySelector("#reel-" + r + " .strip").classList.remove("spin");
-    document.querySelector("#reel-" + r).classList.add("win");
-    beep(freq, 0.1, "square", 0.07); narrar(txt);
-  }, dur * 1000);
-  lock(0, dC, `Centena: ${c} — ${textoCentena(c)}`, 440);
-  lock(1, dD, `Va quedando… ${c}${d}_ — ${textoDecena(c, d)}`, 560);
-  lock(2, dU, "", 720);
-  setTimeout(() => revelar(ganador), dU * 1000 + 250);
+  for (let r = 0; r < 3; r++) { iniciarGiro(r); marcarParar(r, "off"); }
+  $("#btn-girar").disabled = true; $("#btn-girar").classList.add("girando");
+  $("#btn-nuevo").style.display = "none";
+  $("#premio-nombre").disabled = true;
+  fase = 1; marcarParar(0, "activo");
+  narrar("Girando… detén la CENTENA cuando quieras");
+  beep(300, .1, "sawtooth", .05);
 }
-function textoCentena(c) { if (c === 0) return "¡entre el 1 y el 99!"; if (c === 5) return "¡el 500!"; return `¡los ${c}00 están en juego!`; }
-function textoDecena(c, d) { return `¡cerca del ${c * 100 + d * 10}!`; }
 
-function revelar(ganador) {
-  const num = ganador.numero;
+function marcarParar(r, estado) {
+  const b = $("#parar-" + r);
+  b.classList.remove("activo", "listo");
+  b.disabled = estado !== "activo";
+  if (estado === "activo") b.classList.add("activo");
+  if (estado === "listo") b.classList.add("listo");
+}
+
+function pararRodillo(r) {
+  if (fase !== r + 1 || !objetivo) return;
+  const dig = Number(fmt3(objetivo.numero)[r]);
+  marcarParar(r, "listo");
+  fase = r + 2;
+  narrar("Frenando…");
+  detenerReel(r, dig, () => {
+    if (r === 0) { narrar("Ahora la DECENA…"); marcarParar(1, "activo"); }
+    else if (r === 1) { narrar("¡Y la UNIDAD para el número final!"); marcarParar(2, "activo"); }
+    else { revelar(objetivo); }
+  });
+}
+
+function revelar(g) {
   narrar("");
-  const box = $("#ganador-box");
-  box.innerHTML = `<div class="win-card">
+  $("#ganador-box").innerHTML = `<div class="win-card">
     <div class="win-rays"></div>
     <div class="win-tag">🏆 ¡Ganador!</div>
     <div class="win-label">El número ganador es</div>
-    <div class="win-num">Nº ${num}</div>
-    <div class="win-name">${esc(ganador.nombre || "—")}</div>
-    ${ganador.telefono && ganador.telefono !== "-" ? `<div class="win-tel">${esc(ganador.telefono)}</div>` : ""}
+    <div class="win-num">Nº ${g.numero}</div>
+    <div class="win-name">${esc(g.nombre || "—")}</div>
+    <div class="win-premio">${esc(g.premio)}</div>
   </div>`;
-  flashLuz();
-  fanfarria(); confeti();
-  premios[idxActual].ganador = { numero: num, nombre: ganador.nombre, telefono: ganador.telefono };
+  flashLuz(); fanfarria(); confeti();
+  resultados.push({ premio: g.premio, numero: g.numero, nombre: g.nombre, telefono: g.telefono });
   guardarLocal();
-  girando = false;
+  fase = 4;
   $("#btn-girar").disabled = false; $("#btn-girar").classList.remove("girando"); $("#btn-girar").style.display = "none";
-  $("#btn-siguiente").style.display = (idxActual < premios.length - 1) ? "inline-flex" : "none";
-  if (idxActual >= premios.length - 1) narrar("🎉 ¡Ensayo completo! Recuerda: nada de esto quedó guardado en el sistema.");
+  $("#btn-nuevo").style.display = "inline-flex";
   render();
 }
-function avanzarPremio() {
-  idxActual = premios.findIndex((p, i) => i > idxActual - 1 && !p.ganador);
-  if (idxActual < 0) idxActual = premios.length;
-  $("#btn-girar").style.display = "inline-flex"; $("#btn-siguiente").style.display = "none";
-  $("#ganador-box").innerHTML = ""; $("#ganador-box").classList.remove("show");
-  document.querySelectorAll(".reel").forEach((r, i) => { r.classList.remove("win"); posReel(i, 0, false); });
-  narrar("Presiona GIRAR para sortear este premio");
+
+function nuevoSorteo() {
+  objetivo = null; fase = 0;
+  for (let r = 0; r < 3; r++) { resetReel(r); marcarParar(r, "off"); }
+  $("#ganador-box").innerHTML = "";
+  $("#btn-girar").style.display = "inline-flex"; $("#btn-girar").disabled = false;
+  $("#btn-nuevo").style.display = "none";
+  $("#premio-nombre").disabled = false; $("#premio-nombre").value = ""; $("#premio-nombre").focus();
+  narrar("Escribe el premio y presiona GIRAR");
 }
 
 function narrar(t) { $("#narracion").textContent = t; }
 function render() {
-  const totalPag = POOL.length, restantes = elegibles().length;
-  $("#estado-sub").innerHTML = `<b>${totalPag}</b> números pagados participan · <b>${restantes}</b> en juego · <b>${premios.filter(p=>p.ganador).length}</b>/${premios.length} premios sorteados`;
-  $("#pool-info").innerHTML = `Quedan <b>${restantes}</b> números elegibles para el próximo premio.`;
-  if (idxActual < premios.length) { $("#premio-nom").textContent = premios[idxActual].nom; $("#premio-det").textContent = premios[idxActual].det || ""; }
-  else { $("#premio-nom").textContent = "¡Ensayo completo!"; $("#premio-det").textContent = ""; $("#btn-girar").style.display = "none"; }
-  $("#plist").innerHTML = premios.map((p, i) => {
-    const cls = p.ganador ? "listo" : (i === idxActual ? "actual" : "");
-    const gan = p.ganador ? `<div class="pi-gan"><span class="gnum">Nº ${p.ganador.numero}</span> · ${esc(p.ganador.nombre || "—")}</div>` : `<div class="pi-pend">${i === idxActual ? "◄ sorteando ahora" : "pendiente"}</div>`;
-    return `<div class="pitem ${cls}"><div class="pi-idx">${i + 1}</div><div class="pi-body"><div class="pi-nom">${esc(p.nom)}${p.det ? ` <span style="color:var(--gris);font-weight:400">· ${esc(p.det)}</span>` : ""}</div>${gan}</div><button class="pi-edit" onclick="abrirEditar(${i})" title="Editar">✎</button></div>`;
-  }).join("");
+  const restantes = elegibles().length;
+  $("#estado-sub").innerHTML = `<b>${POOL.length}</b> números pagados participan · <b>${restantes}</b> siguen en juego`;
+  $("#pool-info").innerHTML = `Quedan <b>${restantes}</b> números elegibles.`;
+  $("#glist").innerHTML = resultados.length
+    ? resultados.map((g, i) => `<div class="gitem">
+        <div class="gi-num">${g.numero}</div>
+        <div class="gi-body"><div class="gi-prem">${esc(g.premio)}</div><div class="gi-nom">${esc(g.nombre || "—")}</div></div>
+        <button class="gi-del" onclick="borrarResultado(${i})" title="Quitar (devuelve el número al bombo)">✕</button>
+      </div>`).join("")
+    : `<div class="gvacio">Aún no hay ganadores.<br>Escribe un premio y gira.</div>`;
+}
+function borrarResultado(i) {
+  if (!confirm(`¿Quitar el ganador Nº ${resultados[i].numero} (${resultados[i].premio})? El número vuelve al bombo.`)) return;
+  resultados.splice(i, 1); guardarLocal(); render();
 }
 
-function abrirEditar(i) {
-  editIdx = i;
-  $("#edit-titulo").textContent = "Editar premio " + (i + 1);
-  $("#edit-nom").value = premios[i].nom; $("#edit-det").value = premios[i].det || "";
-  $("#edit-borrar").style.display = premios[i].ganador ? "none" : "inline-flex";
-  $("#modal-edit").classList.add("abierto");
-}
-$("#edit-cancelar").addEventListener("click", () => $("#modal-edit").classList.remove("abierto"));
-$("#edit-guardar").addEventListener("click", () => {
-  const nom = $("#edit-nom").value.trim(); if (nom.length < 2) return toast("Falta el nombre del premio");
-  premios[editIdx].nom = nom; premios[editIdx].det = $("#edit-det").value.trim(); guardarLocal(); $("#modal-edit").classList.remove("abierto"); render();
+$("#btn-sonido").addEventListener("click", () => { sonidoOn = !sonidoOn; $("#btn-sonido").textContent = sonidoOn ? "🔊 Sonido" : "🔇 Sonido"; if (sonidoOn) beep(660, .08); });
+$("#btn-limpiar").addEventListener("click", () => {
+  if (!resultados.length) { toast("No hay ganadores que limpiar"); return; }
+  if (!confirm("¿Borrar todos los ganadores sorteados? Los números vuelven al bombo. (No afecta la venta ni los datos de los participantes.)")) return;
+  resultados = []; guardarLocal(); nuevoSorteo(); render();
 });
-$("#edit-borrar").addEventListener("click", () => {
-  if (premios[editIdx].ganador) return;
-  premios.splice(editIdx, 1); idxActual = premios.findIndex(p => !p.ganador); if (idxActual < 0) idxActual = premios.length;
-  guardarLocal(); $("#modal-edit").classList.remove("abierto"); render();
-});
-$("#btn-add").addEventListener("click", () => {
-  const nom = $("#nuevo-premio").value.trim(); if (nom.length < 2) return toast("Escribe el nombre del premio");
-  premios.push({ nom, det: "", ganador: null });
-  if (idxActual >= premios.length - 1) { const f = premios.findIndex(p => !p.ganador); if (f >= 0) idxActual = f; }
-  $("#nuevo-premio").value = ""; guardarLocal(); render();
-});
-$("#nuevo-premio").addEventListener("keydown", e => { if (e.key === "Enter") $("#btn-add").click(); });
-
-$("#btn-sonido").addEventListener("click", () => { sonidoOn = !sonidoOn; $("#btn-sonido").textContent = sonidoOn ? "🔊 Sonido" : "🔇 Sonido"; if (sonidoOn) beep(660, 0.08); });
-$("#opt-persona").addEventListener("change", render);
-$("#btn-reiniciar").addEventListener("click", () => {
-  if (!confirm("¿Reiniciar el ensayo? Se borran los ganadores de práctica (no afecta la venta ni los datos de participantes).")) return;
-  premios = premios.map(p => ({ nom: p.nom, det: p.det, ganador: null })); idxActual = 0; localStorage.removeItem(LS);
-  $("#btn-girar").style.display = "inline-flex"; $("#btn-siguiente").style.display = "none";
-  $("#ganador-box").innerHTML = ""; document.querySelectorAll(".reel").forEach((r, i) => { r.classList.remove("win"); posReel(i, 0, false); });
-  narrar("Presiona GIRAR para sortear el primer premio"); render();
-});
+$("#premio-nombre").addEventListener("keydown", e => { if (e.key === "Enter" && fase === 0) girar(); });
 
 function toast(m, ms = 3200) { const t = $("#toast"); t.textContent = m; t.classList.add("visible"); setTimeout(() => t.classList.remove("visible"), ms); }
 function flashLuz() { const f = document.createElement("div"); f.className = "flash"; document.body.appendChild(f); setTimeout(() => f.remove(), 800); }
@@ -586,7 +533,7 @@ function confeti() {
   for (let i = 0; i < 90; i++) {
     const dv = document.createElement("div"); dv.className = "conf";
     dv.style.left = Math.random() * 100 + "vw"; dv.style.background = cols[i % cols.length];
-    dv.style.animationDuration = (2.2 + Math.random() * 1.8) + "s"; dv.style.animationDelay = (Math.random() * 0.4) + "s";
+    dv.style.animationDuration = (2.2 + Math.random() * 1.8) + "s"; dv.style.animationDelay = (Math.random() * .4) + "s";
     dv.style.transform = `rotate(${Math.random() * 360}deg)`; cont.appendChild(dv);
   }
   setTimeout(() => { cont.classList.remove("on"); cont.innerHTML = ""; }, 4200);
