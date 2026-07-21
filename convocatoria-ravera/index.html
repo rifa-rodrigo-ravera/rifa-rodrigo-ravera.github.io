@@ -16,7 +16,10 @@
 <meta property="og:image" content="https://rifa-rodrigo-ravera.github.io/convocatoria-ravera/og.jpg">
 <meta property="og:locale" content="es_CL">
 <meta name="twitter:card" content="summary_large_image">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@600;700&family=Barlow:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@600;700&family=Barlow:wght@500;600;700&display=block">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@600;700&family=Barlow:wght@500;600;700&display=block" rel="stylesheet">
 <style>
 :root{--naranja:#ff6a00;--oro:#ffcf3f;--crema:#f5efe6}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -33,11 +36,14 @@ a{text-decoration:none;color:inherit;touch-action:manipulation;-webkit-tap-highl
 .velo{position:fixed;inset:0;z-index:1;background:
   linear-gradient(180deg,rgba(0,0,0,.62) 0%,rgba(0,0,0,.18) 22%,rgba(0,0,0,.42) 46%,rgba(0,0,0,.88) 70%,#040404 100%)}
 
+/* bloque compacto anclado abajo: la foto se luce arriba */
 .contenido{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;
-  justify-content:space-between;padding:max(14px,env(safe-area-inset-top)) 16px calc(14px + env(safe-area-inset-bottom))}
+  justify-content:flex-end;gap:clamp(11px,2vh,20px);
+  padding:max(12px,env(safe-area-inset-top)) 16px calc(14px + env(safe-area-inset-bottom))}
 
-/* encabezado chico */
-.kicker{text-align:center;font-family:'Barlow Condensed';font-weight:700;text-transform:uppercase;
+/* encabezado chico, fijo arriba */
+.kicker{position:absolute;top:max(12px,env(safe-area-inset-top));left:16px;right:16px;
+  text-align:center;font-family:'Barlow Condensed';font-weight:700;text-transform:uppercase;
   letter-spacing:clamp(2px,1vw,5px);font-size:clamp(11px,2.9vw,17px);color:var(--naranja);
   text-shadow:0 2px 14px rgba(0,0,0,.95);line-height:1.25}
 .kicker b{display:block;color:#fff;font-size:clamp(13px,3.4vw,21px);letter-spacing:clamp(1px,.6vw,3px)}
@@ -47,16 +53,16 @@ a{text-decoration:none;color:inherit;touch-action:manipulation;-webkit-tap-highl
 .nosvemos{font-family:'Barlow Condensed';font-weight:700;text-transform:uppercase;
   letter-spacing:clamp(3px,1.6vw,8px);font-size:clamp(13px,3.6vw,26px);color:#ffd9b0;
   text-shadow:0 2px 14px rgba(0,0,0,.9)}
-.lugar{font-family:'Bebas Neue';font-size:clamp(40px,12.5vw,104px);line-height:.88;letter-spacing:1px;margin-top:2px;
+.lugar{font-family:'Bebas Neue';font-size:clamp(38px,11.5vw,92px);line-height:.82;letter-spacing:1px;margin-top:1px;
   background:linear-gradient(180deg,#fff 14%,var(--oro) 58%,var(--naranja) 100%);
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
   filter:drop-shadow(0 6px 26px rgba(0,0,0,.8))}
-.hora{display:inline-block;margin-top:clamp(8px,1.6vh,16px);background:var(--naranja);color:#fff;
-  font-family:'Bebas Neue';font-size:clamp(28px,8vw,58px);letter-spacing:3px;padding:5px 26px 2px;border-radius:12px;
+.hora{display:inline-block;margin-top:clamp(7px,1.2vh,13px);background:var(--naranja);color:#fff;
+  font-family:'Bebas Neue';font-size:clamp(26px,7.2vw,52px);letter-spacing:3px;padding:4px 24px 1px;border-radius:11px;
   box-shadow:0 8px 34px rgba(255,106,0,.55)}
-.resp{display:inline-block;margin-top:clamp(9px,1.7vh,18px);font-family:'Barlow Condensed';font-weight:700;
-  letter-spacing:clamp(2px,1vw,5px);font-size:clamp(11px,3vw,20px);text-transform:uppercase;color:#fff;
-  border:2px solid rgba(255,255,255,.5);border-radius:999px;padding:8px 20px;background:rgba(0,0,0,.3)}
+.resp{display:inline-block;margin-top:clamp(7px,1.2vh,14px);font-family:'Barlow Condensed';font-weight:700;
+  letter-spacing:clamp(2px,.9vw,4px);font-size:clamp(10.5px,2.8vw,18px);text-transform:uppercase;color:#fff;
+  border:2px solid rgba(255,255,255,.5);border-radius:999px;padding:7px 18px;background:rgba(0,0,0,.3)}
 
 /* botones de mapa: SIEMPRE 2 en una fila, compactos */
 .mapas{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:520px;width:100%;margin:0 auto}
