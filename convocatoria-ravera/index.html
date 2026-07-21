@@ -6,111 +6,104 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>Convocatoria Ravera — Punta de Tralca</title>
+<title>Punta de Tralca 12:30 — Almuerzo Solidario</title>
 <meta name="description" content="Almuerzo Solidario · Balneario Banco Central. Nos vemos en Punta de Tralca a las 12:30. ¡Viajen con responsabilidad!">
 <meta name="theme-color" content="#0b0b0b">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://rifa-rodrigo-ravera.github.io/convocatoria-ravera/">
-<meta property="og:title" content="Convocatoria Ravera 🏍️ — Punta de Tralca 12:30">
-<meta property="og:description" content="Almuerzo Solidario · Balneario Banco Central. Nos vemos en Punta de Tralca a las 12:30 hrs. ¡Viajen con responsabilidad!">
+<meta property="og:title" content="Nos vemos en Punta de Tralca a las 12:30 🏍️">
+<meta property="og:description" content="Almuerzo Solidario · Balneario Banco Central. ¡Viajen con responsabilidad!">
 <meta property="og:image" content="https://rifa-rodrigo-ravera.github.io/convocatoria-ravera/og.jpg">
 <meta property="og:locale" content="es_CL">
 <meta name="twitter:card" content="summary_large_image">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@600;700&family=Barlow:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--negro:#0b0b0b;--naranja:#ff6a00;--oro:#ffcf3f;--crema:#f5efe6;--gris:#a49c8f}
+:root{--naranja:#ff6a00;--oro:#ffcf3f;--crema:#f5efe6}
 *{margin:0;padding:0;box-sizing:border-box}
-html{color-scheme:dark;scroll-behavior:smooth}
-body{background:#050505;color:var(--crema);font-family:'Barlow',sans-serif;min-height:100dvh;overflow-x:hidden}
-a{text-decoration:none;color:inherit}
-button,a{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+html{color-scheme:dark}
+body{
+  height:100dvh;overflow:hidden;position:relative;background:#050505;color:var(--crema);
+  font-family:'Barlow',sans-serif;display:flex;flex-direction:column;
+}
+a{text-decoration:none;color:inherit;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 
-/* ===== TÍTULO GRANDE ===== */
-.cabecera{position:relative;z-index:3;text-align:center;padding:26px 16px 10px}
-.cabecera .rifa{font-family:'Barlow Condensed';font-weight:700;letter-spacing:7px;font-size:clamp(12px,3vw,16px);
-  color:var(--naranja);text-transform:uppercase}
-.cabecera h1{font-family:'Bebas Neue';font-size:clamp(52px,15vw,140px);line-height:.86;letter-spacing:2px;margin-top:4px;
-  background:linear-gradient(180deg,#fff 12%,var(--oro) 58%,var(--naranja) 100%);
+/* foto de fondo a pantalla completa */
+.bg{position:fixed;inset:0;z-index:0}
+.bg img{width:100%;height:100%;object-fit:cover;object-position:center 26%;display:block}
+.velo{position:fixed;inset:0;z-index:1;background:
+  linear-gradient(180deg,rgba(0,0,0,.62) 0%,rgba(0,0,0,.18) 22%,rgba(0,0,0,.42) 46%,rgba(0,0,0,.88) 70%,#040404 100%)}
+
+.contenido{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;
+  justify-content:space-between;padding:max(14px,env(safe-area-inset-top)) 16px calc(14px + env(safe-area-inset-bottom))}
+
+/* encabezado chico */
+.kicker{text-align:center;font-family:'Barlow Condensed';font-weight:700;text-transform:uppercase;
+  letter-spacing:clamp(2px,1vw,5px);font-size:clamp(11px,2.9vw,17px);color:var(--naranja);
+  text-shadow:0 2px 14px rgba(0,0,0,.95);line-height:1.25}
+.kicker b{display:block;color:#fff;font-size:clamp(13px,3.4vw,21px);letter-spacing:clamp(1px,.6vw,3px)}
+
+/* mensaje principal */
+.msg{text-align:center}
+.nosvemos{font-family:'Barlow Condensed';font-weight:700;text-transform:uppercase;
+  letter-spacing:clamp(3px,1.6vw,8px);font-size:clamp(13px,3.6vw,26px);color:#ffd9b0;
+  text-shadow:0 2px 14px rgba(0,0,0,.9)}
+.lugar{font-family:'Bebas Neue';font-size:clamp(40px,12.5vw,104px);line-height:.88;letter-spacing:1px;margin-top:2px;
+  background:linear-gradient(180deg,#fff 14%,var(--oro) 58%,var(--naranja) 100%);
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 6px 34px rgba(255,106,0,.35))}
-.cabecera .sub{font-family:'Barlow Condensed';font-weight:700;letter-spacing:3px;font-size:clamp(14px,3.6vw,22px);
-  text-transform:uppercase;color:#e8e2d6;margin-top:8px}
-.cabecera .sub .na{color:var(--naranja)}
+  filter:drop-shadow(0 6px 26px rgba(0,0,0,.8))}
+.hora{display:inline-block;margin-top:clamp(8px,1.6vh,16px);background:var(--naranja);color:#fff;
+  font-family:'Bebas Neue';font-size:clamp(28px,8vw,58px);letter-spacing:3px;padding:5px 26px 2px;border-radius:12px;
+  box-shadow:0 8px 34px rgba(255,106,0,.55)}
+.resp{display:inline-block;margin-top:clamp(9px,1.7vh,18px);font-family:'Barlow Condensed';font-weight:700;
+  letter-spacing:clamp(2px,1vw,5px);font-size:clamp(11px,3vw,20px);text-transform:uppercase;color:#fff;
+  border:2px solid rgba(255,255,255,.5);border-radius:999px;padding:8px 20px;background:rgba(0,0,0,.3)}
 
-/* ===== FOTO ===== */
-.foto-wrap{position:relative;max-width:620px;margin:18px auto 0;border-radius:20px;overflow:hidden;
-  border:3px solid rgba(255,106,0,.5);box-shadow:0 14px 60px rgba(255,106,0,.22)}
-.foto-wrap img{display:block;width:100%;height:auto;aspect-ratio:944/1600;object-fit:cover;object-position:center 22%}
-.foto-wrap .cap{position:absolute;left:0;right:0;bottom:0;padding:70px 18px 18px;text-align:center;
-  background:linear-gradient(transparent,rgba(5,5,5,.55) 40%,#050505)}
-.foto-wrap .nosvemos{font-family:'Barlow Condensed';font-weight:700;letter-spacing:6px;font-size:clamp(14px,3.4vw,22px);
-  text-transform:uppercase;color:#ffd9b0}
-.foto-wrap .lugar{font-family:'Bebas Neue';font-size:clamp(42px,11vw,86px);line-height:.9;letter-spacing:1px;margin-top:2px;
-  background:linear-gradient(180deg,#fff 15%,var(--oro) 60%,var(--naranja));
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-
-/* ===== HORA ===== */
-.hora{display:inline-block;margin:20px auto 0;background:var(--naranja);color:#fff;font-family:'Bebas Neue';
-  font-size:clamp(34px,8vw,60px);letter-spacing:3px;padding:8px 34px 4px;border-radius:14px;
-  box-shadow:0 10px 42px rgba(255,106,0,.5)}
-.centro{text-align:center;padding:0 16px}
-.resp{display:inline-block;margin-top:18px;font-family:'Barlow Condensed';font-weight:700;letter-spacing:4px;
-  font-size:clamp(14px,3.4vw,22px);text-transform:uppercase;border:2px solid rgba(255,255,255,.45);
-  border-radius:999px;padding:11px 28px;color:#fff}
-
-/* ===== BOTONES DE MAPA ===== */
-.mapas{max-width:620px;margin:28px auto 0;padding:0 16px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media (max-width:420px){.mapas{grid-template-columns:1fr}}
-.mapa{display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px 12px 16px;border-radius:18px;
-  background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.18);min-height:120px;
-  transition:border-color .15s,background .15s,transform .12s}
-.mapa:hover{border-color:var(--naranja);background:rgba(255,106,0,.12)}
-.mapa:active{transform:scale(.98)}
-.mapa .nom{font-family:'Barlow Condensed';font-weight:700;letter-spacing:3px;font-size:17px;text-transform:uppercase}
-.mapa .ir{font-size:12.5px;color:var(--oro);letter-spacing:1px;text-transform:uppercase;font-weight:600}
-
-.pie{text-align:center;color:var(--gris);font-size:13px;padding:34px 16px calc(30px + env(safe-area-inset-bottom));
-  font-family:'Barlow Condensed';letter-spacing:2px;text-transform:uppercase}
-.pie a{color:var(--naranja);border-bottom:1px solid rgba(255,106,0,.4)}
+/* botones de mapa: SIEMPRE 2 en una fila, compactos */
+.mapas{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:520px;width:100%;margin:0 auto}
+.mapa{display:flex;align-items:center;justify-content:center;gap:9px;padding:11px 8px;border-radius:15px;
+  background:rgba(255,255,255,.11);border:2px solid rgba(255,255,255,.28);min-height:58px;
+  backdrop-filter:blur(3px);transition:border-color .15s,background .15s,transform .12s}
+.mapa:active{transform:scale(.97)}
+.mapa:hover{border-color:var(--naranja);background:rgba(255,106,0,.16)}
+.mapa svg{flex:none;width:clamp(30px,8vw,40px);height:clamp(30px,8vw,40px)}
+.mapa .txt{display:flex;flex-direction:column;line-height:1.1;min-width:0}
+.mapa .nom{font-family:'Barlow Condensed';font-weight:700;letter-spacing:2px;font-size:clamp(13px,3.4vw,17px);text-transform:uppercase}
+.mapa .ir{font-size:clamp(9.5px,2.4vw,12px);color:var(--oro);letter-spacing:.5px;text-transform:uppercase;font-weight:600}
 </style>
 </head>
 <body>
 
-  <div class="cabecera">
-    <div class="rifa">Almuerzo Solidario · Balneario Banco Central</div>
-    <h1>CONVOCATORIA<br>RAVERA</h1>
-    <div class="sub">Todos rifamos por <span class="na">Rodrigo Ravera</span> 🏍️</div>
+<div class="bg"><img src="rodrigo.jpg" alt="" fetchpriority="high"></div>
+<div class="velo"></div>
+
+<div class="contenido">
+
+  <div class="kicker">
+    Almuerzo Solidario
+    <b>Balneario Banco Central</b>
   </div>
 
-  <div class="foto-wrap">
-    <img src="rodrigo.jpg" alt="Rodrigo Ravera" width="944" height="1600" fetchpriority="high">
-    <div class="cap">
-      <div class="nosvemos">Nos vemos en</div>
-      <div class="lugar">PUNTA DE TRALCA</div>
-    </div>
-  </div>
-
-  <div class="centro">
-    <div class="hora">12:30 HRS</div>
+  <div class="msg">
+    <div class="nosvemos">Nos vemos en</div>
+    <div class="lugar">PUNTA<br>DE TRALCA</div>
+    <div><span class="hora">12:30 HRS</span></div>
     <div><span class="resp">Viajen con responsabilidad</span></div>
   </div>
 
   <div class="mapas">
     <a class="mapa" href="https://waze.com/ul/h66j1bs8n2" target="_blank" rel="noopener">
-      <svg width="56" height="56" viewBox="0 0 64 64" aria-hidden="true">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
         <rect x="2" y="2" width="60" height="60" rx="15" fill="#7FCDE8"/>
         <path d="M32 11c11.6 0 20 7.4 20 16.8 0 6.3-3.9 11.6-10 14.6-1.2 4.3-5.2 7.3-9.8 7.3-1.2 0-2.4-.2-3.5-.6-6.2-.9-11.5-4.6-13.9-9.8C12.3 37 11 33 11 29.3 11 18.9 20.4 11 32 11Z" fill="#fff"/>
         <circle cx="25.5" cy="29" r="3.4" fill="#1b2a33"/><circle cx="38.5" cy="29" r="3.4" fill="#1b2a33"/>
         <path d="M25 37.5c1.9 2.9 4.4 4.3 7 4.3s5.1-1.4 7-4.3" stroke="#1b2a33" stroke-width="3" fill="none" stroke-linecap="round"/>
         <circle cx="23" cy="53" r="4.6" fill="#3a4a52"/><circle cx="43" cy="53" r="4.6" fill="#3a4a52"/>
       </svg>
-      <span class="nom">Waze</span>
-      <span class="ir">Tocar para ir ▸</span>
+      <span class="txt"><span class="nom">Waze</span><span class="ir">Tocar para ir ▸</span></span>
     </a>
 
     <a class="mapa" href="https://maps.app.goo.gl/YSr2oSJwY4yqsWYH6?g_st=aw" target="_blank" rel="noopener">
-      <svg width="52" height="52" viewBox="0 0 64 64" aria-hidden="true">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
         <defs><clipPath id="gp"><path d="M32 3C21 3 12 12 12 23c0 14.5 20 38 20 38s20-23.5 20-38C52 12 43 3 32 3Z"/></clipPath></defs>
         <g clip-path="url(#gp)">
           <polygon points="32,23 -12,-12 76,-12" fill="#4285F4"/>
@@ -120,14 +113,10 @@ button,a{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
         </g>
         <circle cx="32" cy="23" r="8.6" fill="#fff"/>
       </svg>
-      <span class="nom">Google Maps</span>
-      <span class="ir">Tocar para ir ▸</span>
+      <span class="txt"><span class="nom">Maps</span><span class="ir">Tocar para ir ▸</span></span>
     </a>
   </div>
 
-  <div class="pie">
-    ¿Aún no tienes tu número? · <a href="https://rifa-rodrigo-ravera.github.io/">Ir a la rifa</a>
-  </div>
-
+</div>
 </body>
 </html>
