@@ -319,6 +319,24 @@ function elegibles() {
   return POOL.filter(x => !usados.has(x.numero));
 }
 
+/* ===== SORTEO JUSTO: cada número tiene exactamente la misma probabilidad (1/500) =====
+   El ganador se elige UNA vez entre todos los elegibles con probabilidad pareja.
+   Los rodillos son SOLO la animación que revela ese número: NO se sortea dígito por
+   dígito, así que ningún número (ni el 500) queda beneficiado.
+   Generador criptográfico + muestreo por rechazo (sin sesgo de módulo). */
+function azarEntero(n) {
+  if (n <= 0) return 0;
+  try {
+    const lim = Math.floor(4294967296 / n) * n;
+    const buf = new Uint32Array(1);
+    let v;
+    do { crypto.getRandomValues(buf); v = buf[0]; } while (v >= lim);
+    return v % n;
+  } catch (_) {
+    return Math.floor(Math.random() * n);
+  }
+}
+
 /* ---- adornos ---- */
 function construirBulbs() {
   const top = $("#marq-top"); if (top.children.length) return;
@@ -437,7 +455,7 @@ function girar() {
   const cand = elegibles();
   if (!cand.length) { toast("No quedan números elegibles."); return; }
 
-  objetivo = { ...cand[Math.floor(Math.random() * cand.length)], premio };
+  objetivo = { ...cand[azarEntero(cand.length)], premio };
   $("#ganador-box").innerHTML = "";
   document.querySelectorAll(".reel").forEach(r => r.classList.remove("win"));
   for (let r = 0; r < 3; r++) { iniciarGiro(r); marcarParar(r, "off"); }
